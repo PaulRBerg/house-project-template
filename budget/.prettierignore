@@ -1,0 +1,4 @@
+dist
+.cache
+bun.lock
+data/project.json

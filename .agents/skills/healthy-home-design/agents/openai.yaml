@@ -1,0 +1,6 @@
+interface:
+  display_name: Healthy Home Design
+  short_description: Give evidence-led guidance for a healthy home.
+  default_prompt: Use $healthy-home-design to assess this home-health decision with evidence, caveats, and verification steps.
+policy:
+  allow_implicit_invocation: true

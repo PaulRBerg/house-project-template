@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "id": "demo-house",
+    "name": "Demo House",
+    "location": "Not specified",
+    "currency": "EUR",
+    "builtAreaSqm": 48,
+    "annualGrowthBps": 500,
+    "contingencyBps": 1000
+  },
+  "milestones": [
+    { "id": "la-rosu", "label": "La roșu", "date": "2030-03" },
+    { "id": "la-gri", "label": "La gri", "date": "2030-06" },
+    { "id": "la-cheie", "label": "La cheie", "date": "2030-09" },
+    { "id": "la-mutat", "label": "La mutat", "date": "2030-10" }
+  ],
+  "groups": [
+    {
+      "id": "construction",
+      "label": "La roșu",
+      "parentId": null,
+      "milestoneId": "la-rosu",
+      "sortOrder": 0,
+      "archived": false
+    },
+    {
+      "id": "rough",
+      "label": "La gri",
+      "parentId": null,
+      "milestoneId": "la-gri",
+      "sortOrder": 1,
+      "archived": false
+    },
+    {
+      "id": "finish",
+      "label": "La cheie",
+      "parentId": null,
+      "milestoneId": "la-cheie",
+      "sortOrder": 2,
+      "archived": false
+    },
+    {
+      "id": "move",
+      "label": "La mutat",
+      "parentId": null,
+      "milestoneId": "la-mutat",
+      "sortOrder": 3,
+      "archived": false
+    }
+  ],
+  "items": [
+    {
+      "id": "foundation",
+      "label": "Foundation allowance",
+      "groupId": "construction",
+      "areaId": "whole-house",
+      "milestoneId": "la-rosu",
+      "sortOrder": 0,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 100000, "highCents": 125000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "wall-framing",
+      "label": "Wall framing allowance",
+      "groupId": "construction",
+      "areaId": "whole-house",
+      "milestoneId": "la-rosu",
+      "sortOrder": 1,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 120000, "highCents": 150000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "electrical-rough-in",
+      "label": "Electrical rough-in allowance",
+      "groupId": "rough",
+      "areaId": "whole-house",
+      "milestoneId": "la-gri",
+      "sortOrder": 0,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 80000, "highCents": 100000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "plumbing-rough-in",
+      "label": "Plumbing rough-in allowance",
+      "groupId": "rough",
+      "areaId": "bathroom",
+      "milestoneId": "la-gri",
+      "sortOrder": 1,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 90000, "highCents": 110000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "interior-finishes",
+      "label": "Interior finishes allowance",
+      "groupId": "finish",
+      "areaId": "whole-house",
+      "milestoneId": "la-cheie",
+      "sortOrder": 0,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 48,
+        "quantityBasis": "built-area",
+        "unit": "m²",
+        "rates": { "baseCents": 1000, "highCents": 1250 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional rate for demonstrating area-based estimates; not a price claim."
+    },
+    {
+      "id": "kitchen-fixtures",
+      "label": "Kitchen fixtures allowance",
+      "groupId": "finish",
+      "areaId": "kitchen",
+      "milestoneId": "la-cheie",
+      "sortOrder": 1,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 70000, "highCents": 90000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "moving-services",
+      "label": "Moving services allowance",
+      "groupId": "move",
+      "areaId": "whole-house",
+      "milestoneId": "la-mutat",
+      "sortOrder": 0,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 30000, "highCents": 40000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    },
+    {
+      "id": "starter-furniture",
+      "label": "Starter furniture allowance",
+      "groupId": "move",
+      "areaId": "living-room",
+      "milestoneId": "la-mutat",
+      "sortOrder": 1,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": { "complete": false },
+      "estimate": {
+        "kind": "total",
+        "amounts": { "baseCents": 50000, "highCents": 65000 },
+        "fixed": true,
+        "pricedOn": "2030-01-01"
+      },
+      "briefReferences": [],
+      "sourceIds": [],
+      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+    }
+  ],
+  "sources": [],
+  "instalments": [
+    {
+      "id": "foundation-instalment",
+      "itemId": "foundation",
+      "label": "Foundation demo instalment",
+      "dueOn": "2030-03",
+      "projectedCents": 100000
+    },
+    {
+      "id": "wall-framing-instalment",
+      "itemId": "wall-framing",
+      "label": "Wall framing demo instalment",
+      "dueOn": "2030-03",
+      "projectedCents": 120000
+    },
+    {
+      "id": "electrical-rough-in-instalment",
+      "itemId": "electrical-rough-in",
+      "label": "Electrical demo instalment",
+      "dueOn": "2030-06",
+      "projectedCents": 80000
+    },
+    {
+      "id": "plumbing-rough-in-instalment",
+      "itemId": "plumbing-rough-in",
+      "label": "Plumbing demo instalment",
+      "dueOn": "2030-06",
+      "projectedCents": 90000
+    },
+    {
+      "id": "interior-finishes-instalment",
+      "itemId": "interior-finishes",
+      "label": "Interior finishes demo instalment",
+      "dueOn": "2030-09",
+      "projectedCents": 48000
+    },
+    {
+      "id": "kitchen-fixtures-instalment",
+      "itemId": "kitchen-fixtures",
+      "label": "Kitchen fixtures demo instalment",
+      "dueOn": "2030-09",
+      "projectedCents": 70000
+    },
+    {
+      "id": "moving-services-instalment",
+      "itemId": "moving-services",
+      "label": "Moving services demo instalment",
+      "dueOn": "2030-10",
+      "projectedCents": 30000
+    },
+    {
+      "id": "starter-furniture-instalment",
+      "itemId": "starter-furniture",
+      "label": "Starter furniture demo instalment",
+      "dueOn": "2030-10",
+      "projectedCents": 50000
+    }
+  ],
+  "payments": []
+}

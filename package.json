@@ -1,0 +1,15 @@
+{
+  "name": "house-project-template",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "workspaces": [
+    "budget"
+  ],
+  "devDependencies": {
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
+    "ultracite": "^7.11.1"
+  }
+}

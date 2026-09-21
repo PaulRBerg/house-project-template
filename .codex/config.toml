@@ -1,0 +1,15 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# Official Blender Lab MCP server, pinned to the repository-tested source commit.
+[mcp_servers.blender-lab]
+command = "uvx"
+args = [
+  "--from",
+  "git+https://projects.blender.org/lab/blender_mcp.git@2cea8d566dde07fbac28a61d698909d69724e853#subdirectory=mcp",
+  "blender-mcp",
+  "--transport=stdio",
+]
+
+[mcp_servers.blender-lab.env]
+BLENDER_MCP_HOST = "127.0.0.1"
+BLENDER_MCP_PORT = "9876"

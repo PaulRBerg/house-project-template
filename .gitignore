@@ -1,0 +1,30 @@
+# Dependencies
+.venv/
+node_modules/
+dist/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Tool state
+.cache/
+.serena/
+
+# Persistent house-model runtime state; canonical files under model/ stay tracked.
+model/*.blend[0-9]*
+model/*.blend@*
+model/*.blend~
+model/*.recovery.blend
+model/.house-model-*
+model/.house-model/
+model/recovery/
+model/renders/
+model/.generated/
+model/backups/
+
+# Files
+.env
+.env.*
+*.log

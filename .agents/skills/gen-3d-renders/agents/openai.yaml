@@ -1,0 +1,6 @@
+interface:
+  display_name: Generative 3D Renders
+  short_description: Create brief-led architectural concept imagery.
+  default_prompt: Use $gen-3d-renders to create coherent concept images from the current brief.
+policy:
+  allow_implicit_invocation: true
