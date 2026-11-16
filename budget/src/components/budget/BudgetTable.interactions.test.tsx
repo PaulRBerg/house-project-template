@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import { selectBudgetView } from "../../domain/index.js";
-import { makeDocument, makeGroup, makeInstalment, makeItem } from "../../domain/test-fixtures.js";
+import { TBD_BENEFICIARY_ID } from "../../domain/index.js";
+import { budgetTableProps } from "../../test/budget-table.js";
+import {
+  makeBeneficiary,
+  makeDocument,
+  makeGroup,
+  makeInstalment,
+  makeItem,
+} from "../../test/builders.js";
 import { render, screen, waitFor } from "../../test/render.js";
 import { BudgetTable } from "./BudgetTable.js";
+import type { BudgetGrouping } from "./categories.js";
 
-const filters = { scope: "all", search: "", status: "all" } as const;
+const filters = { costScope: "all", search: "", status: "all" } as const;
 
 function tableDocument() {
   const professional = makeGroup({ id: "professional", label: "Profesional", sortOrder: 0 });
@@ -34,7 +42,7 @@ function roomGroupingDocument() {
     parentId: finish.id,
   });
   const item = makeItem({
-    areaId: "bedroom",
+    areaId: "U-MBED",
     groupId: bedroom.id,
     id: "bedroom-floor",
     label: "Parchet dormitor",
@@ -47,10 +55,10 @@ function roomGroupingDocument() {
   });
 }
 
-it("renders ownership and completion as separate readable states", () => {
+it("marks owned rows by design only, without status badges", () => {
   const owned = makeItem({
-    id: "owned-device",
-    label: "Owned device",
+    id: "asset-apple-tv",
+    label: "Media player",
     ownership: "owned",
     completion: { complete: true },
   });
@@ -60,31 +68,25 @@ it("renders ownership and completion as separate readable states", () => {
     completion: { complete: true },
   });
   const planned = makeItem({ id: "planned", label: "Lucrare planificată" });
-  const view = selectBudgetView(
-    makeDocument({
-      items: [owned, complete, planned],
-      instalments: [
-        makeInstalment({ itemId: owned.id }),
-        makeInstalment({ id: "complete-ins", itemId: complete.id }),
-        makeInstalment({ id: "planned-ins", itemId: planned.id }),
-      ],
-    }),
-    { asOf: "2026-09-19", scenario: "base" },
-  );
-  render(
-    <BudgetTable
-      filters={filters}
-      grouping="categories"
-      hierarchy={view.hierarchy}
-      onGroupingChange={vi.fn()}
-      onOpenItem={vi.fn()}
-      selectedCategory="constructie"
-    />,
-  );
+  const document = makeDocument({
+    items: [owned, complete, planned],
+    instalments: [
+      makeInstalment({ itemId: owned.id }),
+      makeInstalment({ id: "complete-ins", itemId: complete.id }),
+      makeInstalment({ id: "planned-ins", itemId: planned.id }),
+    ],
+  });
+  render(<BudgetTable {...budgetTableProps(document, { grouping: "categories" })} />);
 
-  expect(screen.getByRole("row", { name: /Owned device/ })).toHaveTextContent("Deja cumpărat");
-  expect(screen.getByRole("row", { name: /Lucrare finalizată/ })).toHaveTextContent("Finalizat");
-  expect(screen.getByRole("row", { name: /Lucrare planificată/ })).toHaveTextContent("Planificat");
+  const ownedRow = screen.getByRole("row", { name: /Media player/ });
+  expect(ownedRow).toHaveClass("border-l-olive");
+  expect(ownedRow).not.toHaveTextContent("Deja cumpărat");
+  expect(screen.getByRole("row", { name: /Lucrare finalizată/ })).not.toHaveTextContent(
+    "Finalizat",
+  );
+  expect(screen.getByRole("row", { name: /Lucrare planificată/ })).not.toHaveTextContent(
+    "Planificat",
+  );
 });
 
 function renderTable(
@@ -93,127 +95,80 @@ function renderTable(
   onGroupingChange = vi.fn(),
   onOpenItem = vi.fn(),
 ) {
-  const view = selectBudgetView(tableDocument(), { asOf: "2026-09-19", scenario: "base" });
-  return {
-    ...render(
-      <BudgetTable
-        filters={{ ...filters, search }}
-        grouping="categories"
-        hierarchy={view.hierarchy}
-        onGroupingChange={onGroupingChange}
-        onOpenItem={onOpenItem}
-        selectedCategory={selectedCategory}
-      />,
-    ),
-    view,
-  };
+  const props = budgetTableProps(tableDocument(), {
+    filters: { ...filters, search },
+    grouping: "categories",
+    onGroupingChange,
+    onOpenBeneficiary: vi.fn(),
+    onOpenItem,
+    selectedCategory,
+  });
+  return { ...render(<BudgetTable {...props} />), props };
 }
 
 describe("BudgetTable interactions", () => {
   it("collapses groups, but search reveals a matching item", async () => {
-    const { user, rerender } = renderTable();
+    const { user, rerender, props } = renderTable();
     await user.click(screen.getByRole("button", { name: "Restrânge Structură" }));
     await waitFor(() =>
       expect(screen.queryByRole("button", { name: "Fundație" })).not.toBeInTheDocument(),
     );
 
-    rerender(
-      <BudgetTable
-        filters={{ ...filters, search: "Fundație" }}
-        grouping="categories"
-        hierarchy={
-          selectBudgetView(tableDocument(), { asOf: "2026-09-19", scenario: "base" }).hierarchy
-        }
-        onGroupingChange={vi.fn()}
-        onOpenItem={vi.fn()}
-        selectedCategory="construction"
-      />,
-    );
+    rerender(<BudgetTable {...props} filters={{ ...filters, search: "Fundație" }} />);
+    expect(await screen.findByRole("button", { name: "Fundație" })).toBeVisible();
+  });
+
+  it("ignores collapse clicks while a search keeps groups open", async () => {
+    const { user, rerender, props } = renderTable("construction", "Fundație");
+    expect(screen.getByRole("button", { name: "Restrânge Structură" })).toBeDisabled();
+    await user.click(screen.getByRole("row", { name: /Structură/ }));
+
+    rerender(<BudgetTable {...props} filters={filters} />);
     expect(await screen.findByRole("button", { name: "Fundație" })).toBeVisible();
   });
 
   it("resets collapsed expansion when re-entering a category and opens item details", async () => {
     const onOpenItem = vi.fn();
-    const { user, rerender, view } = renderTable("construction", "", vi.fn(), onOpenItem);
+    const { user, rerender, props } = renderTable("construction", "", vi.fn(), onOpenItem);
     await user.click(screen.getByRole("button", { name: "Restrânge Structură" }));
     await waitFor(() =>
       expect(screen.queryByRole("button", { name: "Fundație" })).not.toBeInTheDocument(),
     );
 
-    rerender(
-      <BudgetTable
-        {...{
-          filters,
-          grouping: "categories" as const,
-          hierarchy: view.hierarchy,
-          onGroupingChange: vi.fn(),
-          onOpenItem,
-          selectedCategory: "professional",
-        }}
-      />,
-    );
-    rerender(
-      <BudgetTable
-        {...{
-          filters,
-          grouping: "categories" as const,
-          hierarchy: view.hierarchy,
-          onGroupingChange: vi.fn(),
-          onOpenItem,
-          selectedCategory: "construction",
-        }}
-      />,
-    );
+    rerender(<BudgetTable {...props} selectedCategory="professional" />);
+    rerender(<BudgetTable {...props} selectedCategory="construction" />);
     await user.click(await screen.findByRole("button", { name: "Fundație" }));
     expect(onOpenItem).toHaveBeenCalledWith("foundation");
   });
 
   it("resets collapsed expansion when entering room grouping", async () => {
-    const view = selectBudgetView(roomGroupingDocument(), { asOf: "2026-09-19", scenario: "base" });
-    const { rerender, user } = render(
-      <BudgetTable
-        filters={filters}
-        grouping="categories"
-        hierarchy={view.hierarchy}
-        onGroupingChange={vi.fn()}
-        onOpenItem={vi.fn()}
-        selectedCategory="finish"
-      />,
-    );
+    const props = budgetTableProps(roomGroupingDocument(), {
+      grouping: "categories",
+      selectedCategory: "finish",
+    });
+    const { rerender, user } = render(<BudgetTable {...props} />);
     await user.click(screen.getByRole("button", { name: "Restrânge Dormitor" }));
     await waitFor(() =>
       expect(screen.queryByRole("button", { name: "Parchet dormitor" })).not.toBeInTheDocument(),
     );
 
-    rerender(
-      <BudgetTable
-        filters={filters}
-        grouping="rooms"
-        hierarchy={view.hierarchy}
-        onGroupingChange={vi.fn()}
-        onOpenItem={vi.fn()}
-        selectedCategory="finish"
-      />,
-    );
+    rerender(<BudgetTable {...props} grouping="rooms" />);
     expect(await screen.findByRole("button", { name: "Parchet dormitor" })).toBeVisible();
   });
 
   it("keeps one room grouping selected for click and keyboard controls", async () => {
     const onGroupingChange = vi.fn();
-    const view = selectBudgetView(roomGroupingDocument(), { asOf: "2026-09-19", scenario: "base" });
+    const props = budgetTableProps(roomGroupingDocument(), { selectedCategory: "finish" });
     function ControlledTable() {
-      const [grouping, setGrouping] = useState<"rooms" | "categories">("categories");
+      const [grouping, setGrouping] = useState<BudgetGrouping>("categories");
       return (
         <BudgetTable
-          filters={filters}
+          {...props}
           grouping={grouping}
-          hierarchy={view.hierarchy}
           onGroupingChange={(nextGrouping) => {
             onGroupingChange(nextGrouping);
             setGrouping(nextGrouping);
           }}
-          onOpenItem={vi.fn()}
-          selectedCategory="finish"
         />
       );
     }
@@ -235,5 +190,41 @@ describe("BudgetTable interactions", () => {
     expect(document.activeElement).toBe(categories);
     expect(categories).toHaveAttribute("aria-pressed", "true");
     expect(onGroupingChange).toHaveBeenLastCalledWith("categories");
+  });
+
+  it("shows each item's beneficiary and routes clicks to onOpenBeneficiary, not onOpenItem", async () => {
+    const beneficiary = makeBeneficiary();
+    const assigned = makeItem({
+      id: "assigned-item",
+      label: "Structură",
+      beneficiaryId: beneficiary.id,
+    });
+    const unassigned = makeItem({ id: "unassigned-item", label: "Instalații" });
+    const doc = makeDocument({
+      beneficiaries: [beneficiary],
+      items: [assigned, unassigned],
+      instalments: [
+        makeInstalment({ itemId: assigned.id }),
+        makeInstalment({ id: "instalment-unassigned", itemId: unassigned.id }),
+      ],
+    });
+    const onOpenBeneficiary = vi.fn();
+    const onOpenItem = vi.fn();
+    const { user } = render(
+      <BudgetTable
+        {...budgetTableProps(doc, { grouping: "categories", onOpenBeneficiary, onOpenItem })}
+      />,
+    );
+
+    expect(screen.getByRole("row", { name: /Structură/ })).toHaveTextContent("Constructor Exemplu");
+    expect(screen.getByRole("row", { name: /Instalații/ })).toHaveTextContent("TBD");
+
+    await user.click(screen.getByRole("button", { name: "Beneficiar: Constructor Exemplu" }));
+    expect(onOpenBeneficiary).toHaveBeenCalledWith(beneficiary.id);
+
+    await user.click(screen.getByRole("button", { name: "Beneficiar: TBD" }));
+    expect(onOpenBeneficiary).toHaveBeenCalledWith(TBD_BENEFICIARY_ID);
+
+    expect(onOpenItem).not.toHaveBeenCalled();
   });
 });

@@ -1,6 +1,2 @@
-interface:
-  display_name: Price Estimator
-  short_description: Research current local house-project prices in EUR.
-  default_prompt: Use $price-estimator to research comparable EUR evidence for the requested budget items.
 policy:
   allow_implicit_invocation: true

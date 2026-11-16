@@ -1,0 +1,2168 @@
+{
+  "schema_version": 1,
+  "units": "m",
+  "id": "casa-exemplu",
+  "name": "Casa Exemplu",
+  "transform": [
+    [0, -1, 0, 11.82],
+    [-1, 0, 0, 17.82],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ],
+  "parcel": {
+    "id": "parcel-demo",
+    "polygon": {
+      "outer": [
+        [0.0, 0.0],
+        [24.0, 0.0],
+        [24.0, 40.0],
+        [0.0, 40.0]
+      ],
+      "holes": []
+    },
+    "reported_area_m2": 960.0,
+    "side_lengths_m": [24.0, 40.0, 24.0, 40.0],
+    "vehicle_access_edge": [1, 2],
+    "ground_material_id": "mat_soil",
+    "setback_material_id": "mat-baseline-site-annotation-ink"
+  },
+  "levels": [
+    {
+      "id": "G",
+      "name": "Parter",
+      "elevation_m": 0.0,
+      "clear_height_m": 2.55,
+      "floor_top_offset_m": 0.006
+    },
+    {
+      "id": "U",
+      "name": "Etaj",
+      "elevation_m": 2.8,
+      "clear_height_m": 2.55,
+      "floor_top_offset_m": 0.006
+    }
+  ],
+  "rooms": [
+    {
+      "id": "G-HALL",
+      "name": "Hol de intrare",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [3.6, 2.5],
+          [9.64, 2.5],
+          [9.64, 4.4],
+          [3.6, 4.4]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.0,
+      "anchor": [6.62, 3.45],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_oat"
+      }
+    },
+    {
+      "id": "G-LIV",
+      "name": "Living și dining",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [0.0, 0.0],
+          [5.5, 0.0],
+          [5.5, 2.5],
+          [3.6, 2.5],
+          [3.6, 4.4],
+          [0.0, 4.4]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [1.8, 2.2],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_cream",
+        "accents": [
+          {
+            "wall_id": "wall-g-liv-stair",
+            "material_id": "mat_wall_sage"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G-KIT",
+      "name": "Bucătărie",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [0.0, 4.4],
+          [3.6, 4.4],
+          [3.6, 7.64],
+          [0.0, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [1.8, 6.02],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_cream"
+      }
+    },
+    {
+      "id": "G-OFF",
+      "name": "Birou / cameră de oaspeți",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [7.1, 4.4],
+          [9.64, 4.4],
+          [9.64, 7.64],
+          [7.1, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [8.37, 6.02],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_sand",
+        "accents": [
+          {
+            "wall_id": "wall-g-tech-off",
+            "material_id": "mat_wall_dusty_blue"
+          }
+        ]
+      },
+      "short_name": "Birou"
+    },
+    {
+      "id": "G-BATH",
+      "name": "Baie parter",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [3.6, 4.4],
+          [5.5, 4.4],
+          [5.5, 7.64],
+          [3.6, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [4.55, 6.02],
+      "material_id": "material-floor-stone",
+      "wall_finish": {
+        "material_id": "mat_wall_oat"
+      }
+    },
+    {
+      "id": "G-TECH",
+      "name": "Cameră tehnică și spălătorie",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [5.5, 4.4],
+          [7.1, 4.4],
+          [7.1, 7.64],
+          [5.5, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [6.3, 6.02],
+      "material_id": "material-floor-stone",
+      "wall_finish": {
+        "material_id": "mat_wall_greige"
+      },
+      "short_name": "Tehnic"
+    },
+    {
+      "id": "G-STAIR",
+      "name": "Scară",
+      "level_id": "G",
+      "zone": {
+        "outer": [
+          [5.5, 0.0],
+          [9.64, 0.0],
+          [9.64, 2.5],
+          [5.5, 2.5]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [7.57, 1.25],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_oat"
+      }
+    },
+    {
+      "id": "U-LOBBY",
+      "name": "Hol etaj",
+      "level_id": "U",
+      "zone": {
+        "outer": [
+          [3.6, 0.0],
+          [5.5, 0.0],
+          [5.5, 2.5],
+          [8.5, 2.5],
+          [8.5, 0.0],
+          [9.64, 0.0],
+          [9.64, 4.4],
+          [3.6, 4.4]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.0,
+      "anchor": [6.62, 3.45],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_oat"
+      }
+    },
+    {
+      "id": "U-MBED",
+      "name": "Dormitor matrimonial",
+      "level_id": "U",
+      "zone": {
+        "outer": [
+          [0.0, 0.0],
+          [3.6, 0.0],
+          [3.6, 7.64],
+          [0.0, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [1.8, 3.82],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_greige",
+        "accents": [
+          {
+            "wall_id": "wall-u-west",
+            "material_id": "mat_wall_terracotta_limewash",
+            "span_m": [0.0, 3.6]
+          }
+        ]
+      },
+      "short_name": "Dormitor"
+    },
+    {
+      "id": "U-CHILD",
+      "name": "Camera copilului",
+      "level_id": "U",
+      "zone": {
+        "outer": [
+          [5.5, 4.4],
+          [9.64, 4.4],
+          [9.64, 7.64],
+          [5.5, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [7.57, 6.02],
+      "material_id": "material-floor-oak",
+      "wall_finish": {
+        "material_id": "mat_wall_cream",
+        "accents": [
+          {
+            "wall_id": "wall-u-bath-child",
+            "material_id": "mat_wall_sage"
+          }
+        ]
+      }
+    },
+    {
+      "id": "U-BATH",
+      "name": "Baie etaj",
+      "level_id": "U",
+      "zone": {
+        "outer": [
+          [3.6, 4.4],
+          [5.5, 4.4],
+          [5.5, 7.64],
+          [3.6, 7.64]
+        ],
+        "holes": []
+      },
+      "floor_inset_m": 0.08,
+      "anchor": [4.55, 6.02],
+      "material_id": "material-floor-stone",
+      "wall_finish": {
+        "material_id": "mat_wall_oat"
+      }
+    }
+  ],
+  "walls": [
+    {
+      "id": "wall-g-east",
+      "name": "Fațada laterală de est / parter",
+      "level_id": "G",
+      "start": [0.0, 0.0],
+      "end": [9.64, 0.0],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": -1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.25,
+        "bands": [
+          {
+            "z_m": [-0.3, 0.3],
+            "material_id": "mat_exterior_plinth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wall-g-west",
+      "name": "Fațada laterală de vest / parter",
+      "level_id": "G",
+      "start": [0.0, 7.64],
+      "end": [9.64, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": 1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.25,
+        "bands": [
+          {
+            "z_m": [-0.3, 0.3],
+            "material_id": "mat_exterior_plinth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wall-g-garden",
+      "name": "Fațada spre grădină / parter",
+      "level_id": "G",
+      "start": [0.0, 0.0],
+      "end": [0.0, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": 1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.25,
+        "bands": [
+          {
+            "z_m": [-0.3, 0.3],
+            "material_id": "mat_exterior_plinth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wall-g-street",
+      "name": "Fațada spre stradă / parter",
+      "level_id": "G",
+      "start": [9.64, 0.0],
+      "end": [9.64, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": -1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.25,
+        "bands": [
+          {
+            "z_m": [-0.3, 0.3],
+            "material_id": "mat_exterior_plinth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wall-u-east",
+      "name": "Fațada laterală de est / etaj",
+      "level_id": "U",
+      "start": [0.0, 0.0],
+      "end": [9.64, 0.0],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": -1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.61
+      }
+    },
+    {
+      "id": "wall-u-west",
+      "name": "Fațada laterală de vest / etaj",
+      "level_id": "U",
+      "start": [0.0, 7.64],
+      "end": [9.64, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": 1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.61
+      }
+    },
+    {
+      "id": "wall-u-garden",
+      "name": "Fațada spre grădină / etaj",
+      "level_id": "U",
+      "start": [0.0, 0.0],
+      "end": [0.0, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": 1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.61
+      }
+    },
+    {
+      "id": "wall-u-street",
+      "name": "Fațada spre stradă / etaj",
+      "level_id": "U",
+      "start": [9.64, 0.0],
+      "end": [9.64, 7.64],
+      "thickness": 0.36,
+      "material_id": "material-wall-ceramic-brick",
+      "role": "exterior",
+      "exterior_side": -1,
+      "finish": {
+        "style": "plain",
+        "material_id": "mat_exterior_white",
+        "extend_top_m": 0.61
+      }
+    },
+    {
+      "id": "wall-g-liv-kitchen",
+      "name": "Living / bucătărie",
+      "level_id": "G",
+      "start": [0.0, 4.4],
+      "end": [3.6, 4.4],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-hall-liv",
+      "name": "Hol / living și baie / bucătărie",
+      "level_id": "G",
+      "start": [3.6, 2.5],
+      "end": [3.6, 7.64],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-hall-north",
+      "name": "Hol / baie, cameră tehnică, birou",
+      "level_id": "G",
+      "start": [3.6, 4.4],
+      "end": [9.64, 4.4],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-hall-south",
+      "name": "Hol / living și scară",
+      "level_id": "G",
+      "start": [3.6, 2.5],
+      "end": [9.64, 2.5],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-liv-stair",
+      "name": "Living / scară (perete media)",
+      "level_id": "G",
+      "start": [5.5, 0.0],
+      "end": [5.5, 2.5],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-bath-tech",
+      "name": "Baie parter / cameră tehnică",
+      "level_id": "G",
+      "start": [5.5, 4.4],
+      "end": [5.5, 7.64],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-tech-off",
+      "name": "Cameră tehnică / birou",
+      "level_id": "G",
+      "start": [7.1, 4.4],
+      "end": [7.1, 7.64],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-g-stair-spine",
+      "name": "Perete median între rampe",
+      "level_id": "G",
+      "start": [6.61, 1.33],
+      "end": [8.5, 1.33],
+      "thickness": 0.1,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-lobby-north",
+      "name": "Hol etaj / baie și camera copilului",
+      "level_id": "U",
+      "start": [3.6, 4.4],
+      "end": [9.64, 4.4],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-mbed",
+      "name": "Dormitor matrimonial / hol și baie",
+      "level_id": "U",
+      "start": [3.6, 0.0],
+      "end": [3.6, 7.64],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-bath-child",
+      "name": "Baie etaj / camera copilului",
+      "level_id": "U",
+      "start": [5.5, 4.4],
+      "end": [5.5, 7.64],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-stair-west",
+      "name": "Hol etaj / gol scară",
+      "level_id": "U",
+      "start": [5.5, 0.0],
+      "end": [5.5, 2.5],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-stair-north",
+      "name": "Hol etaj / gol scară (nord)",
+      "level_id": "U",
+      "start": [5.5, 2.5],
+      "end": [8.5, 2.5],
+      "thickness": 0.12,
+      "material_id": "material-partition-concept",
+      "role": "interior"
+    },
+    {
+      "id": "wall-u-stair-guard",
+      "name": "Parapet plin la sosirea scării",
+      "level_id": "U",
+      "start": [8.5, 0.0],
+      "end": [8.5, 1.33],
+      "thickness": 0.1,
+      "material_id": "material-partition-concept",
+      "role": "interior",
+      "height_m": 1.0
+    },
+    {
+      "id": "wall-u-stair-spine",
+      "name": "Parapet median între rampe",
+      "level_id": "U",
+      "start": [6.61, 1.33],
+      "end": [8.5, 1.33],
+      "thickness": 0.1,
+      "material_id": "material-partition-concept",
+      "role": "interior",
+      "height_m": 1.0
+    }
+  ],
+  "openings": [
+    {
+      "id": "door-g-entrance",
+      "wall_id": "wall-g-street",
+      "kind": "door",
+      "offset": 2.7,
+      "width": 1.0,
+      "sill": 0,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "hinge": "end",
+      "swing_deg": 90,
+      "door_style": "flush-entry",
+      "frame_width_m": 0.045,
+      "notes": "Ușă de intrare termoizolantă, plină, cu yală multipunct (SITE-09); balamaua spre dulapul de haine."
+    },
+    {
+      "id": "door-g-terrace",
+      "wall_id": "wall-g-garden",
+      "kind": "terrace",
+      "offset": 2.6,
+      "width": 1.5,
+      "sill": 0.02,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "operation": "sliding",
+      "panel_count": 2,
+      "slide_direction": "toward-start",
+      "frame_width_m": 0.05,
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-g-liv-garden",
+      "wall_id": "wall-g-garden",
+      "kind": "window",
+      "offset": 0.5,
+      "width": 1.8,
+      "sill": 0.6,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-g-kit-garden",
+      "wall_id": "wall-g-garden",
+      "kind": "window",
+      "offset": 5.0,
+      "width": 1.4,
+      "sill": 0.95,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-g-liv-east",
+      "wall_id": "wall-g-east",
+      "kind": "window",
+      "offset": 0.8,
+      "width": 1.4,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-g-liv-nook",
+      "wall_id": "wall-g-east",
+      "kind": "window",
+      "offset": 3.9,
+      "width": 1.2,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-g-stair-east",
+      "wall_id": "wall-g-east",
+      "kind": "window",
+      "offset": 6.9,
+      "width": 1.0,
+      "sill": 1.3,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-g-bath",
+      "wall_id": "wall-g-west",
+      "kind": "window",
+      "offset": 4.6,
+      "width": 0.6,
+      "sill": 1.6,
+      "head": 2.2,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-g-off-west",
+      "wall_id": "wall-g-west",
+      "kind": "window",
+      "offset": 7.8,
+      "width": 1.0,
+      "sill": 1.1,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-g-stair-street",
+      "wall_id": "wall-g-street",
+      "kind": "window",
+      "offset": 0.8,
+      "width": 0.8,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-g-off-street",
+      "wall_id": "wall-g-street",
+      "kind": "window",
+      "offset": 4.8,
+      "width": 1.2,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "open-g-liv-kitchen",
+      "wall_id": "wall-g-liv-kitchen",
+      "kind": "open",
+      "offset": 0.4,
+      "width": 2.8,
+      "sill": 0,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "open-g-stair-foot",
+      "wall_id": "wall-g-hall-south",
+      "kind": "open",
+      "offset": 4.88,
+      "width": 0.95,
+      "sill": 0,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "door-g-liv",
+      "wall_id": "wall-g-hall-liv",
+      "kind": "door",
+      "offset": 0.9,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "door_style": "sliding-pocket",
+      "slide_direction": "toward-start"
+    },
+    {
+      "id": "door-g-bath",
+      "wall_id": "wall-g-hall-north",
+      "kind": "door",
+      "offset": 0.1,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "door-g-tech",
+      "wall_id": "wall-g-hall-north",
+      "kind": "door",
+      "offset": 2.1,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "door-g-off",
+      "wall_id": "wall-g-hall-north",
+      "kind": "door",
+      "offset": 3.6,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "door-g-understair",
+      "wall_id": "wall-g-hall-south",
+      "kind": "door",
+      "offset": 2.1,
+      "width": 0.8,
+      "sill": 0,
+      "head": 1.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": -90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "window-u-mbed-east",
+      "wall_id": "wall-u-east",
+      "kind": "window",
+      "offset": 0.9,
+      "width": 1.2,
+      "sill": 0.8,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-u-lobby-nook",
+      "wall_id": "wall-u-east",
+      "kind": "window",
+      "offset": 4.0,
+      "width": 1.0,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-u-stair-east",
+      "wall_id": "wall-u-east",
+      "kind": "window",
+      "offset": 6.8,
+      "width": 1.0,
+      "sill": 0.6,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-u-mbed-garden",
+      "wall_id": "wall-u-garden",
+      "kind": "window",
+      "offset": 1.6,
+      "width": 1.8,
+      "sill": 0.6,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-u-bath",
+      "wall_id": "wall-u-west",
+      "kind": "window",
+      "offset": 4.5,
+      "width": 0.7,
+      "sill": 1.5,
+      "head": 2.2,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-u-child-west",
+      "wall_id": "wall-u-west",
+      "kind": "window",
+      "offset": 8.0,
+      "width": 1.2,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "window-u-lobby-bay",
+      "wall_id": "wall-u-street",
+      "kind": "window",
+      "offset": 0.6,
+      "width": 0.9,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept"
+    },
+    {
+      "id": "window-u-child-street",
+      "wall_id": "wall-u-street",
+      "kind": "window",
+      "offset": 4.9,
+      "width": 1.2,
+      "sill": 0.9,
+      "head": 2.3,
+      "material_id": "material-opening-concept",
+      "blind": true,
+      "blind_concealed": true
+    },
+    {
+      "id": "door-u-mbed",
+      "wall_id": "wall-u-mbed",
+      "kind": "door",
+      "offset": 0.3,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "door-u-bath",
+      "wall_id": "wall-u-lobby-north",
+      "kind": "door",
+      "offset": 0.1,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    },
+    {
+      "id": "door-u-child",
+      "wall_id": "wall-u-lobby-north",
+      "kind": "door",
+      "offset": 2.1,
+      "width": 0.9,
+      "sill": 0,
+      "head": 2.1,
+      "material_id": "material-opening-concept",
+      "hinge": "start",
+      "swing_deg": 90,
+      "door_style": "flush-concealed"
+    }
+  ],
+  "slabs": [
+    {
+      "id": "slab-ground",
+      "name": "Placă pe sol",
+      "level_id": "G",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": []
+      },
+      "base_z_m": -0.3,
+      "thickness_m": 0.3,
+      "material_id": "material-slab-concept"
+    },
+    {
+      "id": "slab-upper",
+      "name": "Planșeu peste parter cu gol de scară",
+      "level_id": "U",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": [
+          [
+            [5.6, 0.18],
+            [8.5, 0.18],
+            [8.5, 2.44],
+            [5.6, 2.44]
+          ]
+        ]
+      },
+      "base_z_m": 2.576,
+      "thickness_m": 0.224,
+      "material_id": "material-slab-concept",
+      "notes": "Proxy de concept: circa 18 cm placă din beton armat + circa 4,4 cm pachet de pardoseală; dimensionare prin proiect."
+    },
+    {
+      "id": "ceiling-g",
+      "name": "Tavan parter",
+      "level_id": "G",
+      "role": "ceiling",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": [
+          [
+            [5.6, 0.18],
+            [8.5, 0.18],
+            [8.5, 2.44],
+            [5.6, 2.44]
+          ]
+        ]
+      },
+      "base_z_m": 2.556,
+      "thickness_m": 0.02,
+      "material_id": "mat_plaster_white",
+      "notes": "Tavan finit la +2,556 m, 2,55 m peste pardoseala finită."
+    },
+    {
+      "id": "ceiling-u",
+      "name": "Tavan etaj",
+      "level_id": "U",
+      "role": "ceiling",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": []
+      },
+      "base_z_m": 5.356,
+      "thickness_m": 0.02,
+      "material_id": "mat_plaster_white",
+      "notes": "Tavan finit la +5,356 m, 2,55 m peste pardoseala finită a etajului."
+    },
+    {
+      "id": "slab-roof",
+      "name": "Placă de acoperiș din beton armat",
+      "level_id": "U",
+      "role": "roof",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": []
+      },
+      "base_z_m": 5.376,
+      "thickness_m": 0.16,
+      "material_id": "material-slab-concept",
+      "notes": "Placă de concept de 16 cm, cota superioară +5,536 m; alcătuire prin proiect."
+    }
+  ],
+  "roofs": [
+    {
+      "id": "roof-east",
+      "name": "Terasă caldă / versant est",
+      "level_id": "U",
+      "polygon": {
+        "outer": [
+          [-0.18, -0.18],
+          [9.82, -0.18],
+          [9.82, 3.82],
+          [-0.18, 3.82]
+        ],
+        "holes": []
+      },
+      "base_z_m": 5.736,
+      "deck_z_m": 5.536,
+      "pitch_deg": 1.0,
+      "slope_direction": [0, -1],
+      "pitch_origin": [4.82, 3.82],
+      "material_id": "mat_roof_membrane",
+      "notes": "Terasă necirculabilă caldă cu membrană (SITE-06), cu circa 20 cm termoizolație la receptor și pante de 1° spre rigola mediană; atic orizontal la +5,96 m și copertină metalică. Panta, receptoarele și termoizolația se stabilesc prin calcul.",
+      "pv": {
+        "columns": 4,
+        "rows": 2,
+        "spacing_m": [1.8, 1.4],
+        "module_size_m": [1.762, 1.134, 0.03],
+        "height_above_roof_m": 0.065,
+        "origin": [2.12, 0.9]
+      },
+      "trims": [
+        {
+          "center": [4.82, -0.13, 5.655],
+          "size": [10.0, 0.1, 0.61],
+          "material_id": "mat_exterior_white"
+        },
+        {
+          "center": [4.82, -0.1, 5.99],
+          "size": [10.0, 0.16, 0.06],
+          "material_id": "mat_metal_dark"
+        },
+        {
+          "center": [4.82, 7.77, 5.655],
+          "size": [10.0, 0.1, 0.61],
+          "material_id": "mat_exterior_white"
+        },
+        {
+          "center": [4.82, 7.74, 5.99],
+          "size": [10.0, 0.16, 0.06],
+          "material_id": "mat_metal_dark"
+        },
+        {
+          "center": [-0.13, 3.82, 5.655],
+          "size": [0.1, 7.8, 0.61],
+          "material_id": "mat_exterior_white"
+        },
+        {
+          "center": [-0.1, 3.82, 5.99],
+          "size": [0.16, 8.0, 0.06],
+          "material_id": "mat_metal_dark"
+        },
+        {
+          "center": [9.77, 3.82, 5.655],
+          "size": [0.1, 7.8, 0.61],
+          "material_id": "mat_exterior_white"
+        },
+        {
+          "center": [9.74, 3.82, 5.99],
+          "size": [0.16, 8.0, 0.06],
+          "material_id": "mat_metal_dark"
+        }
+      ]
+    },
+    {
+      "id": "roof-west",
+      "name": "Terasă caldă / versant vest",
+      "level_id": "U",
+      "polygon": {
+        "outer": [
+          [-0.18, 3.82],
+          [9.82, 3.82],
+          [9.82, 7.82],
+          [-0.18, 7.82]
+        ],
+        "holes": []
+      },
+      "base_z_m": 5.736,
+      "deck_z_m": 5.536,
+      "pitch_deg": 1.0,
+      "slope_direction": [0, 1],
+      "pitch_origin": [4.82, 3.82],
+      "material_id": "mat_roof_membrane",
+      "notes": "Terasă necirculabilă caldă cu membrană (SITE-06), cu circa 20 cm termoizolație la receptor și pante de 1° spre rigola mediană; atic orizontal la +5,96 m și copertină metalică. Panta, receptoarele și termoizolația se stabilesc prin calcul.",
+      "pv": {
+        "columns": 4,
+        "rows": 2,
+        "spacing_m": [1.8, 1.4],
+        "module_size_m": [1.762, 1.134, 0.03],
+        "height_above_roof_m": 0.065,
+        "origin": [2.12, 5.34]
+      },
+      "trims": []
+    }
+  ],
+  "stairs": [
+    {
+      "id": "stair-main",
+      "name": "Scară în U cu podest intermediar",
+      "from_level_id": "G",
+      "to_level_id": "U",
+      "zone": {
+        "outer": [
+          [5.56, 0.18],
+          [9.46, 0.18],
+          [9.46, 2.44],
+          [5.56, 2.44]
+        ],
+        "holes": []
+      },
+      "riser_count": 16,
+      "riser_height_m": 0.175,
+      "tread_depth_m": 0.27,
+      "configuration": "U-shaped: two equal straight flights with a half landing toward the living room",
+      "geometry": {
+        "origin": [8.5, 0.18],
+        "run_direction": [-1, 0],
+        "flight_width_m": 1.0,
+        "flight_gap_m": 0.1,
+        "side_margin_m": 0.1,
+        "landing_depth_m": 1.0
+      },
+      "notes": "16 contratrepte de 17,5 cm în două rampe egale de câte 8; trepte de 27 cm, 2h + l = 62 cm; podest de 1,00 m la +1,40 m și depozitare închisă sub podest (LAY-08). Verificare prin proiect."
+    }
+  ],
+  "structure": [
+    {
+      "id": "column-s1-g",
+      "kind": "column",
+      "mark": "S1",
+      "name": "Stâlp S1 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [0.0, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s1-u",
+      "kind": "column",
+      "mark": "S1",
+      "name": "Stâlp S1 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [0.0, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s2-g",
+      "kind": "column",
+      "mark": "S2",
+      "name": "Stâlp S2 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [5.5, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s2-u",
+      "kind": "column",
+      "mark": "S2",
+      "name": "Stâlp S2 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [5.5, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s3-g",
+      "kind": "column",
+      "mark": "S3",
+      "name": "Stâlp S3 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [9.64, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s3-u",
+      "kind": "column",
+      "mark": "S3",
+      "name": "Stâlp S3 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [9.64, 0.0],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s4-g",
+      "kind": "column",
+      "mark": "S4",
+      "name": "Stâlp S4 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [0.0, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s4-u",
+      "kind": "column",
+      "mark": "S4",
+      "name": "Stâlp S4 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [0.0, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s5-g",
+      "kind": "column",
+      "mark": "S5",
+      "name": "Stâlp S5 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [5.5, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s5-u",
+      "kind": "column",
+      "mark": "S5",
+      "name": "Stâlp S5 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [5.5, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s6-g",
+      "kind": "column",
+      "mark": "S6",
+      "name": "Stâlp S6 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [9.64, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s6-u",
+      "kind": "column",
+      "mark": "S6",
+      "name": "Stâlp S6 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [9.64, 4.4],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s7-g",
+      "kind": "column",
+      "mark": "S7",
+      "name": "Stâlp S7 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [0.0, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s7-u",
+      "kind": "column",
+      "mark": "S7",
+      "name": "Stâlp S7 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [0.0, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s8-g",
+      "kind": "column",
+      "mark": "S8",
+      "name": "Stâlp S8 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [5.5, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s8-u",
+      "kind": "column",
+      "mark": "S8",
+      "name": "Stâlp S8 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [5.5, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "column-s9-g",
+      "kind": "column",
+      "mark": "S9",
+      "name": "Stâlp S9 / parter",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "center": [9.64, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 0.0,
+      "top_z_m": 2.576
+    },
+    {
+      "id": "column-s9-u",
+      "kind": "column",
+      "mark": "S9",
+      "name": "Stâlp S9 / etaj",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "center": [9.64, 7.64],
+      "section_m": [0.3, 0.3],
+      "bottom_z_m": 2.8,
+      "top_z_m": 5.376
+    },
+    {
+      "id": "beam-g-e1",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă est, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [0.0, 0.0],
+      "end": [5.5, 0.0],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-e2",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă est, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 0.0],
+      "end": [9.64, 0.0],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-w1",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă vest, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [0.0, 7.64],
+      "end": [5.5, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-w2",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă vest, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 7.64],
+      "end": [9.64, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-g1",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă grădină, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [0.0, 0.0],
+      "end": [0.0, 4.4],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-g2",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă grădină, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [0.0, 4.4],
+      "end": [0.0, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-s1",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă stradă, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [9.64, 0.0],
+      "end": [9.64, 4.4],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-s2",
+      "kind": "beam",
+      "mark": "G1",
+      "name": "Grindă de fațadă stradă, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [9.64, 4.4],
+      "end": [9.64, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 2.3,
+      "top_z_m": 2.8,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-g-n1",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă înglobată / ax hol nord, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [0.0, 4.4],
+      "end": [5.5, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-g-n2",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă înglobată / ax hol nord, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 4.4],
+      "end": [9.64, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-g-m1",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă înglobată / ax median, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 0.0],
+      "end": [5.5, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-g-m2",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă înglobată / ax median, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 4.4],
+      "end": [5.5, 7.64],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-u-e1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă est, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [0.0, 0.0],
+      "end": [5.5, 0.0],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-e2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă est, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [5.5, 0.0],
+      "end": [9.64, 0.0],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-w1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă vest, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [0.0, 7.64],
+      "end": [5.5, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-w2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă vest, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [5.5, 7.64],
+      "end": [9.64, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-g1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă grădină, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [0.0, 0.0],
+      "end": [0.0, 4.4],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-g2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă grădină, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [0.0, 4.4],
+      "end": [0.0, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-s1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă stradă, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [9.64, 0.0],
+      "end": [9.64, 4.4],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-s2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă de fațadă stradă, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [9.64, 4.4],
+      "end": [9.64, 7.64],
+      "width_m": 0.25,
+      "bottom_z_m": 5.1,
+      "top_z_m": 5.536,
+      "placement": "in-wall"
+    },
+    {
+      "id": "beam-u-n1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă înglobată / ax hol nord, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [0.0, 4.4],
+      "end": [5.5, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 5.356,
+      "top_z_m": 5.536,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-u-n2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă înglobată / ax hol nord, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [5.5, 4.4],
+      "end": [9.64, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 5.356,
+      "top_z_m": 5.536,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-u-m1",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă înglobată / ax median, tronson 1",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [5.5, 0.0],
+      "end": [5.5, 4.4],
+      "width_m": 0.2,
+      "bottom_z_m": 5.356,
+      "top_z_m": 5.536,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-u-m2",
+      "kind": "beam",
+      "mark": "GR",
+      "name": "Grindă înglobată / ax median, tronson 2",
+      "material_id": "material-structure-concrete",
+      "level_id": "U",
+      "start": [5.5, 4.4],
+      "end": [5.5, 7.64],
+      "width_m": 0.2,
+      "bottom_z_m": 5.356,
+      "top_z_m": 5.536,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-g-t1",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă de bordaj gol scară / nord",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [5.5, 2.5],
+      "end": [9.64, 2.5],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "beam-g-t2",
+      "kind": "beam",
+      "mark": "G3",
+      "name": "Grindă de bordaj gol scară / sosire",
+      "material_id": "material-structure-concrete",
+      "level_id": "G",
+      "start": [8.625, 0.0],
+      "end": [8.625, 2.5],
+      "width_m": 0.2,
+      "bottom_z_m": 2.556,
+      "top_z_m": 2.8,
+      "placement": "flush"
+    },
+    {
+      "id": "axis-x-1",
+      "kind": "axis",
+      "name": "Ax 1",
+      "label": "1",
+      "direction": "x",
+      "position": 0.0
+    },
+    {
+      "id": "axis-x-2",
+      "kind": "axis",
+      "name": "Ax 2",
+      "label": "2",
+      "direction": "x",
+      "position": 5.5
+    },
+    {
+      "id": "axis-x-3",
+      "kind": "axis",
+      "name": "Ax 3",
+      "label": "3",
+      "direction": "x",
+      "position": 9.64
+    },
+    {
+      "id": "axis-y-a",
+      "kind": "axis",
+      "name": "Ax A",
+      "label": "A",
+      "direction": "y",
+      "position": 0.0
+    },
+    {
+      "id": "axis-y-b",
+      "kind": "axis",
+      "name": "Ax B",
+      "label": "B",
+      "direction": "y",
+      "position": 4.4
+    },
+    {
+      "id": "axis-y-c",
+      "kind": "axis",
+      "name": "Ax C",
+      "label": "C",
+      "direction": "y",
+      "position": 7.64
+    }
+  ],
+  "semantic_refs": [
+    {
+      "entity_id": "casa-exemplu",
+      "requirements": ["LAY-01", "LAY-06", "SITE-03"]
+    },
+    {
+      "entity_id": "parcel-demo",
+      "requirements": ["SITE-01", "SITE-02", "SITE-07"]
+    },
+    {
+      "entity_id": "G",
+      "requirements": ["LAY-07"]
+    },
+    {
+      "entity_id": "U",
+      "requirements": ["LAY-07"]
+    },
+    {
+      "entity_id": "G-HALL",
+      "requirements": ["LAY-01", "LAY-05", "RM-HALL-01"]
+    },
+    {
+      "entity_id": "G-LIV",
+      "requirements": ["LAY-01", "RM-LIV-01"]
+    },
+    {
+      "entity_id": "G-KIT",
+      "requirements": ["LAY-01", "LAY-03", "RM-KIT-01"]
+    },
+    {
+      "entity_id": "G-OFF",
+      "requirements": ["LAY-01", "LAY-02", "RM-OFF-01"]
+    },
+    {
+      "entity_id": "G-BATH",
+      "requirements": ["LAY-01", "LAY-03", "RM-HOUSE-01", "RM-BATH-01"]
+    },
+    {
+      "entity_id": "G-TECH",
+      "requirements": ["LAY-01", "LAY-03", "RM-TECH-01"]
+    },
+    {
+      "entity_id": "G-STAIR",
+      "requirements": ["LAY-01", "LAY-04", "LAY-08"]
+    },
+    {
+      "entity_id": "U-LOBBY",
+      "requirements": ["LAY-01", "LAY-05"]
+    },
+    {
+      "entity_id": "U-MBED",
+      "requirements": ["LAY-01", "LAY-02", "RM-HOUSE-01", "RM-MBED-01"]
+    },
+    {
+      "entity_id": "U-CHILD",
+      "requirements": ["LAY-01", "LAY-02", "RM-HOUSE-01", "RM-CHILD-01"]
+    },
+    {
+      "entity_id": "U-BATH",
+      "requirements": ["LAY-01", "LAY-03", "RM-HOUSE-01", "RM-UBATH-01"]
+    },
+    {
+      "entity_id": "stair-main",
+      "requirements": ["LAY-04"]
+    },
+    {
+      "entity_id": "roof-east",
+      "requirements": ["SITE-06", "EN-07"]
+    },
+    {
+      "entity_id": "roof-west",
+      "requirements": ["SITE-06", "EN-07"]
+    },
+    {
+      "entity_id": "door-g-entrance",
+      "requirements": ["SITE-09"]
+    },
+    {
+      "entity_id": "door-g-terrace",
+      "requirements": ["SITE-09", "GAR-03"]
+    },
+    {
+      "entity_id": "wall-g-east",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-g-west",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-g-garden",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-g-street",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-u-east",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-u-west",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-u-garden",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "wall-u-street",
+      "requirements": ["SITE-04"]
+    },
+    {
+      "entity_id": "column-s1-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s1-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s2-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s2-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s3-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s3-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s4-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s4-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s5-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s5-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s6-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s6-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s7-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s7-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s8-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s8-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s9-g",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "column-s9-u",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-e1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-e2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-w1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-w2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-g1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-g2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-s1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-s2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-n1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-n2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-m1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-m2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-e1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-e2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-w1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-w2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-g1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-g2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-s1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-s2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-n1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-n2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-m1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-u-m2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-t1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "beam-g-t2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-x-1",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-x-2",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-x-3",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-y-a",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-y-b",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "axis-y-c",
+      "requirements": ["SITE-05"]
+    },
+    {
+      "entity_id": "door-g-liv",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-g-bath",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-g-tech",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-g-off",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-g-understair",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-u-mbed",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-u-bath",
+      "requirements": ["STY-02"]
+    },
+    {
+      "entity_id": "door-u-child",
+      "requirements": ["STY-02"]
+    }
+  ]
+}

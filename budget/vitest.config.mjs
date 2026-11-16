@@ -1,22 +1,26 @@
+import { defineDevkitConfig } from "@prb/devkit/vitest";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vitest/config";
 
-export default defineConfig({
+const baseConfig = defineDevkitConfig();
+
+export default {
+  ...baseConfig,
   plugins: [react()],
   test: {
+    ...baseConfig.test,
     globals: false,
     reporters: ["default"],
-    restoreMocks: false,
-    testTimeout: 10_000,
+    restoreMocks: true,
     projects: [
       {
+        extends: true,
         test: {
           name: "node",
-          environment: "node",
-          include: ["src/**/*.test.ts"],
+          include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
         },
       },
       {
+        extends: true,
         test: {
           name: "ui",
           environment: "jsdom",
@@ -26,4 +30,4 @@ export default defineConfig({
       },
     ],
   },
-});
+};

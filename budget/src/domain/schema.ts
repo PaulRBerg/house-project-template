@@ -2,14 +2,40 @@ import { z } from "zod";
 
 import { BUDGET_AREA_IDS } from "./areas.js";
 
-export const DEFAULT_ANNUAL_GROWTH_BPS = 500 as const;
-export const DEFAULT_CONTINGENCY_BPS = 1_000 as const;
-export const MAX_ANNUAL_GROWTH_BPS = 2_500 as const;
-export const MAX_CONTINGENCY_BPS = 5_000 as const;
+/** Fixed risk reserve over eligible future house costs; the household chose not to tune it. */
+export const CONTINGENCY_BPS = 1_000 as const;
 export const MAX_MONEY_CENTS = 100_000_000_000 as const;
-export const MAX_GROWTH_DAYS = 36_525 as const;
+/** Basis points in one whole (100 %). */
+export const BPS_DENOMINATOR = 10_000 as const;
 
-export const MILESTONE_IDS = ["la-rosu", "la-gri", "la-cheie", "la-mutat"] as const;
+/** Reserved beneficiary ID for items without a known payee. */
+export const TBD_BENEFICIARY_ID = "tbd";
+
+export const FIXED_MILESTONES = {
+  "la-rosu": "2027-09",
+  "la-gri": "2027-12",
+  "la-cheie": "2028-09",
+  "la-mutat": "2029-06",
+} as const;
+
+/** Separate post-move budget; every other milestone belongs to the initial budget. */
+export const EXTRA_MILESTONE_ID = "extra";
+
+const MILESTONE_IDS: ReadonlyArray<keyof typeof FIXED_MILESTONES | typeof EXTRA_MILESTONE_ID> = [
+  ...(Object.keys(FIXED_MILESTONES) as Array<keyof typeof FIXED_MILESTONES>),
+  EXTRA_MILESTONE_ID,
+];
+
+/** Record collections of a budget document, in canonical file order. */
+export const RECORD_COLLECTION_KEYS = [
+  "milestones",
+  "groups",
+  "items",
+  "sources",
+  "beneficiaries",
+  "instalments",
+  "payments",
+] as const;
 
 const idSchema = z
   .string()
@@ -18,6 +44,8 @@ const idSchema = z
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Folosește un ID stabil în kebab-case.");
 
 const labelSchema = z.string().trim().min(1).max(240);
+const noteSchema = z.string().trim().max(500);
+const sortOrderSchema = z.number().int().nonnegative();
 const euroCentsSchema = z.number().int().nonnegative().max(MAX_MONEY_CENTS);
 
 function isHttpUrl(value: string): boolean {
@@ -29,7 +57,7 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-function isCalendarDate(value: string): boolean {
+export function isCalendarDate(value: string): boolean {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) return false;
   const year = Number(match[1]);
@@ -52,46 +80,21 @@ function isCalendarMonth(value: string): boolean {
   return month >= 1 && month <= 12;
 }
 
-/** Month-level planning value; valid legacy day values are reduced to their month when parsed. */
-export const isoMonthSchema = z.preprocess(
-  (value) => (typeof value === "string" && isCalendarDate(value) ? value.slice(0, 7) : value),
-  z.string().refine(isCalendarMonth, "Luna trebuie să fie o valoare calendaristică ISO YYYY-MM."),
-);
-
-export const scenarioSchema = z.enum(["base", "high"]);
-export type Scenario = z.infer<typeof scenarioSchema>;
+/** Month-level planning value. */
+export const isoMonthSchema = z
+  .string()
+  .refine(isCalendarMonth, "Luna trebuie să fie o valoare calendaristică ISO YYYY-MM.");
 
 export const paymentModeSchema = z.enum(["one-off", "partial-progress"]);
 
 export const budgetAreaIdSchema = z.enum(BUDGET_AREA_IDS);
 
-const currentScenarioAmountsSchema = z
-  .object({
-    baseCents: euroCentsSchema,
-    highCents: euroCentsSchema,
-  })
-  .strict()
-  .superRefine((amounts, context) => {
-    if (amounts.baseCents > amounts.highCents) {
-      context.addIssue({
-        code: "custom",
-        message: "Scenariile trebuie ordonate Optimist ≤ Prudent.",
-      });
-    }
-  });
-
-// Older v1 backups retain a retired low tier; base is now Optimist and high remains Prudent.
-export const scenarioAmountsSchema = z.preprocess((value) => {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) return value;
-  const amounts = { ...value } as Record<string, unknown>;
-  delete amounts.lowCents;
-  return amounts;
-}, currentScenarioAmountsSchema);
+export const estimateAmountsSchema = z.object({ baseCents: euroCentsSchema }).strict();
 
 const totalEstimateSchema = z
   .object({
     kind: z.literal("total"),
-    amounts: scenarioAmountsSchema,
+    amounts: estimateAmountsSchema,
     fixed: z.boolean(),
     pricedOn: isoDateSchema,
   })
@@ -103,23 +106,29 @@ const quantityRateEstimateSchema = z
     quantity: z.number().positive().finite().max(1_000_000_000),
     quantityBasis: z.literal("built-area").optional(),
     unit: z.string().trim().min(1).max(40),
-    rates: scenarioAmountsSchema,
+    rates: estimateAmountsSchema,
     fixed: z.boolean(),
     pricedOn: isoDateSchema,
   })
   .strict()
   .superRefine((estimate, context) => {
-    for (const [scenario, rateCents] of Object.entries(estimate.rates)) {
-      const amountCents = Math.round(estimate.quantity * rateCents);
-      if (!Number.isSafeInteger(amountCents) || amountCents > MAX_MONEY_CENTS) {
-        context.addIssue({
-          code: "custom",
-          path: ["rates", scenario],
-          message: `Cantitatea înmulțită cu tariful trebuie să producă maximum ${MAX_MONEY_CENTS} cenți întregi siguri.`,
-        });
-      }
+    const amountCents = quantityRateCents(estimate);
+    if (!Number.isSafeInteger(amountCents) || amountCents > MAX_MONEY_CENTS) {
+      context.addIssue({
+        code: "custom",
+        path: ["rates", "baseCents"],
+        message: `Cantitatea înmulțită cu tariful trebuie să producă maximum ${MAX_MONEY_CENTS} cenți întregi siguri.`,
+      });
     }
   });
+
+/** Unvalidated quantity × rate product in cents. */
+export function quantityRateCents(estimate: {
+  quantity: number;
+  rates: { baseCents: number };
+}): number {
+  return Math.round(estimate.quantity * estimate.rates.baseCents);
+}
 
 export const estimateSchema = z.discriminatedUnion("kind", [
   totalEstimateSchema,
@@ -130,6 +139,7 @@ export const milestoneSchema = z
   .object({
     id: z.enum(MILESTONE_IDS),
     label: labelSchema,
+    startDate: isoMonthSchema.optional(),
     date: isoMonthSchema,
   })
   .strict();
@@ -140,7 +150,7 @@ export const groupSchema = z
     label: labelSchema,
     parentId: idSchema.nullable(),
     milestoneId: milestoneSchema.shape.id,
-    sortOrder: z.number().int().nonnegative(),
+    sortOrder: sortOrderSchema,
     archived: z.boolean(),
   })
   .strict();
@@ -148,7 +158,6 @@ export const groupSchema = z
 export const briefReferenceSchema = z
   .object({
     recordId: z.string().trim().min(1).max(160),
-    status: z.enum(["required", "preferred", "phased", "deferred"]),
   })
   .strict();
 
@@ -174,18 +183,19 @@ export const itemSchema = z
     label: labelSchema,
     groupId: idSchema,
     areaId: budgetAreaIdSchema.optional(),
+    beneficiaryId: idSchema.optional(),
     milestoneId: milestoneSchema.shape.id,
-    sortOrder: z.number().int().nonnegative(),
+    sortOrder: sortOrderSchema,
     costScope: z.enum(["core", "movable"]),
     costType: z.enum(["land", "work", "professional-fee", "system", "movable-good", "other"]),
-    paymentMode: paymentModeSchema.default("partial-progress"),
+    paymentMode: paymentModeSchema,
     contingencyEligible: z.boolean(),
     included: z.boolean(),
     archived: z.boolean(),
     ownership: z.enum(["planned", "owned"]),
     completion: completionSchema,
     estimate: estimateSchema,
-    supplier: z.string().trim().min(1).max(240).optional(),
+    brand: labelSchema.optional(),
     briefReferences: z.array(briefReferenceSchema).max(40),
     sourceIds: z.array(idSchema).max(40),
     notes: z.string().trim().max(2_000).optional(),
@@ -226,17 +236,39 @@ export const itemSchema = z
     }
   });
 
+export const beneficiarySchema = z
+  .object({
+    id: idSchema,
+    name: labelSchema,
+    phone: z.string().trim().min(1).max(40).optional(),
+    email: z.email().optional(),
+    website: z
+      .url()
+      .refine(isHttpUrl, "Site-ul trebuie să folosească un URL http sau https.")
+      .optional(),
+  })
+  .strict()
+  .superRefine((beneficiary, context) => {
+    if (beneficiary.id === TBD_BENEFICIARY_ID) {
+      context.addIssue({
+        code: "custom",
+        path: ["id"],
+        message: "ID-ul «tbd» este rezervat elementelor fără beneficiar.",
+      });
+    }
+  });
+
 export const sourceSchema = z
   .object({
     id: idSchema,
     title: labelSchema,
     url: z.url().refine(isHttpUrl, "Sursa trebuie să folosească un URL http sau https."),
     accessedOn: isoDateSchema,
-    scope: z.string().trim().min(1).max(500),
+    scope: noteSchema.min(1),
     tax: z
       .object({
         status: z.enum(["included", "excluded", "not-applicable", "unknown"]),
-        rateBps: z.number().int().min(0).max(10_000).optional(),
+        rateBps: z.number().int().min(0).max(BPS_DENOMINATOR).optional(),
       })
       .strict(),
     confidence: z.enum(["low", "medium", "high"]),
@@ -244,7 +276,7 @@ export const sourceSchema = z
       .object({
         currency: z.string().trim().length(3).toUpperCase(),
         quotedAmountMinor: z.number().int().nonnegative().optional(),
-        note: z.string().trim().max(500).optional(),
+        note: noteSchema.optional(),
       })
       .strict()
       .optional(),
@@ -268,52 +300,43 @@ export const paymentSchema = z
     instalmentId: idSchema,
     paidOn: isoDateSchema,
     amountCents: euroCentsSchema.positive(),
-    note: z.string().trim().max(500).optional(),
+    note: noteSchema.optional(),
   })
   .strict();
 
-const currentProjectSchema = z
+export const projectSchema = z
   .object({
     id: idSchema,
     name: labelSchema,
-    location: z.string().trim().min(1).max(240),
+    location: labelSchema,
     currency: z.literal("EUR"),
     builtAreaSqm: z.number().positive().finite().max(1_000_000),
-    annualGrowthBps: z.number().int().min(0).max(MAX_ANNUAL_GROWTH_BPS),
-    contingencyBps: z.number().int().min(0).max(MAX_CONTINGENCY_BPS),
   })
   .strict();
-
-// Older v1 backups may still contain retired targets; discard them when opening.
-export const projectSchema = z.preprocess((value) => {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) return value;
-  const project = { ...value } as Record<string, unknown>;
-  delete project.coreBudgetTargetCents;
-  delete project.coreBudgetCapCents;
-  return project;
-}, currentProjectSchema);
 
 export const budgetDocumentSchema = z
   .object({
     schemaVersion: z.literal(1),
     project: projectSchema,
-    milestones: z.array(milestoneSchema).length(4),
+    milestones: z.array(milestoneSchema).length(MILESTONE_IDS.length),
     groups: z.array(groupSchema),
     items: z.array(itemSchema),
     sources: z.array(sourceSchema),
+    beneficiaries: z.array(beneficiarySchema),
     instalments: z.array(instalmentSchema),
     payments: z.array(paymentSchema),
   })
   .strict()
   .superRefine(validateDocumentReferences);
 
-export type ScenarioAmounts = z.infer<typeof scenarioAmountsSchema>;
+export type EstimateAmounts = z.infer<typeof estimateAmountsSchema>;
 export type Estimate = z.infer<typeof estimateSchema>;
 export type Milestone = z.infer<typeof milestoneSchema>;
 export type BudgetGroup = z.infer<typeof groupSchema>;
 export type BriefReference = z.infer<typeof briefReferenceSchema>;
 export type BudgetItem = z.infer<typeof itemSchema>;
 export type BudgetSource = z.infer<typeof sourceSchema>;
+export type Beneficiary = z.infer<typeof beneficiarySchema>;
 export type Instalment = z.infer<typeof instalmentSchema>;
 export type Payment = z.infer<typeof paymentSchema>;
 export type BudgetProject = z.infer<typeof projectSchema>;
@@ -338,27 +361,30 @@ function validateDocumentReferences(
     }
   });
 
-  const milestoneIds = document.milestones.map((milestone) => milestone.id);
-  for (const id of MILESTONE_IDS) {
-    if (milestoneIds.filter((milestoneId) => milestoneId === id).length !== 1) {
+  const milestones = new Map(document.milestones.map((milestone) => [milestone.id, milestone]));
+  document.milestones.forEach((milestone, index) => {
+    if (milestone.startDate && milestone.startDate > milestone.date) {
+      context.addIssue({
+        code: "custom",
+        path: ["milestones", index, "startDate"],
+        message: "Începutul etapei trebuie să fie înaintea sfârșitului sau în aceeași lună.",
+      });
+    }
+  });
+  for (const [id, date] of Object.entries(FIXED_MILESTONES)) {
+    const milestone = milestones.get(id as Milestone["id"]);
+    if (!milestone || milestone.date !== date) {
       context.addIssue({
         code: "custom",
         path: ["milestones"],
-        message: `Jalonul ${id} trebuie să apară exact o dată.`,
+        message: `Jalonul ${id} trebuie să aibă luna fixă ${date}.`,
       });
     }
   }
 
   const allIds = new Map<string, string>();
-  const collections: ReadonlyArray<readonly [string, ReadonlyArray<{ id: string }>]> = [
-    ["milestones", document.milestones],
-    ["groups", document.groups],
-    ["items", document.items],
-    ["sources", document.sources],
-    ["instalments", document.instalments],
-    ["payments", document.payments],
-  ];
-  for (const [collectionName, records] of collections) {
+  for (const collectionName of RECORD_COLLECTION_KEYS) {
+    const records: ReadonlyArray<{ id: string }> = document[collectionName];
     records.forEach((record, index) => {
       const previousCollection = allIds.get(record.id);
       if (previousCollection) {
@@ -414,6 +440,7 @@ function validateDocumentReferences(
   document.groups.forEach((group) => visit(group.id));
 
   const sources = new Set(document.sources.map((source) => source.id));
+  const beneficiaries = new Set(document.beneficiaries.map((beneficiary) => beneficiary.id));
   const items = new Map(document.items.map((item) => [item.id, item]));
   document.items.forEach((item, index) => {
     const group = groups.get(item.groupId);
@@ -428,6 +455,13 @@ function validateDocumentReferences(
         code: "custom",
         path: ["items", index, "milestoneId"],
         message: "Elementul trebuie să aparțină aceluiași jalon ca grupul său.",
+      });
+    }
+    if (item.beneficiaryId !== undefined && !beneficiaries.has(item.beneficiaryId)) {
+      context.addIssue({
+        code: "custom",
+        path: ["items", index, "beneficiaryId"],
+        message: `Beneficiarul ${item.beneficiaryId} nu există.`,
       });
     }
     const duplicateSources = item.sourceIds.filter(

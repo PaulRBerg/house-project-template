@@ -1,13 +1,24 @@
 import { ExternalLink } from "lucide-react";
 import ReactMarkdown, { type Components } from "react-markdown";
 
-import type { BudgetDocument, BudgetSource, DerivedItem } from "../../domain/index.js";
-import { BRIEF_STATUS_LABELS, formatDate, formatDateRange, formatMoney } from "../../ui/format.js";
-import { categoryStage } from "../shared/CategoryIcon.js";
+import {
+  beneficiaryName,
+  beneficiaryNamesById,
+  type BudgetDocument,
+  type BudgetSource,
+  type DerivedItem,
+} from "../../domain/index.js";
+import {
+  formatBpsPercent,
+  formatCount,
+  formatDate,
+  formatDateRange,
+  formatMoney,
+} from "../../ui/format.js";
 import { Dialog } from "../shared/Dialog.js";
-import { ItemIcon } from "../shared/ItemIcon.js";
-import { itemStatusLabel } from "../shared/ItemStatus.js";
-import { cn, eyebrowStyles } from "../shared/styles.js";
+import { ItemBrandIcon, ItemIcon } from "../shared/ItemIcon.js";
+import { PaymentProgress } from "../shared/PaymentProgress.js";
+import { accentLinkStyles, cn, definitionListStyles, eyebrowStyles } from "../shared/styles.js";
 
 interface ItemDetailsProps {
   document: BudgetDocument;
@@ -26,6 +37,7 @@ const taxLabels = {
 const confidenceLabels = { high: "ridicată", medium: "medie", low: "scăzută" };
 
 const sectionTitleStyles = cn(eyebrowStyles, "mb-0");
+const headlineAmountStyles = "mt-1 text-[1.7rem]/none font-[660] tracking-[-0.03em] tabular-nums";
 
 const noteMarkdownComponents = {
   a({ children, node: _node, ...props }) {
@@ -46,23 +58,11 @@ function formatEuroText(text: string): string {
   return text.replace(/\bEUR\b/g, "€");
 }
 
-/** Top-level catalogue category of a group, which decides the stage tint. */
-function rootCategoryId(document: BudgetDocument, groupId: string): string {
-  const groupsById = new Map(document.groups.map((group) => [group.id, group]));
-  let current = groupsById.get(groupId);
-  while (current?.parentId) {
-    const parent = groupsById.get(current.parentId);
-    if (!parent) break;
-    current = parent;
-  }
-  return current?.id ?? groupId;
-}
-
 function SourceReference({ source }: { source: BudgetSource }) {
   return (
     <article className="py-3.5">
       <a
-        className="inline-flex items-start gap-1.5 font-bold text-accent underline-offset-3 hover:underline"
+        className={cn(accentLinkStyles, "items-start")}
         href={source.url}
         rel="noreferrer"
         target="_blank"
@@ -74,7 +74,7 @@ function SourceReference({ source }: { source: BudgetSource }) {
       <p className="mt-2 text-[0.7rem] text-muted">
         Accesată {formatDate(source.accessedOn)} · încredere {confidenceLabels[source.confidence]} ·
         TVA {taxLabels[source.tax.status]}
-        {source.tax.rateBps !== undefined && ` (${source.tax.rateBps / 100}%)`}
+        {source.tax.rateBps !== undefined && ` (${formatBpsPercent(source.tax.rateBps)})`}
       </p>
       {source.provenance && (
         <div className="mt-1 text-[0.7rem] text-muted">
@@ -92,32 +92,45 @@ function ItemContext({ document, entry }: Pick<ItemDetailsProps, "document" | "e
   const { item } = entry;
   const group = document.groups.find((candidate) => candidate.id === item.groupId);
   const milestone = document.milestones.find((candidate) => candidate.id === item.milestoneId);
+  const payee = beneficiaryName(item, beneficiaryNamesById(document.beneficiaries));
 
   return (
     <section className="mt-7 border-t border-line pt-5" aria-labelledby="item-context-title">
       <h3 className={sectionTitleStyles} id="item-context-title">
         Context
       </h3>
-      <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 [&_dt]:text-muted">
+      <dl className={cn(definitionListStyles, "mt-3")}>
         <dt>Categorie</dt>
         <dd>{group?.label}</dd>
         <dt>Etapă</dt>
         <dd>{milestone?.label}</dd>
         <dt>Tip de cost</dt>
         <dd>{item.costScope === "core" ? "Buget de bază" : "Bun mobil"}</dd>
-        <dt>Stare</dt>
-        <dd>
-          {itemStatusLabel(item)}
-          {item.completion.completedOn && ` · ${formatDate(item.completion.completedOn)}`}
+        <dt>Plăți</dt>
+        <dd className="flex flex-wrap items-center gap-x-2">
+          {entry.totalCents > 0 ? (
+            <PaymentProgress
+              label={item.label}
+              settledCents={entry.settledCents}
+              totalCents={entry.totalCents}
+            />
+          ) : (
+            "Fără cost"
+          )}
+          {item.completion.completedOn && `· ${formatDate(item.completion.completedOn)}`}
         </dd>
         <dt>În buget</dt>
         <dd>{entry.effectivelyArchived ? "Arhivat" : item.included ? "Inclus" : "Neinclus"}</dd>
         <dt>Calendar</dt>
-        <dd>{formatDateRange(entry.scheduleStartOn, entry.scheduleFinalOn) || "Fără termen"}</dd>
-        {item.supplier && (
+        <dd>
+          {formatDateRange(entry.scheduleStartOn, entry.scheduleFinalOn) || formatDate(undefined)}
+        </dd>
+        <dt>Beneficiar</dt>
+        <dd>{payee}</dd>
+        {item.brand && (
           <>
-            <dt>Furnizor</dt>
-            <dd>{item.supplier}</dd>
+            <dt>Marcă</dt>
+            <dd>{item.brand}</dd>
           </>
         )}
       </dl>
@@ -128,9 +141,9 @@ function ItemContext({ document, entry }: Pick<ItemDetailsProps, "document" | "e
             {item.briefReferences.map((reference) => (
               <li
                 className="rounded-full border border-line bg-canvas px-2.5 py-1 text-[0.7rem] font-medium"
-                key={`${reference.recordId}-${reference.status}`}
+                key={reference.recordId}
               >
-                {reference.recordId} · {BRIEF_STATUS_LABELS[reference.status]}
+                {reference.recordId}
               </li>
             ))}
           </ul>
@@ -144,7 +157,6 @@ export function ItemDetails({ document, entry, open, onClose, onExited }: ItemDe
   const { item } = entry;
   const { estimate } = item;
   const sources = document.sources.filter((source) => item.sourceIds.includes(source.id));
-  const stage = categoryStage(rootCategoryId(document, item.groupId));
   const owned = item.ownership === "owned";
   const showForecast = entry.active && !owned;
 
@@ -155,7 +167,7 @@ export function ItemDetails({ document, entry, open, onClose, onExited }: ItemDe
         <span
           aria-hidden="true"
           className="inline-flex size-11 flex-none items-center justify-center rounded-[10px] border border-stage/16 bg-stage-tint [&>svg]:text-stage"
-          data-stage={stage}
+          data-stage={item.milestoneId}
         >
           <ItemIcon itemId={item.id} size={22} />
         </span>
@@ -180,15 +192,13 @@ export function ItemDetails({ document, entry, open, onClose, onExited }: ItemDe
                     ? "Preț istoric"
                     : "Valoare istorică estimată"
                   : "Estimare de bază"}
+                <ItemBrandIcon itemId={item.id} size={13} />
               </p>
-              <p className="mt-1 text-[1.7rem]/none font-[660] tracking-[-0.03em] tabular-nums">
-                {formatMoney(entry.estimateCents)}
-              </p>
+              <p className={headlineAmountStyles}>{formatMoney(entry.estimateCents)}</p>
               {estimate.kind === "quantity-rate" && (
                 <p className="mt-2 tabular-nums">
                   {estimate.quantity} {estimate.unit} ×{" "}
-                  {formatMoney(estimate.rates[`${entry.estimateScenario}Cents`], true)}/
-                  {estimate.unit}
+                  {formatMoney(estimate.rates.baseCents, true)}/{estimate.unit}
                   {estimate.quantityBasis === "built-area" && " · aria construită desfășurată"}
                 </p>
               )}
@@ -200,9 +210,7 @@ export function ItemDetails({ document, entry, open, onClose, onExited }: ItemDe
             {showForecast && (
               <div>
                 <p className="text-[0.7rem] text-muted">Prognoză</p>
-                <p className="mt-1 text-[1.7rem]/none font-[660] tracking-[-0.03em] tabular-nums">
-                  {formatMoney(entry.forecastCents)}
-                </p>
+                <p className={headlineAmountStyles}>{formatMoney(entry.forecastCents)}</p>
                 <p className="mt-2 text-[0.7rem] text-muted">
                   {entry.contingencyCents > 0
                     ? `Include rezerva de ${formatMoney(entry.contingencyCents)}.`
@@ -227,7 +235,7 @@ export function ItemDetails({ document, entry, open, onClose, onExited }: ItemDe
             </h3>
             {sources.length > 0 && (
               <span className="text-[0.7rem] text-muted tabular-nums">
-                {sources.length === 1 ? "1 sursă" : `${sources.length} surse`}
+                {formatCount(sources.length, { one: "sursă", other: "surse" })}
               </span>
             )}
           </div>

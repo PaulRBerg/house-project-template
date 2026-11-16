@@ -4,12 +4,12 @@ import { resolve } from "node:path";
 import { assert, describe, expect, it } from "vitest";
 
 import { budgetDocumentSchema, selectBudgetView, type BudgetDocument } from "../../domain/index.js";
-import { makeDocument, makeItem, makeSource } from "../../domain/test-fixtures.js";
+import { makeBeneficiary, makeDocument, makeItem, makeSource } from "../../test/builders.js";
 import { render, screen, within } from "../../test/render.js";
 import { ItemDetails } from "./ItemDetails.js";
 
 function renderDetails(document: BudgetDocument, itemId = document.items[0]?.id) {
-  const view = selectBudgetView(document, { scenario: "base", asOf: "2026-09-19" });
+  const view = selectBudgetView(document, { asOf: "2026-09-19", scope: "all" });
   const entry = view.items.find((candidate) => candidate.item.id === itemId);
   assert(entry);
   return render(
@@ -26,18 +26,18 @@ function renderDetails(document: BudgetDocument, itemId = document.items[0]?.id)
 describe("ItemDetails", () => {
   it("exposes linked evidence and estimate context without item editing controls", () => {
     const source = makeSource({
-      provenance: { currency: "RON", note: "Example conversion note." },
+      provenance: { currency: "RON", note: "Conversie documentată la data estimării." },
     });
     const item = makeItem({
       sourceIds: [source.id],
-      notes: "Fictional allowance for materials and work.",
-      supplier: "Example supplier",
+      notes: "Alocație pentru materiale și manoperă.",
+      brand: "Constructor local",
       estimate: {
         kind: "quantity-rate",
-        quantity: 48,
+        quantity: 260,
         quantityBasis: "built-area",
         unit: "m²",
-        rates: { baseCents: 1_500, highCents: 2_500 },
+        rates: { baseCents: 1_500 },
         pricedOn: "2026-09-18",
         fixed: false,
       },
@@ -51,21 +51,25 @@ describe("ItemDetails", () => {
 
     const dialog = screen.getByRole("dialog", { name: item.label });
     const sourceLink = within(dialog).getByRole("link", { name: source.title });
-    expect(sourceLink).toHaveAttribute("href", "https://example.com/estimate");
+    expect(sourceLink).toHaveAttribute("href", "https://example.com/oferta");
     expect(sourceLink).toHaveAttribute("target", "_blank");
     expect(sourceLink).toHaveAttribute("rel", "noreferrer");
     for (const text of [
       source.title,
       source.scope,
-      "Accesată 1 Ian 2030",
+      "Accesată 18 Sep 2026",
       "încredere medie",
-      "TVA inclus (21%)",
+      "TVA inclus (21 %)",
       "Moneda sursei: RON",
-      "Example conversion note.",
-      "Fictional allowance for materials and work.",
-      "Example supplier",
-      "€720",
-      "48 m² × €15.00/m² · aria construită desfășurată",
+      "Conversie documentată la data estimării.",
+      "Alocație pentru materiale și manoperă.",
+      "Marcă",
+      "Constructor local",
+      "Beneficiar",
+      "TBD",
+      "budget-001",
+      "€3,900",
+      "260 m² × €15.00/m² · aria construită desfășurată",
     ]) {
       expect(dialog).toHaveTextContent(text);
     }
@@ -76,13 +80,25 @@ describe("ItemDetails", () => {
     expect(within(dialog).getByRole("button", { name: "Închide" })).toBeInTheDocument();
   });
 
-  it("explains missing external evidence while preserving project notes", () => {
-    const item = makeItem({ notes: "Example project note." });
+  it("explains missing external evidence while preserving household notes and references", () => {
+    const item = makeItem({ notes: "Alocație acceptată de gospodărie." });
     renderDetails(makeDocument({ items: [item] }));
 
     const dialog = screen.getByRole("dialog", { name: item.label });
     expect(dialog).toHaveTextContent("Nu există o sursă externă atașată acestui reper.");
-    expect(dialog).toHaveTextContent("Example project note.");
+    expect(dialog).toHaveTextContent("Alocație acceptată de gospodărie.");
+    expect(dialog).toHaveTextContent("budget-001");
+  });
+
+  it("shows the assigned beneficiary's name", () => {
+    const beneficiary = makeBeneficiary();
+    const item = makeItem({ beneficiaryId: beneficiary.id });
+    renderDetails(makeDocument({ beneficiaries: [beneficiary], items: [item] }));
+
+    const dialog = screen.getByRole("dialog", { name: item.label });
+    expect(dialog).toHaveTextContent("Beneficiar");
+    expect(dialog).toHaveTextContent("Constructor Exemplu");
+    expect(dialog).not.toHaveTextContent("TBD");
   });
 
   it("renders item notes as safe Markdown", () => {
@@ -111,7 +127,8 @@ describe("ItemDetails", () => {
     const dialog = screen.getByRole("dialog", { name: item.label });
     expect(dialog).toHaveTextContent("Preț istoric");
     expect(dialog).toHaveTextContent("€100");
-    expect(dialog).toHaveTextContent("Deja cumpărat");
+    expect(dialog).toHaveTextContent("Plătit");
+    expect(dialog).not.toHaveTextContent("Deja cumpărat");
     expect(dialog).not.toHaveTextContent("Prognoză:");
   });
 
@@ -121,7 +138,7 @@ describe("ItemDetails", () => {
       completion: { complete: true },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 10_000, highCents: 10_000 },
+        amounts: { baseCents: 10_000 },
         fixed: false,
         pricedOn: "2026-09-18",
       },

@@ -1,71 +1,60 @@
-# Blender model guidance
+# Model guidance
 
-`house.blend` is a small, generic demonstration: one 8 m × 6 m single-storey rectangular volume, four exterior
-walls, a gabled roof, one door and four windows. Its 48 m² external footprint matches the repository's demo data,
-but the model is illustrative and unaccepted. It is not a buildable design, a site layout, or an authority for
-requirements. Use the brief for accepted decisions and reconcile any accepted geometry change with the brief and
-budget.
+[house.blend](house.blend) is the procedural, furnished parcel concept of the demo house _Casa Exemplu_. It uses native
+editable geometry, procedural and CC0 image materials, and EEVEE by default (Cycles on request). It does not require
+IFC. The [household brief](../brief/README.md) remains the authority for decisions. The maintained sources live in
+`design/` (the house, furnishings, style, site and requirement JSON), `engine/`, `assets/` and `scripts/`. Replace the
+demo by editing `design/*.json` and the brief; the engine holds no house-specific IDs or values.
 
-The scene is self-contained. It has no parcel, surveyed coordinates, setback claim, linked library, downloaded
-texture, furnishing, or household-specific room topology. Generated evidence belongs in `.generated/`; replaceable
-images belong in `renders/`.
+Use the [`blender-model`](../.agents/skills/blender-model/SKILL.md) skill for every model task. It owns the edit,
+compile, build, save, preview and full-render workflow (through MCP or headless Blender), the Blender safety rules, the
+render output layout and the completion checks, and it lists the references to read for each kind of task.
 
-## Maintained sources
+## Construction material intent
 
-- `scripts/build_demo_house.py` deterministically builds the complete scene from an empty Blender file.
-- `scripts/blender_workflow.py` guards creation, rebuilding, saving, reopening, and verification.
-- `scripts/test_blender_workflow.py` checks the path/hash guards and facade opening geometry without starting Blender.
+The brief requires ceramic brick for the exterior and primary walls (`SITE-04`) inside a reinforced-concrete frame
+(`SITE-05`). BCA is not a substitute for those elements; it may appear only in secondary elements that the coordinated
+project identifies and verifies. The model is concept geometry and does not prove the final structural assembly,
+thicknesses, performance or compliance.
 
-Do not make lasting geometry changes only in the Blender UI. Update the builder and call `rebuild_demo` against a
-known clean saved hash; this entry point rebuilds and saves the canonical file. Then call `reopen_and_verify`.
-Keep the builder source hash stored in the scene current. For exploration, use Numpad 0 to view the saved camera and
-F12 to render it.
+## Exploration policy
 
-## Blender connection
+House and room areas, dimensions, proportions and plan shapes are open to exploration under `LAY-06`. Measurements in
+the references describe the current variant, not targets or limits, except for these accepted rules:
 
-Use Blender Lab's official MCP server for scene facts and maintained-script execution. Use native UI interaction for
-add-on installation, visual inspection, and recovery when available. Use MCP screenshots when native computer use is
-not available. Do not use routine Python Console or clipboard injection.
+- The house, including facade finishes, stays within the 180 m² gross-area cap (`LAY-06`, `requirements.json`
+  `gross_area`).
+- Every level keeps the 2.55 m finished clear height, with every room a single storey high (`LAY-07`).
+- The house, terrace and roof projections stay inside the 2 m concept setback from every parcel limit (`SITE-02`).
+  Fences, gates, access paving and the parking space may reach the boundary.
+- The programme and connection graph of `LAY-01` hold: every room is reached from `G-HALL` or `U-LOBBY` (the kitchen
+  through the open link from `G-LIV`) without crossing another occupied room.
 
-The repository pins Blender Lab `blender_mcp` at commit
-`2cea8d566dde07fbac28a61d698909d69724e853` in `.mcp.json` and `.codex/config.toml`. Install the add-on from that
-same source in Blender 5.1 or later through Blender's native UI. The sample was saved and validated in Blender 5.2;
-5.1 has not been separately tested. The add-on and server communicate only through
-`127.0.0.1:9876`. Configure the Blender executable on the host when the background tools require it; never commit an
-absolute `BLENDER_PATH`.
+When another variant becomes the working basis, reconcile the affected brief records and budget quantities. Geometry
+audits use semantic IDs and independently exported evaluated meshes. Do not rebuild accepted geometry for
+sub-decimetre parity or expose the complete internal review list in an everyday preview.
 
-Before any mutation, establish exclusive ownership of the live Blender instance and verify the resolved open-file
-path, clean state, and the expected on-disk SHA-256. For a first build, also prove any currently open source file is
-clean and unchanged before opening a factory-startup empty scene with
-`read_homefile(use_empty=True, use_factory_startup=True)`. For a rebuild, require the canonical blend itself to be
-open, clean, and equal to the supplied hash. A timeout makes the outcome uncertain: inspect the live file, dirty
-state, object inventory, output and any receipt before deciding whether a retry is safe. Never replay an uncertain
-mutation.
+## Invariants
 
-Open this checkout's `model/house.blend` and verify its resolved path first. Run maintained functions through official
-MCP in a fresh namespace. Derive the scripts from that verified file, because Blender's working directory need not
-be the repository. A typical verification call is:
+- The brief is the authority for decisions. The model is concept evidence, not professional approval.
+- `design/requirements.json` cites only brief records that exist; the compiler rejects unknown IDs.
+- The demo parcel is fictional and unsurveyed (`SITE-01`). Replace its polygon with surveyed corners before any siting
+  decision. Infer no solar orientation; `parcel.grid_north_deg` stays absent until a survey supplies it.
+- Furnishing assemblies live in their declared collections, never directly in scene roots.
+- Keep scene fake users enabled so unused variants survive saving.
+- Reuse `engine/paths.py`, `engine/persistence.py` and `engine/blender_datablocks.py` instead of local copies.
+- Add CC0 Poly Haven maps or skies with `just model-asset <exterior|interior> <id> [resolution]`. It downloads into
+  `assets/<group>/`, verifies the published MD5 and records the entry in that group's `sources.json`.
+- Keep `.codex/config.toml` and `.mcp.json` in sync. Do not commit an absolute `BLENDER_PATH`.
+- Keep the canonical blend, sources and guidance tracked. Do not blanket-purge `.generated/`.
 
-```python
-from pathlib import Path
-import runpy
-import bpy
+## Coordination still required
 
-scripts = Path(bpy.data.filepath).resolve().parent / "scripts"
-workflow = runpy.run_path(str(scripts / "blender_workflow.py"))
-result = workflow["verify_current"](
-    str(scripts.parent / "house.blend"),
-    "<known 64-character SHA-256>",
-)
-```
+The floor-face, doorway and arrival-route checks do not certify useful area, complete furniture clearance, stair
+headroom, structure, acoustics, building services, fire safety or code compliance. Dimensional proxies represent
+equipment. Roof drainage, external shading and PV layout depend on the survey, climate analysis and engineering.
 
-After `rebuild_demo` saves a geometry change, call `reopen_and_verify`, then independently inspect the saved snapshot.
-Verification must cover the resolved path, saved and clean state, metric units, 48 m² footprint metadata, exact
-object inventory, builder source hash, linked libraries, and external file assets. Inspect a current render rather
-than treating a successful render command as visual proof.
-
-Run the workflow checks from the repository root with:
-
-```sh
-just --justfile budget/justfile blender-workflow-tests
-```
+`stair:np057:<stair>` checks the NP 057-02 relation, `corridor:legea114:<room>` the 1.20 m Legea 114/1996 circulation
+reference (`LAY-05`) from evaluated floor faces minus columns and low furnishings, and `bath-access:legea114:U-BATH`
+reports the review-only bathtub approach (`RM-UBATH-01`). Read measured values and review flags from the
+`just parcel-audit` report, not from this guide. The architect verifies finished dimensions.

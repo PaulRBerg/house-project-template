@@ -1,6 +1,14 @@
 import { z } from "zod";
 
-import { budgetDocumentSchema } from "../domain/schema.js";
+import { budgetDocumentSchema, isoDateSchema } from "../domain/schema.js";
+
+export const API_PATHS = {
+  budget: "/api/budget",
+  exchangeRate: "/api/exchange-rate",
+} as const;
+
+/** Human-readable BNR reference-rate page, also the header link while the rate loads. */
+export const BNR_EXCHANGE_RATE_PAGE_URL = "https://www.bnr.ro/541-cursul-de-schimb";
 
 export const revisionSchema = z.string().regex(/^[a-f0-9]{64}$/);
 
@@ -8,13 +16,6 @@ export const budgetSnapshotSchema = z
   .object({
     document: budgetDocumentSchema,
     revision: revisionSchema,
-  })
-  .strict();
-
-export const putBudgetRequestSchema = z
-  .object({
-    expectedRevision: revisionSchema,
-    document: budgetDocumentSchema,
   })
   .strict();
 
@@ -27,18 +28,16 @@ export const apiErrorSchema = z
         details: z.array(z.string()).optional(),
       })
       .strict(),
-    latest: budgetSnapshotSchema.optional(),
   })
   .strict();
 
 export type BudgetSnapshot = z.infer<typeof budgetSnapshotSchema>;
-export type PutBudgetRequest = z.infer<typeof putBudgetRequestSchema>;
 export type ApiErrorBody = z.infer<typeof apiErrorSchema>;
 
 export const exchangeRateSchema = z
   .object({
     ronPerEur: z.number().positive().finite(),
-    rateDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    rateDate: isoDateSchema,
     source: z.union([z.literal("BNR"), z.literal("ECB")]),
     sourceUrl: z.url(),
     fetchedAt: z.iso.datetime(),

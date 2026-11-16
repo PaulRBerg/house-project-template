@@ -1,6 +1,0 @@
-interface:
-  display_name: High-Performance Home
-  short_description: Assess building performance, systems, and energy evidence.
-  default_prompt: Use $high-performance-home to assess this building-performance decision with evidence and caveats.
-policy:
-  allow_implicit_invocation: true

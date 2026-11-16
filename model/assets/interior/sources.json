@@ -1,0 +1,342 @@
+[
+  {
+    "id": "oak_veneer_02",
+    "source": "https://polyhaven.com/a/oak_veneer_02",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "oak_veneer_02_diff_2k.jpg",
+        "size": 2526115,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_veneer_02/oak_veneer_02_diff_2k.jpg",
+        "md5": "c046feadfb4ec99fe749f1840d8afd64"
+      },
+      "Rough": {
+        "path": "oak_veneer_02_rough_2k.jpg",
+        "size": 3167619,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_veneer_02/oak_veneer_02_rough_2k.jpg",
+        "md5": "b95f4e3abe3407ae0f83a536182e2c0f"
+      },
+      "Displacement": {
+        "path": "oak_veneer_02_disp_2k.jpg",
+        "size": 373713,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_veneer_02/oak_veneer_02_disp_2k.jpg",
+        "md5": "97c4b1ff2597c3a7a197b8b9aa79c841"
+      }
+    }
+  },
+  {
+    "id": "oak_wood_planks",
+    "source": "https://polyhaven.com/a/oak_wood_planks",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "oak_wood_planks_diff_2k.jpg",
+        "size": 2736142,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_wood_planks/oak_wood_planks_diff_2k.jpg",
+        "md5": "740160778f1c4b78bac74d96fe3c06ea"
+      },
+      "Rough": {
+        "path": "oak_wood_planks_rough_2k.jpg",
+        "size": 3396426,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_wood_planks/oak_wood_planks_rough_2k.jpg",
+        "md5": "d7533fb12d5c296917ff6fb169bb282b"
+      },
+      "Displacement": {
+        "path": "oak_wood_planks_disp_2k.jpg",
+        "size": 772661,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/oak_wood_planks/oak_wood_planks_disp_2k.jpg",
+        "md5": "1da57e424d76a699b4da86b206a8d36e"
+      }
+    }
+  },
+  {
+    "id": "rough_linen",
+    "source": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "rough_linen_diff_1k.jpg",
+        "size": 835801,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+        "md5": "663db789fb075462b685c1f740e58930"
+      },
+      "Rough": {
+        "path": "rough_linen_rough_1k.jpg",
+        "size": 1083725,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_rough_1k.jpg",
+        "md5": "a380b24cc43cff88c39510305ebf0020"
+      },
+      "Displacement": {
+        "path": "rough_linen_disp_1k.jpg",
+        "size": 882066,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_disp_1k.jpg",
+        "md5": "ae9235beae232e1f8e28aa2120bba199"
+      }
+    }
+  },
+  {
+    "id": "curly_teddy_natural",
+    "source": "https://polyhaven.com/a/curly_teddy_natural",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "curly_teddy_natural_diff_1k.jpg",
+        "size": 673494,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_diff_1k.jpg",
+        "md5": "82060ba3b45dfdbfab202b616a251b94"
+      },
+      "Rough": {
+        "path": "curly_teddy_natural_rough_1k.jpg",
+        "size": 812202,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_rough_1k.jpg",
+        "md5": "ea8d25d0290626e294b8d2242333d790"
+      },
+      "Displacement": {
+        "path": "curly_teddy_natural_disp_1k.jpg",
+        "size": 346134,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_disp_1k.jpg",
+        "md5": "93657fa1b11fee8abe1b9df0d376de20"
+      }
+    }
+  },
+  {
+    "id": "hessian_230",
+    "source": "https://polyhaven.com/a/hessian_230",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "hessian_230_diff_1k.jpg",
+        "size": 1062404,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_diff_1k.jpg",
+        "md5": "6d2cee5fb9e5584b7a202ab27e1a6dcc"
+      },
+      "Rough": {
+        "path": "hessian_230_rough_1k.jpg",
+        "size": 923890,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_rough_1k.jpg",
+        "md5": "8d3a20d7cc91d00de7d5980d471b3c59"
+      },
+      "Displacement": {
+        "path": "hessian_230_disp_1k.jpg",
+        "size": 720828,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_disp_1k.jpg",
+        "md5": "4a448a19fb7765c44570d9cf4c4b7410"
+      }
+    }
+  },
+  {
+    "id": "terry_cloth",
+    "source": "https://polyhaven.com/a/terry_cloth",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "terry_cloth_diff_1k.jpg",
+        "size": 933725,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/terry_cloth/terry_cloth_diff_1k.jpg",
+        "md5": "79084e50ec009738e0bf9c64365a4dfd"
+      },
+      "Rough": {
+        "path": "terry_cloth_rough_1k.jpg",
+        "size": 907821,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/terry_cloth/terry_cloth_rough_1k.jpg",
+        "md5": "1bde1962167b398f060fe9474ed1db0a"
+      },
+      "Displacement": {
+        "path": "terry_cloth_disp_1k.jpg",
+        "size": 844123,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/terry_cloth/terry_cloth_disp_1k.jpg",
+        "md5": "12d1df4522d716cef4d4b8b01fd373b3"
+      }
+    }
+  },
+  {
+    "id": "waffle_pique_cotton",
+    "source": "https://polyhaven.com/a/waffle_pique_cotton",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "waffle_pique_cotton_diff_1k.jpg",
+        "size": 764042,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/waffle_pique_cotton/waffle_pique_cotton_diff_1k.jpg",
+        "md5": "35504804fc3859dd00cae542c59b0f72"
+      },
+      "Rough": {
+        "path": "waffle_pique_cotton_rough_1k.jpg",
+        "size": 864544,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/waffle_pique_cotton/waffle_pique_cotton_rough_1k.jpg",
+        "md5": "a7724b64eb4f63603624463d7a27b980"
+      },
+      "Displacement": {
+        "path": "waffle_pique_cotton_disp_1k.jpg",
+        "size": 644054,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/waffle_pique_cotton/waffle_pique_cotton_disp_1k.jpg",
+        "md5": "5d0e595fbdc640b89dfe1361ba93f645"
+      }
+    }
+  },
+  {
+    "id": "caban",
+    "source": "https://polyhaven.com/a/caban",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "caban_diff_1k.jpg",
+        "size": 715554,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/caban/caban_diff_1k.jpg",
+        "md5": "4b9ff6f1c315df49e04b24ea5ad73975"
+      },
+      "Rough": {
+        "path": "caban_rough_1k.jpg",
+        "size": 1022753,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/caban/caban_rough_1k.jpg",
+        "md5": "83ab230ac899f0d7e79a37aea5c86c71"
+      },
+      "Displacement": {
+        "path": "caban_disp_1k.jpg",
+        "size": 543038,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/caban/caban_disp_1k.jpg",
+        "md5": "e8d9bcf313aff0c275e74f5d9715812d"
+      }
+    }
+  },
+  {
+    "id": "plastered_wall_04",
+    "source": "https://polyhaven.com/a/plastered_wall_04",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "plastered_wall_04_diff_1k.jpg",
+        "size": 299230,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_04/plastered_wall_04_diff_1k.jpg",
+        "md5": "3a45e9e3ff0c6aa179371dff02bded1f"
+      },
+      "Rough": {
+        "path": "plastered_wall_04_rough_1k.jpg",
+        "size": 243061,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_04/plastered_wall_04_rough_1k.jpg",
+        "md5": "66c89044921accf705665e4ea9ba1d66"
+      },
+      "Displacement": {
+        "path": "plastered_wall_04_disp_1k.jpg",
+        "size": 82957,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_04/plastered_wall_04_disp_1k.jpg",
+        "md5": "8d03737bb00ab27632a87e638c5729d4"
+      }
+    }
+  },
+  {
+    "id": "hinoki_planks",
+    "source": "https://polyhaven.com/a/hinoki_planks",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "hinoki_planks_diff_1k.jpg",
+        "size": 527974,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_diff_1k.jpg",
+        "md5": "7d59516b8cc9b8f55cd330099970e665"
+      },
+      "Rough": {
+        "path": "hinoki_planks_rough_1k.jpg",
+        "size": 155781,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_rough_1k.jpg",
+        "md5": "6e826a839e05fb09d80d22fcb9192b4e"
+      },
+      "Displacement": {
+        "path": "hinoki_planks_disp_1k.jpg",
+        "size": 252942,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_disp_1k.jpg",
+        "md5": "d01647f5a7f9911b51625e8b688b3ca7"
+      }
+    }
+  },
+  {
+    "id": "smooth_concrete_floor",
+    "source": "https://polyhaven.com/a/smooth_concrete_floor",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "smooth_concrete_floor_diff_1k.jpg",
+        "size": 861674,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smooth_concrete_floor/smooth_concrete_floor_diff_1k.jpg",
+        "md5": "321efe0af2d0809ab958b78a008fa116"
+      },
+      "Rough": {
+        "path": "smooth_concrete_floor_rough_1k.jpg",
+        "size": 488628,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smooth_concrete_floor/smooth_concrete_floor_rough_1k.jpg",
+        "md5": "d69e03eafb7442684db178e26896a1ee"
+      },
+      "Displacement": {
+        "path": "smooth_concrete_floor_disp_1k.jpg",
+        "size": 169690,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smooth_concrete_floor/smooth_concrete_floor_disp_1k.jpg",
+        "md5": "cb75bc46f1c1f65f4d3eb5f134439585"
+      }
+    }
+  },
+  {
+    "id": "Travertine009",
+    "source": "https://ambientcg.com/view?id=Travertine009",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "archive": {
+      "url": "https://ambientcg.com/get?file=Travertine009_1K-JPG.zip",
+      "md5": "b6e887b7d4c82e0c2f7ba4d8792f3165"
+    },
+    "files": {
+      "Diffuse": {
+        "path": "Travertine009_1K-JPG_Color.jpg",
+        "size": 922573,
+        "md5": "1c56f72de1c89ee6d95c098f3f32eeec"
+      },
+      "Displacement": {
+        "path": "Travertine009_1K-JPG_Displacement.jpg",
+        "size": 18358,
+        "md5": "ff69b0d9ba262bb5f1ec6232528a5377"
+      },
+      "Rough": {
+        "path": "Travertine009_1K-JPG_Roughness.jpg",
+        "size": 298778,
+        "md5": "b379579dd77ce69cc7cc971fba35e8fd"
+      }
+    }
+  },
+  {
+    "id": "Carpet016",
+    "source": "https://ambientcg.com/view?id=Carpet016",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "archive": {
+      "url": "https://ambientcg.com/get?file=Carpet016_1K-JPG.zip",
+      "md5": "e98bf7ba6840052937c7bd4b042fed36"
+    },
+    "files": {
+      "Diffuse": {
+        "path": "Carpet016_1K-JPG_Color.jpg",
+        "size": 1207660,
+        "md5": "6d5a400d11465d3ec89bfb71c4e83f66"
+      },
+      "Displacement": {
+        "path": "Carpet016_1K-JPG_Displacement.jpg",
+        "size": 736301,
+        "md5": "5521b83e59f7a6d9f3a4b669b9270dfc"
+      },
+      "Rough": {
+        "path": "Carpet016_1K-JPG_Roughness.jpg",
+        "size": 686755,
+        "md5": "ff60c51fc791a962f54ac02af23d5238"
+      }
+    }
+  }
+]

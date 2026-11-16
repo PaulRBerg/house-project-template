@@ -1,20 +1,20 @@
 import { Search, SlidersHorizontal } from "lucide-react";
 
+import type { BudgetItem } from "../../domain/schema.js";
 import { AppButton } from "../shared/AppButton.js";
 import { AppSelect } from "../shared/AppSelect.js";
 
-export type ScopeFilter = "all" | "core" | "movable";
+export type CostScopeFilter = BudgetItem["costScope"] | "all";
 export type StatusFilter = "active" | "complete" | "overdue" | "excluded" | "archived" | "all";
 
 interface ToolbarProps {
   search: string;
   onSearchChange: (value: string) => void;
-  scope: ScopeFilter;
-  onScopeChange: (scope: ScopeFilter) => void;
+  costScope: CostScopeFilter;
+  onCostScopeChange: (costScope: CostScopeFilter) => void;
   status: StatusFilter;
   onStatusChange: (status: StatusFilter) => void;
   onOpenAssumptions: () => void;
-  disabled: boolean;
 }
 
 export function BudgetToolbar(props: ToolbarProps) {
@@ -35,14 +35,14 @@ export function BudgetToolbar(props: ToolbarProps) {
       <AppSelect
         className="min-w-35"
         label="Tip de cost"
-        name="budget-scope"
-        onValueChange={props.onScopeChange}
+        name="budget-cost-scope"
+        onValueChange={props.onCostScopeChange}
         options={[
           { value: "all", label: "Casă + bunuri" },
           { value: "core", label: "Buget de bază" },
           { value: "movable", label: "Bunuri mobile" },
         ]}
-        value={props.scope}
+        value={props.costScope}
       />
       <AppSelect
         className="min-w-35"
@@ -60,9 +60,9 @@ export function BudgetToolbar(props: ToolbarProps) {
         value={props.status}
       />
       <p className="ml-auto text-[0.7rem] whitespace-nowrap text-muted">
-        Totalurile de sus acoperă tot proiectul.
+        Totalurile de sus acoperă bugetul până la mutare, fără Extra.
       </p>
-      <AppButton disabled={props.disabled} onClick={props.onOpenAssumptions} type="button">
+      <AppButton onClick={props.onOpenAssumptions} type="button">
         <SlidersHorizontal aria-hidden="true" size={16} /> Ipoteze
       </AppButton>
     </section>

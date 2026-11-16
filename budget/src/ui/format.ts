@@ -1,3 +1,10 @@
+import { UI_LOCALE } from "../domain/collections.js";
+import { BPS_DENOMINATOR } from "../domain/schema.js";
+import type { DerivedItem } from "../domain/selectors.js";
+
+const PLURAL_RULES = new Intl.PluralRules(UI_LOCALE);
+const PERCENT = new Intl.NumberFormat(UI_LOCALE, { style: "percent", maximumFractionDigits: 1 });
+
 const MONEY = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "EUR",
@@ -39,9 +46,9 @@ export function formatDate(value: string | undefined): string {
   if (!value) return "Fără termen";
   const [year, month, day] = value.split("-").map(Number);
   if (!year || !month || month > 12) return value;
-  if (day === undefined) return `${ROMANIAN_MONTHS[month - 1]} ${String(year).padStart(4, "0")}`;
+  if (day === undefined) return formatMonth(value);
   if (!day) return value;
-  return `${day} ${ROMANIAN_MONTHS[month - 1]} ${String(year).padStart(4, "0")}`;
+  return `${day} ${formatMonth(value.slice(0, 7))}`;
 }
 
 export function formatDateRange(start: string | undefined, end: string | undefined): string {
@@ -56,25 +63,6 @@ export function formatMonth(value: string): string {
   return `${ROMANIAN_MONTHS[month - 1]} ${String(year).padStart(4, "0")}`;
 }
 
-export function parseDateInput(value: string): string | null {
-  const match = /^(\d{1,2}) (Ian|Feb|Mar|Apr|Mai|Iun|Iul|Aug|Sep|Oct|Noi|Dec) (\d{4})$/.exec(
-    value.trim(),
-  );
-  if (!match) return null;
-  const day = Number(match[1]);
-  const month = ROMANIAN_MONTHS.indexOf(match[2] as (typeof ROMANIAN_MONTHS)[number]) + 1;
-  const year = Number(match[3]);
-  const date = new Date(Date.UTC(year, month - 1, day));
-  if (
-    date.getUTCFullYear() !== year ||
-    date.getUTCMonth() !== month - 1 ||
-    date.getUTCDate() !== day
-  ) {
-    return null;
-  }
-  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-}
-
 export function localCalendarDate(now = new Date()): string {
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -82,21 +70,52 @@ export function localCalendarDate(now = new Date()): string {
   return `${year}-${month}-${day}`;
 }
 
-export function parseEuroToCents(value: string): number | null {
-  const normalized = value.trim().replace(/[\s\u00A0\u202F]/g, "");
-  if (!/^\d+(?:[.,]\d{1,2})?$/.test(normalized)) return null;
-  const [whole = "0", fraction = ""] = normalized.replace(",", ".").split(".");
-  const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
-  return Number.isSafeInteger(cents) ? cents : null;
+/** Romanian noun form for a count: singular, plural, or "de" plural from 20 upwards. */
+export function pluralNoun(count: number, forms: { one: string; other: string }): string {
+  const rule = PLURAL_RULES.select(count);
+  if (rule === "one") return forms.one;
+  return rule === "few" ? forms.other : `de ${forms.other}`;
 }
 
-export function formatMoneyInput(cents: number): string {
-  return (cents / 100).toFixed(2);
+export function formatCount(count: number, forms: { one: string; other: string }): string {
+  return `${count} ${pluralNoun(count, forms)}`;
 }
 
-export const BRIEF_STATUS_LABELS = {
-  required: "obligatoriu",
-  preferred: "preferat",
-  phased: "etapizat",
-  deferred: "amânat",
-} as const;
+/** Romanian percentage of a ratio, e.g. 0.1 → "10 %". */
+export function formatPercent(ratio: number): string {
+  return PERCENT.format(ratio);
+}
+
+export function formatBpsPercent(bps: number): string {
+  return formatPercent(bps / BPS_DENOMINATOR);
+}
+
+/** Case-insensitive search query; empty when there is nothing to match. */
+export function normalizeSearch(value: string): string {
+  return value.trim().toLocaleLowerCase(UI_LOCALE);
+}
+
+/** Whether a label contains an already normalized, non-empty query. */
+export function labelMatches(label: string, query: string): boolean {
+  return query !== "" && label.toLocaleLowerCase(UI_LOCALE).includes(query);
+}
+
+/**
+ * Item cost as shown in tables: the price actually paid once an owned or fully paid item is
+ * settled, the estimate for an unpaid excluded or archived item, otherwise the
+ * estimate-to-forecast range.
+ */
+export function formatItemCost(entry: DerivedItem): string {
+  const paidPrice =
+    entry.item.ownership === "owned"
+      ? entry.active
+        ? entry.totalCents
+        : entry.estimateCents
+      : entry.actualPaidCents > 0 && entry.remainingForecastCents === 0
+        ? entry.actualPaidCents
+        : undefined;
+  if (paidPrice !== undefined) return formatMoney(paidPrice);
+  return entry.active
+    ? formatMoneyRange(entry.estimateCents, entry.forecastCents)
+    : formatMoney(entry.estimateCents);
+}

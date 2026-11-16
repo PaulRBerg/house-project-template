@@ -1,49 +1,87 @@
 import { Toggle } from "@base-ui/react/toggle";
 import { ToggleGroup } from "@base-ui/react/toggle-group";
-import { ArchiveRestore, ChevronDown, Circle, CircleCheck, TriangleAlert } from "lucide-react";
+import { ArchiveRestore, ChevronDown, TriangleAlert } from "lucide-react";
 import { type MouseEvent, useMemo, useRef, useState } from "react";
 
 import {
+  beneficiaryName,
+  beneficiaryNamesById,
   getBudgetAreaHierarchy,
+  TBD_BENEFICIARY_ID,
+  type Beneficiary,
   type BudgetHierarchyGroup,
   type BudgetHierarchyItem,
   type DerivedItem,
 } from "../../domain/index.js";
-import { formatDateRange, formatMoney, formatMoneyRange } from "../../ui/format.js";
-import { CategoryIcon, categoryStage } from "../shared/CategoryIcon.js";
-import { ItemIcon } from "../shared/ItemIcon.js";
-import { ItemStatus } from "../shared/ItemStatus.js";
 import {
+  formatCount,
+  formatDateRange,
+  formatItemCost,
+  formatMoneyRange,
+  labelMatches,
+  normalizeSearch,
+} from "../../ui/format.js";
+import { CategoryIcon } from "../shared/CategoryIcon.js";
+import { ItemBrandIcon, ItemIcon } from "../shared/ItemIcon.js";
+import { PaymentProgress } from "../shared/PaymentProgress.js";
+import {
+  BUDGET_TABLE_COLUMNS,
   cn,
+  emptyStatePanelStyles,
+  emptyStateStyles,
+  eyebrowStyles,
+  iconButtonStyles,
+  linkButtonStyles,
   moneyCellStyles,
   segmentedGroupStyles,
   segmentedToggleStyles,
+  tableCellStyles,
+  tableHeaderStyles,
+  tableScrollerStyles,
 } from "../shared/styles.js";
 import { AnimatedBudgetRow, AnimatedCellContent } from "./AnimatedBudgetRow.js";
-import type { ScopeFilter, StatusFilter } from "./BudgetToolbar.js";
-
-const tableCellStyles = "px-3.5 text-left align-middle select-text";
-const tableHeaderStyles =
-  "sticky top-0 z-(--z-sticky) bg-table-head px-3.5 py-3 text-left text-[0.65rem] font-[760] tracking-[0.08em] text-muted uppercase";
+import type { CostScopeFilter, StatusFilter } from "./BudgetToolbar.js";
+import { BUDGET_GROUPINGS, supportsRoomGrouping, type BudgetGrouping } from "./categories.js";
 
 interface Filters {
   search: string;
-  scope: ScopeFilter;
+  costScope: CostScopeFilter;
   status: StatusFilter;
+}
+
+/** Filters with the search text normalized once per render. */
+interface MatchFilters extends Filters {
+  query: string;
+}
+
+type HierarchyChild = BudgetHierarchyGroup | BudgetHierarchyItem;
+
+interface GroupVisibility {
+  visible: boolean;
+  itemCount: number;
 }
 
 interface BudgetTableProps {
   hierarchy: BudgetHierarchyGroup[];
   filters: Filters;
   grouping: BudgetGrouping;
-  selectedCategory: string;
+  /** Stage root resolved by the caller; null only when the hierarchy is empty. */
+  selectedCategory: string | null;
+  beneficiaries: readonly Beneficiary[];
   onGroupingChange: (grouping: BudgetGrouping) => void;
   onOpenItem: (itemId: string) => void;
+  onOpenBeneficiary: (beneficiaryId: string) => void;
 }
 
-export type BudgetGrouping = "rooms" | "categories";
+const GROUPING_LABELS: Record<BudgetGrouping, string> = {
+  rooms: "Pe camere",
+  categories: "Pe categorii",
+};
 
-const ROOM_GROUPING_CATEGORY_IDS = new Set(["finish", "move"]);
+/** Each hierarchy level shifts its leading icon by one step. */
+const TREE_INDENT_PX = 16;
+/** Chevron button width (36px) plus its gap, so items indent past the parent band's gutter. */
+const CHEVRON_GUTTER_PX = 43;
 
 function isTextSelectionClick(event: MouseEvent<HTMLElement>): boolean {
   const selection = event.currentTarget.ownerDocument.getSelection();
@@ -52,11 +90,18 @@ function isTextSelectionClick(event: MouseEvent<HTMLElement>): boolean {
   );
 }
 
-function itemMatches(entry: DerivedItem, filters: Filters, searchMatched = false): boolean {
-  const query = filters.search.trim().toLocaleLowerCase("ro");
-  if (filters.scope !== "all" && entry.item.costScope !== filters.scope) return false;
-  if (!searchMatched && query && !entry.item.label.toLocaleLowerCase("ro").includes(query))
+/** Row click that activates the row, ignoring text selection and clicks on its own buttons. */
+function handleRowClick(event: MouseEvent<HTMLElement>, activate: () => void): void {
+  if (isTextSelectionClick(event)) return;
+  if (event.target instanceof Element && event.target.closest("button")) return;
+  activate();
+}
+
+function itemMatches(entry: DerivedItem, filters: MatchFilters, searchMatched = false): boolean {
+  if (filters.costScope !== "all" && entry.item.costScope !== filters.costScope) return false;
+  if (!searchMatched && filters.query && !labelMatches(entry.item.label, filters.query)) {
     return false;
+  }
   if (filters.status === "active" && !entry.active) return false;
   if (filters.status === "complete" && !entry.item.completion.complete) return false;
   if (filters.status === "overdue" && entry.overdueCents === 0) return false;
@@ -66,92 +111,61 @@ function itemMatches(entry: DerivedItem, filters: Filters, searchMatched = false
   return true;
 }
 
-function groupHasMatches(
+/**
+ * Records whether each group in a subtree has matching content and how many items it shows,
+ * visiting every node once.
+ */
+function collectVisibility(
   group: BudgetHierarchyGroup,
-  filters: Filters,
-  ancestorMatched = false,
-): boolean {
-  const query = filters.search.trim().toLocaleLowerCase("ro");
-  const groupMatched =
-    ancestorMatched || (!!query && group.label.toLocaleLowerCase("ro").includes(query));
+  filters: MatchFilters,
+  ancestorMatched: boolean,
+  into: Map<string, GroupVisibility>,
+): GroupVisibility {
+  const groupMatched = ancestorMatched || labelMatches(group.label, filters.query);
+  let visibility: GroupVisibility;
   if (group.children.length === 0) {
-    const searchMatches = !query || groupMatched;
+    const searchMatches = !filters.query || groupMatched;
     const statusMatches =
       filters.status === "all" ||
       (filters.status === "active" && !group.archived) ||
       (filters.status === "archived" && group.archived);
-    return filters.scope === "all" && searchMatches && statusMatches;
+    visibility = {
+      visible: filters.costScope === "all" && searchMatches && statusMatches,
+      itemCount: 0,
+    };
+  } else {
+    visibility = { visible: false, itemCount: 0 };
+    for (const child of group.children) {
+      const childVisibility =
+        child.kind === "item"
+          ? itemMatches(child.derived, filters, groupMatched)
+            ? { visible: true, itemCount: 1 }
+            : undefined
+          : collectVisibility(child, filters, groupMatched, into);
+      if (!childVisibility) continue;
+      visibility.visible ||= childVisibility.visible;
+      visibility.itemCount += childVisibility.itemCount;
+    }
   }
-  return group.children.some((child) =>
-    child.kind === "item"
-      ? itemMatches(child.derived, filters, groupMatched)
-      : groupHasMatches(child, filters, groupMatched),
-  );
+  into.set(group.id, visibility);
+  return visibility;
 }
 
-function PaymentProgress({
-  label,
-  totalCents,
-  settledCents,
-}: {
-  label: string;
-  totalCents: number;
-  settledCents: number;
-}) {
-  if (totalCents === 0) return null;
-  const paid = settledCents === totalCents;
-  const unpaid = settledCents === 0;
-
-  if (paid || unpaid) {
-    const Icon = paid ? CircleCheck : Circle;
-    return (
-      <div
-        className={cn(
-          "flex items-center gap-2 text-[0.7rem]",
-          paid ? "font-medium text-olive" : "text-muted",
-        )}
-      >
-        <Icon aria-hidden="true" className="shrink-0" size={16} strokeWidth={1.75} />
-        <span>{paid ? "Plătit" : "Neplătit"}</span>
-      </div>
-    );
-  }
-
-  const remaining = totalCents - settledCents;
-  const status = `${formatMoney(settledCents)} plătit`;
-  const detail = `${formatMoney(remaining)} rămas`;
-
-  return (
-    <div className="flex items-center gap-2">
-      <div
-        aria-label={`Plăți: ${label}`}
-        aria-valuemax={totalCents}
-        aria-valuemin={0}
-        aria-valuenow={settledCents}
-        aria-valuetext={`${status}, ${detail}`}
-        className="size-5 shrink-0 text-olive"
-        role="progressbar"
-      >
-        <svg aria-hidden="true" className="size-full -rotate-90" fill="none" viewBox="0 0 20 20">
-          <circle className="stroke-muted/25" cx="10" cy="10" r="8" strokeWidth="2" />
-          <circle
-            cx="10"
-            cy="10"
-            pathLength="100"
-            r="8"
-            stroke="currentColor"
-            strokeDasharray={`${(settledCents / totalCents) * 100} 100`}
-            strokeLinecap="round"
-            strokeWidth="2"
-          />
-        </svg>
-      </div>
-      <div className="grid gap-0.5 text-[0.7rem] tabular-nums">
-        <span className="font-medium">{status}</span>
-        <span className="text-[0.65rem] text-muted">{detail}</span>
-      </div>
-    </div>
-  );
+/** Visible direct children plus the visibility of every nested group. */
+function visibleChildren(
+  children: readonly HierarchyChild[],
+  filters: MatchFilters,
+  searchMatched: boolean,
+): { children: HierarchyChild[]; visibility: Map<string, GroupVisibility> } {
+  const visibility = new Map<string, GroupVisibility>();
+  return {
+    children: children.filter((child) =>
+      child.kind === "group"
+        ? collectVisibility(child, filters, searchMatched, visibility).visible
+        : itemMatches(child.derived, filters, searchMatched),
+    ),
+    visibility,
+  };
 }
 
 function ItemRow({
@@ -160,27 +174,20 @@ function ItemRow({
   open,
   ancestors,
   onOpen,
+  beneficiaryNames,
+  onOpenBeneficiary,
 }: {
   child: BudgetHierarchyItem;
   depth: number;
   open: boolean;
   ancestors: string[];
   onOpen: () => void;
+  beneficiaryNames: ReadonlyMap<string, string>;
+  onOpenBeneficiary: (beneficiaryId: string) => void;
 }) {
   const entry = child.derived;
-  const remaining = Math.max(0, entry.forecastCents - entry.actualPaidCents);
-  const paidPrice =
-    entry.item.ownership === "owned"
-      ? entry.active
-        ? entry.totalCents
-        : entry.estimateCents
-      : entry.actualPaidCents > 0 && remaining === 0
-        ? entry.actualPaidCents
-        : undefined;
-  const estimateForecast =
-    paidPrice === undefined
-      ? formatMoneyRange(entry.estimateCents, entry.forecastCents)
-      : formatMoney(paidPrice);
+  const beneficiaryId = entry.item.beneficiaryId ?? TBD_BENEFICIARY_ID;
+  const payee = beneficiaryName(entry.item, beneficiaryNames);
 
   return (
     <AnimatedBudgetRow
@@ -194,10 +201,11 @@ function ItemRow({
         entry.effectivelyArchived && "opacity-58",
       )}
       onClick={(event) => {
-        if (isTextSelectionClick(event)) return;
-        if (event.target instanceof Element && event.target.closest("button")) return;
-        event.currentTarget.querySelector("button")?.focus();
-        onOpen();
+        const row = event.currentTarget;
+        handleRowClick(event, () => {
+          row.querySelector("button")?.focus();
+          onOpen();
+        });
       }}
     >
       {(phase, animationRef) => (
@@ -206,7 +214,7 @@ function ItemRow({
             <AnimatedCellContent phase={phase} ref={animationRef}>
               <div
                 className="flex items-center gap-2"
-                style={{ paddingInlineStart: `${depth * 16}px` }}
+                style={{ paddingInlineStart: `${depth * TREE_INDENT_PX + CHEVRON_GUTTER_PX}px` }}
               >
                 <ItemIcon itemId={entry.item.id} />
                 <button
@@ -219,15 +227,31 @@ function ItemRow({
                 >
                   <span className="flex items-center gap-1.5 text-[0.84rem] font-[680]">
                     {entry.item.label}
+                    <ItemBrandIcon itemId={entry.item.id} />
                   </span>
                 </button>
-                <ItemStatus item={entry.item} />
               </div>
             </AnimatedCellContent>
           </th>
+          <td className={tableCellStyles}>
+            <AnimatedCellContent phase={phase}>
+              <button
+                aria-label={`Beneficiar: ${payee}`}
+                className={cn(
+                  linkButtonStyles,
+                  "text-[0.78rem] font-medium focus-visible:outline-accent",
+                  entry.item.beneficiaryId === undefined && "text-muted",
+                )}
+                onClick={() => onOpenBeneficiary(beneficiaryId)}
+                type="button"
+              >
+                {payee}
+              </button>
+            </AnimatedCellContent>
+          </td>
           <td className={cn(tableCellStyles, moneyCellStyles, "text-right")}>
             <AnimatedCellContent phase={phase}>
-              <strong>{estimateForecast}</strong>
+              <strong>{formatItemCost(entry)}</strong>
               {entry.discrepancy.kind !== "balanced" && (
                 <small className="text-accent!">
                   <TriangleAlert aria-hidden="true" size={12} />
@@ -263,32 +287,39 @@ function ItemRow({
 function GroupRows({
   group,
   filters,
+  visibility,
   depth,
-  searchActive,
   open,
   ancestors,
   onOpenItem,
-  ancestorMatched = false,
+  beneficiaryNames,
+  onOpenBeneficiary,
+  ancestorMatched,
 }: {
   group: BudgetHierarchyGroup;
-  filters: Filters;
+  filters: MatchFilters;
+  visibility: ReadonlyMap<string, GroupVisibility>;
   depth: number;
-  searchActive: boolean;
   open: boolean;
   ancestors: string[];
   onOpenItem: (itemId: string) => void;
-  ancestorMatched?: boolean;
+  beneficiaryNames: ReadonlyMap<string, string>;
+  onOpenBeneficiary: (beneficiaryId: string) => void;
+  ancestorMatched: boolean;
 }) {
-  const query = filters.search.trim().toLocaleLowerCase("ro");
-  const groupMatched =
-    ancestorMatched || (!!query && group.label.toLocaleLowerCase("ro").includes(query));
+  const groupMatched = ancestorMatched || labelMatches(group.label, filters.query);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [expanded, setExpanded] = useState(true);
-  if (!groupHasMatches(group, filters, ancestorMatched)) return null;
-  const isExpanded = searchActive || expanded;
+  const { visible, itemCount: visibleItemCount } = visibility.get(group.id) ?? {
+    visible: false,
+    itemCount: 0,
+  };
+  if (!visible) return null;
+  const isExpanded = filters.query !== "" || expanded;
   const contentOpen = open && isExpanded;
 
   const toggle = () => {
+    if (filters.query !== "") return;
     const focusedRow = document.activeElement?.closest<HTMLTableRowElement>("tr[data-budget-row]");
     if (isExpanded && focusedRow?.dataset.budgetAncestors?.split(" ").includes(group.id)) {
       triggerRef.current?.focus();
@@ -304,28 +335,25 @@ function GroupRows({
         data-budget-row="group"
         open={open}
         className={cn(
-          "cursor-pointer border-t border-line bg-group",
-          depth === 1 ? "bg-group-nested" : depth >= 2 && "bg-group-deep",
+          "cursor-pointer border-t border-line hover:bg-stage-tint",
+          depth === 0 ? "bg-stage-tint/50" : "bg-stage-tint/25",
         )}
-        onClick={(event) => {
-          if (isTextSelectionClick(event)) return;
-          if (event.target instanceof Element && event.target.closest("button")) return;
-          toggle();
-        }}
+        onClick={(event) => handleRowClick(event, toggle)}
       >
         {(phase, animationRef) => (
           <>
             <th className={cn(tableCellStyles, "font-normal")} scope="row">
-              <AnimatedCellContent phase={phase} ref={animationRef}>
+              <AnimatedCellContent className="py-2" phase={phase} ref={animationRef}>
                 <div
-                  className="flex items-center gap-1.75 text-[0.79rem] font-[760]"
-                  style={{ paddingInlineStart: `${depth * 16}px` }}
+                  className="flex items-center gap-1.75"
+                  style={{ paddingInlineStart: `${depth * TREE_INDENT_PX}px` }}
                 >
                   <button
                     ref={triggerRef}
                     aria-expanded={isExpanded}
                     aria-label={`${isExpanded ? "Restrânge" : "Extinde"} ${group.label}`}
-                    className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-[5px] border-0 bg-transparent p-0 hover:bg-line/60"
+                    className={iconButtonStyles}
+                    disabled={filters.query !== ""}
                     onClick={toggle}
                     type="button"
                   >
@@ -340,18 +368,30 @@ function GroupRows({
                     />
                   </button>
                   <CategoryIcon categoryId={group.sourceGroupId ?? group.id} />
-                  <span>{group.label}</span>
-                  {group.archived && <ArchiveRestore aria-label="Categorie arhivată" size={14} />}
+                  <span className={cn(eyebrowStyles, "mb-0 text-ink")}>{group.label}</span>
+                  {visibleItemCount > 0 && (
+                    <span className="text-[0.68rem] text-muted tabular-nums">
+                      {formatCount(visibleItemCount, { one: "element", other: "elemente" })}
+                    </span>
+                  )}
+                  {group.archived && <ArchivedIcon />}
                 </div>
               </AnimatedCellContent>
             </th>
-            <td className={cn(tableCellStyles, moneyCellStyles, "text-right")}>
-              <AnimatedCellContent phase={phase}>
+            <td className={tableCellStyles} />
+            <td
+              className={cn(
+                tableCellStyles,
+                moneyCellStyles,
+                "text-right [&_strong]:font-semibold",
+              )}
+            >
+              <AnimatedCellContent className="py-2" phase={phase}>
                 <strong>{formatMoneyRange(group.estimateCents, group.totalCents)}</strong>
               </AnimatedCellContent>
             </td>
             <td className={tableCellStyles}>
-              <AnimatedCellContent phase={phase}>
+              <AnimatedCellContent className="py-2" phase={phase}>
                 <PaymentProgress
                   label={group.label}
                   totalCents={group.totalCents}
@@ -360,7 +400,7 @@ function GroupRows({
               </AnimatedCellContent>
             </td>
             <td className={cn(tableCellStyles, "text-[0.72rem]")}>
-              <AnimatedCellContent phase={phase}>
+              <AnimatedCellContent className="py-2" phase={phase}>
                 {formatDateRange(group.scheduleStartOn, group.scheduleFinalOn)}
               </AnimatedCellContent>
             </td>
@@ -372,21 +412,25 @@ function GroupRows({
           <GroupRows
             ancestorMatched={groupMatched}
             ancestors={[...ancestors, group.id]}
+            beneficiaryNames={beneficiaryNames}
             depth={depth + 1}
             filters={filters}
             group={child}
             key={child.id}
+            onOpenBeneficiary={onOpenBeneficiary}
             onOpenItem={onOpenItem}
             open={contentOpen}
-            searchActive={searchActive}
+            visibility={visibility}
           />
         ) : itemMatches(child.derived, filters, groupMatched) ? (
           <ItemRow
             ancestors={[...ancestors, group.id]}
+            beneficiaryNames={beneficiaryNames}
             child={child}
             depth={depth + 1}
             key={child.id}
             onOpen={() => onOpenItem(child.id)}
+            onOpenBeneficiary={onOpenBeneficiary}
             open={contentOpen}
           />
         ) : null,
@@ -395,18 +439,23 @@ function GroupRows({
   );
 }
 
+function ArchivedIcon() {
+  return <ArchiveRestore aria-label="Categorie arhivată" size={14} />;
+}
+
 function CategorySummary({ group }: { group: BudgetHierarchyGroup }) {
   return (
     <div
-      className="mb-2.5 grid grid-cols-[minmax(0,1.25fr)_minmax(120px,0.65fr)_minmax(180px,0.9fr)_minmax(130px,0.7fr)] items-center gap-4 rounded-xl border border-stage/24 bg-stage-header px-4 py-3"
+      className="mb-2.5 grid grid-cols-[minmax(0,1.25fr)_minmax(110px,0.55fr)_minmax(120px,0.65fr)_minmax(180px,0.9fr)_minmax(130px,0.7fr)] items-center gap-4 rounded-xl border border-stage/24 bg-stage-header px-4 py-3"
       data-budget-summary={group.id}
-      data-stage={categoryStage(group.id)}
+      data-stage={group.milestoneId}
     >
       <div className="flex min-w-0 items-center gap-2 text-[0.83rem] font-[760]">
         <CategoryIcon categoryId={group.id} size={18} />
         <span>{group.label}</span>
-        {group.archived && <ArchiveRestore aria-label="Categorie arhivată" size={14} />}
+        {group.archived && <ArchivedIcon />}
       </div>
+      <span aria-hidden="true" />
       <strong className="text-right text-[0.88rem] tabular-nums">
         {formatMoneyRange(group.estimateCents, group.totalCents)}
       </strong>
@@ -428,62 +477,71 @@ function GroupTable({
   emptyMessage,
   filters,
   onOpenItem,
-  searchActive,
+  beneficiaryNames,
+  onOpenBeneficiary,
   searchMatched,
   tableKey,
 }: {
   ancestors: string[];
-  children: Array<BudgetHierarchyGroup | BudgetHierarchyItem>;
+  children: readonly HierarchyChild[];
   emptyMessage: string;
-  filters: Filters;
+  filters: MatchFilters;
   onOpenItem: (itemId: string) => void;
-  searchActive: boolean;
+  beneficiaryNames: ReadonlyMap<string, string>;
+  onOpenBeneficiary: (beneficiaryId: string) => void;
   searchMatched: boolean;
   tableKey: string;
 }) {
+  const visible = visibleChildren(children, filters, searchMatched);
   return (
     <div
       aria-label="Tabel de buget derulabil pe orizontală"
-      className="max-w-full overflow-auto rounded-xl border border-line bg-surface focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
+      role="region"
+      className={tableScrollerStyles}
       tabIndex={0}
     >
       <table className="w-full min-w-225 table-fixed border-collapse">
         <thead>
           <tr>
             <th className={tableHeaderStyles}>Element</th>
-            <th className={cn(tableHeaderStyles, "w-[18%] text-right")}>Cost</th>
-            <th className={cn(tableHeaderStyles, "w-[22%]")}>Plăți</th>
-            <th className={cn(tableHeaderStyles, "w-[21%]")}>Calendar</th>
+            <th className={cn(tableHeaderStyles, BUDGET_TABLE_COLUMNS.beneficiary)}>Beneficiar</th>
+            <th className={cn(tableHeaderStyles, BUDGET_TABLE_COLUMNS.cost, "text-right")}>Cost</th>
+            <th className={cn(tableHeaderStyles, BUDGET_TABLE_COLUMNS.payments)}>Plăți</th>
+            <th className={cn(tableHeaderStyles, BUDGET_TABLE_COLUMNS.schedule)}>Calendar</th>
           </tr>
         </thead>
         <tbody key={tableKey}>
-          {children.map((child) =>
+          {visible.children.map((child) =>
             child.kind === "group" ? (
               <GroupRows
                 ancestorMatched={searchMatched}
                 ancestors={ancestors}
+                beneficiaryNames={beneficiaryNames}
                 depth={0}
                 filters={filters}
                 group={child}
                 key={child.id}
+                onOpenBeneficiary={onOpenBeneficiary}
                 onOpenItem={onOpenItem}
                 open
-                searchActive={searchActive}
+                visibility={visible.visibility}
               />
             ) : (
               <ItemRow
                 ancestors={ancestors}
+                beneficiaryNames={beneficiaryNames}
                 child={child}
                 depth={0}
                 key={child.id}
                 onOpen={() => onOpenItem(child.id)}
+                onOpenBeneficiary={onOpenBeneficiary}
                 open
               />
             ),
           )}
-          {children.length === 0 && (
+          {visible.children.length === 0 && (
             <tr className="border-t border-line">
-              <td className="px-5 py-13 text-center text-muted" colSpan={4}>
+              <td className={emptyStateStyles} colSpan={5}>
                 {emptyMessage}
               </td>
             </tr>
@@ -499,58 +557,56 @@ function AreaSection({
   area,
   filters,
   onOpenItem,
+  beneficiaryNames,
+  onOpenBeneficiary,
   stageLabel,
 }: {
   ancestorMatched: boolean;
   area: BudgetHierarchyGroup;
-  filters: Filters;
+  filters: MatchFilters;
   onOpenItem: (itemId: string) => void;
+  beneficiaryNames: ReadonlyMap<string, string>;
+  onOpenBeneficiary: (beneficiaryId: string) => void;
   stageLabel: string;
 }) {
-  const searchActive = filters.search.trim().length > 0;
-  const searchMatched = Boolean(
-    ancestorMatched ||
-    (searchActive &&
-      area.label.toLocaleLowerCase("ro").includes(filters.search.trim().toLocaleLowerCase("ro"))),
-  );
-  const visibleChildren = area.children.filter((child) =>
-    child.kind === "group"
-      ? groupHasMatches(child, filters, searchMatched)
-      : itemMatches(child.derived, filters, searchMatched),
-  );
+  const searchMatched = ancestorMatched || labelMatches(area.label, filters.query);
   const headingId = `budget-area-heading-${area.id}`;
 
   return (
     <section aria-labelledby={headingId} className="mt-5 first:mt-0">
       <div
-        className="mb-2 grid grid-cols-[minmax(0,1.25fr)_minmax(120px,0.65fr)_minmax(180px,0.9fr)_minmax(130px,0.7fr)] items-center gap-4 px-1"
+        className={cn("mx-px mb-2 grid items-center", BUDGET_TABLE_COLUMNS.areaGrid)}
         data-budget-area-summary={area.id}
       >
-        <div className="min-w-0">
-          <h3 className="text-[0.86rem] font-[780]" id={headingId}>
+        <div className="min-w-0 px-3.5">
+          <h2 className="text-[0.86rem] font-[780]" id={headingId}>
             {area.label}
-          </h3>
+          </h2>
           <p className="text-[0.67rem] text-muted">Subtotal în {stageLabel}</p>
         </div>
-        <strong className="text-right text-[0.84rem] tabular-nums">
+        <span aria-hidden="true" />
+        <strong className="px-3.5 text-right text-[0.84rem] tabular-nums">
           {formatMoneyRange(area.estimateCents, area.totalCents)}
         </strong>
-        <PaymentProgress
-          label={`${area.label}, ${stageLabel}`}
-          settledCents={area.settledCents}
-          totalCents={area.totalCents}
-        />
-        <span className="text-[0.72rem] text-muted">
+        <div className="px-3.5">
+          <PaymentProgress
+            label={`${area.label}, ${stageLabel}`}
+            settledCents={area.settledCents}
+            totalCents={area.totalCents}
+          />
+        </div>
+        <span className="px-3.5 text-[0.72rem] text-muted">
           {formatDateRange(area.scheduleStartOn, area.scheduleFinalOn)}
         </span>
       </div>
       <GroupTable
         ancestors={[area.id]}
-        children={visibleChildren}
+        beneficiaryNames={beneficiaryNames}
+        children={area.children}
         emptyMessage={`Niciun element din zona ${area.label} nu corespunde filtrelor.`}
         filters={filters}
+        onOpenBeneficiary={onOpenBeneficiary}
         onOpenItem={onOpenItem}
-        searchActive={searchActive}
         searchMatched={searchMatched}
         tableKey={area.id}
       />
@@ -559,64 +615,48 @@ function AreaSection({
 }
 
 export function BudgetTable(props: BudgetTableProps) {
-  const selectedRoot =
-    props.hierarchy.find((group) => group.id === props.selectedCategory) ?? props.hierarchy[0];
+  const beneficiaryNames = useMemo(
+    () => beneficiaryNamesById(props.beneficiaries),
+    [props.beneficiaries],
+  );
+  const filters = useMemo(
+    () => ({ ...props.filters, query: normalizeSearch(props.filters.search) }),
+    [props.filters],
+  );
+  const selectedRoot = props.hierarchy.find((group) => group.id === props.selectedCategory);
   const rootSearchMatched = Boolean(
-    selectedRoot &&
-    props.filters.search.trim() &&
-    selectedRoot.label
-      .toLocaleLowerCase("ro")
-      .includes(props.filters.search.trim().toLocaleLowerCase("ro")),
+    selectedRoot && labelMatches(selectedRoot.label, filters.query),
   );
-  const visibleChildren = useMemo(
-    () =>
-      selectedRoot?.children.filter((child) =>
-        child.kind === "group"
-          ? groupHasMatches(child, props.filters, rootSearchMatched)
-          : itemMatches(child.derived, props.filters, rootSearchMatched),
-      ) ?? [],
-    [props.filters, rootSearchMatched, selectedRoot],
+  const roomGrouping = Boolean(selectedRoot && supportsRoomGrouping(selectedRoot.id));
+  const grouping = roomGrouping ? props.grouping : "categories";
+  const areas = useMemo(
+    () => (roomGrouping && selectedRoot ? getBudgetAreaHierarchy(selectedRoot) : []),
+    [roomGrouping, selectedRoot],
   );
-  const supportsRoomGrouping = Boolean(
-    selectedRoot && ROOM_GROUPING_CATEGORY_IDS.has(selectedRoot.id),
-  );
-  const grouping = supportsRoomGrouping ? props.grouping : "categories";
   const visibleAreas = useMemo(
-    () =>
-      selectedRoot
-        ? getBudgetAreaHierarchy(selectedRoot).filter((area) =>
-            groupHasMatches(area, props.filters, rootSearchMatched),
-          )
-        : [],
-    [props.filters, rootSearchMatched, selectedRoot],
+    () => visibleChildren(areas, filters, rootSearchMatched).children as BudgetHierarchyGroup[],
+    [areas, filters, rootSearchMatched],
   );
 
   return (
-    <section className="mt-4">
+    <section className="mt-4" data-stage={selectedRoot?.milestoneId}>
       {selectedRoot && (
         <>
           <CategorySummary group={selectedRoot} />
-          {supportsRoomGrouping && (
+          {roomGrouping && (
             <div className="mb-2.5 flex justify-end">
               <ToggleGroup
                 aria-label="Grupare buget"
                 className={segmentedGroupStyles}
                 onValueChange={(nextValues) => {
-                  const [nextValue] = nextValues;
-                  if (nextValue === "rooms" || nextValue === "categories") {
-                    props.onGroupingChange(nextValue);
-                  }
+                  const nextValue = BUDGET_GROUPINGS.find((value) => value === nextValues[0]);
+                  if (nextValue) props.onGroupingChange(nextValue);
                 }}
                 value={[grouping]}
               >
-                {(
-                  [
-                    ["rooms", "Pe camere"],
-                    ["categories", "Pe categorii"],
-                  ] as const
-                ).map(([value, label]) => (
+                {BUDGET_GROUPINGS.map((value) => (
                   <Toggle className={segmentedToggleStyles} key={value} value={value}>
-                    {label}
+                    {GROUPING_LABELS[value]}
                   </Toggle>
                 ))}
               </ToggleGroup>
@@ -632,14 +672,16 @@ export function BudgetTable(props: BudgetTableProps) {
                   <AreaSection
                     ancestorMatched={rootSearchMatched}
                     area={area}
-                    filters={props.filters}
+                    beneficiaryNames={beneficiaryNames}
+                    filters={filters}
                     key={area.id}
+                    onOpenBeneficiary={props.onOpenBeneficiary}
                     onOpenItem={props.onOpenItem}
                     stageLabel={selectedRoot.label}
                   />
                 ))
               ) : (
-                <div className="rounded-xl border border-line bg-surface px-5 py-13 text-center text-muted">
+                <div className={emptyStatePanelStyles}>
                   Niciun element din etapa {selectedRoot.label} nu corespunde filtrelor.
                 </div>
               )}
@@ -647,11 +689,12 @@ export function BudgetTable(props: BudgetTableProps) {
           ) : (
             <GroupTable
               ancestors={[selectedRoot.id]}
-              children={visibleChildren}
+              beneficiaryNames={beneficiaryNames}
+              children={selectedRoot.children}
               emptyMessage={`Niciun element din categoria ${selectedRoot.label} nu corespunde filtrelor.`}
-              filters={props.filters}
+              filters={filters}
+              onOpenBeneficiary={props.onOpenBeneficiary}
               onOpenItem={props.onOpenItem}
-              searchActive={props.filters.search.trim().length > 0}
               searchMatched={rootSearchMatched}
               tableKey={selectedRoot.id}
             />

@@ -1,5 +1,7 @@
 if (import.meta.env.DEV) {
-  import("react-grab");
+  import("react-grab").then(({ getGlobalApi }) => {
+    getGlobalApi()?.setOptions({ activationKey: "Meta+G", keyHoldDuration: 0 });
+  });
 }
 
 import { NuqsAdapter } from "nuqs/adapters/react";

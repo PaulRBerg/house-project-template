@@ -1,0 +1,238 @@
+[
+  {
+    "id": "wood_planks",
+    "source": "https://polyhaven.com/a/wood_planks",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-22",
+    "files": {
+      "Diffuse": {
+        "path": "wood_planks_diff_2k.jpg",
+        "size": 2387732,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_planks/wood_planks_diff_2k.jpg",
+        "md5": "29f2d08d585433fb54034a0e8fa79adc"
+      },
+      "Rough": {
+        "path": "wood_planks_rough_2k.jpg",
+        "size": 1151798,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_planks/wood_planks_rough_2k.jpg",
+        "md5": "461754cb0181e562be384e2acc2fc8d2"
+      },
+      "Displacement": {
+        "path": "wood_planks_disp_2k.jpg",
+        "size": 678214,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_planks/wood_planks_disp_2k.jpg",
+        "md5": "0e67464160204ce9a3336573c077ed52"
+      }
+    }
+  },
+  {
+    "id": "concrete_wall_008",
+    "source": "https://polyhaven.com/a/concrete_wall_008",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-22",
+    "files": {
+      "Diffuse": {
+        "path": "concrete_wall_008_diff_2k.jpg",
+        "size": 2666189,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_wall_008/concrete_wall_008_diff_2k.jpg",
+        "md5": "9e834dad5c07a3ba452a2ad0f1454c9f"
+      },
+      "Rough": {
+        "path": "concrete_wall_008_rough_2k.jpg",
+        "size": 1458273,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_wall_008/concrete_wall_008_rough_2k.jpg",
+        "md5": "8b4997c293727d89322a7dbe30ae34ae"
+      },
+      "Displacement": {
+        "path": "concrete_wall_008_disp_2k.jpg",
+        "size": 777437,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_wall_008/concrete_wall_008_disp_2k.jpg",
+        "md5": "5bb8b340c56eb483f8fdb69b6ff29d6f"
+      }
+    }
+  },
+  {
+    "id": "slate_floor",
+    "source": "https://polyhaven.com/a/slate_floor",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-22",
+    "files": {
+      "Diffuse": {
+        "path": "slate_floor_diff_2k.jpg",
+        "size": 3009643,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/slate_floor/slate_floor_diff_2k.jpg",
+        "md5": "0ef9a6e817feafbca2d419d3ab8c15db"
+      },
+      "Rough": {
+        "path": "slate_floor_rough_2k.jpg",
+        "size": 3444520,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/slate_floor/slate_floor_rough_2k.jpg",
+        "md5": "3b8284313d476cb7b2c2e9a6bb8c08bc"
+      },
+      "Displacement": {
+        "path": "slate_floor_disp_2k.jpg",
+        "size": 1355474,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/slate_floor/slate_floor_disp_2k.jpg",
+        "md5": "61e625dd8943e16f18dfdfe75f3fea11"
+      }
+    }
+  },
+  {
+    "id": "stone_wall_02",
+    "source": "https://polyhaven.com/a/stone_wall_02",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-22",
+    "files": {
+      "Diffuse": {
+        "path": "stone_wall_02_diff_2k.jpg",
+        "size": 2554296,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/stone_wall_02/stone_wall_02_diff_2k.jpg",
+        "md5": "51c4b0342c135ea8de0654b10e8cb2e6"
+      },
+      "Rough": {
+        "path": "stone_wall_02_rough_2k.jpg",
+        "size": 1215515,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/stone_wall_02/stone_wall_02_rough_2k.jpg",
+        "md5": "6c72c6a23059d4f85da60a632effb152"
+      },
+      "Displacement": {
+        "path": "stone_wall_02_disp_2k.jpg",
+        "size": 1004319,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/stone_wall_02/stone_wall_02_disp_2k.jpg",
+        "md5": "a952130162561dc8ecfa3e52b7acaf3a"
+      }
+    }
+  },
+  {
+    "id": "aerial_grass_rock",
+    "source": "https://polyhaven.com/a/aerial_grass_rock",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-09-23",
+    "files": {
+      "Diffuse": {
+        "path": "aerial_grass_rock_diff_2k.jpg",
+        "size": 2624635,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/aerial_grass_rock/aerial_grass_rock_diff_2k.jpg",
+        "md5": "024018554c0002620127749d1f585f3d"
+      },
+      "Rough": {
+        "path": "aerial_grass_rock_rough_2k.jpg",
+        "size": 1495844,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/aerial_grass_rock/aerial_grass_rock_rough_2k.jpg",
+        "md5": "8d181000237d420a73f99dfc260dab17"
+      },
+      "Displacement": {
+        "path": "aerial_grass_rock_disp_2k.jpg",
+        "size": 530342,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/aerial_grass_rock/aerial_grass_rock_disp_2k.jpg",
+        "md5": "a02fe96ebd14dabd8fc7a829f4a77bac"
+      }
+    }
+  },
+  {
+    "id": "kloofendal_48d_partly_cloudy_puresky",
+    "source": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-10-22",
+    "files": {
+      "HDRI": {
+        "path": "kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+        "size": 5451493,
+        "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+        "md5": "2eba3a4d7eeb23cbfbeca364c97e7980"
+      }
+    }
+  },
+  {
+    "id": "leafy_grass",
+    "source": "https://polyhaven.com/a/leafy_grass",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-10-22",
+    "files": {
+      "Diffuse": {
+        "path": "leafy_grass_diff_2k.jpg",
+        "size": 4766204,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/leafy_grass/leafy_grass_diff_2k.jpg",
+        "md5": "8014f4dace676a62ed71b3dd76119dae"
+      },
+      "Rough": {
+        "path": "leafy_grass_rough_2k.jpg",
+        "size": 2274652,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/leafy_grass/leafy_grass_rough_2k.jpg",
+        "md5": "b5c551ed91162aab5afbfb03b73ae3f5"
+      },
+      "Displacement": {
+        "path": "leafy_grass_disp_2k.jpg",
+        "size": 2545281,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/leafy_grass/leafy_grass_disp_2k.jpg",
+        "md5": "9c0a5f6c375be590bda0c28e2c1dfa2a"
+      }
+    }
+  },
+  {
+    "id": "white_plaster_02",
+    "source": "https://polyhaven.com/a/white_plaster_02",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-10-22",
+    "files": {
+      "Diffuse": {
+        "path": "white_plaster_02_diff_2k.jpg",
+        "size": 2568315,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_plaster_02/white_plaster_02_diff_2k.jpg",
+        "md5": "35f9c96c16aa0d934da7884b232f6d07"
+      },
+      "Rough": {
+        "path": "white_plaster_02_rough_2k.jpg",
+        "size": 1604444,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_plaster_02/white_plaster_02_rough_2k.jpg",
+        "md5": "47f989e9fd3e69e667244ff4b9f406f8"
+      },
+      "Displacement": {
+        "path": "white_plaster_02_disp_2k.jpg",
+        "size": 1007108,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_plaster_02/white_plaster_02_disp_2k.jpg",
+        "md5": "4078dba6ea1f4df9602d28e243e5ab21"
+      }
+    }
+  },
+  {
+    "id": "brown_brick_02",
+    "source": "https://polyhaven.com/a/brown_brick_02",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-10-22",
+    "files": {
+      "Diffuse": {
+        "path": "brown_brick_02_diff_2k.jpg",
+        "size": 1571943,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_brick_02/brown_brick_02_diff_2k.jpg",
+        "md5": "91125d228659788974eeb0d9a38b3fc6"
+      },
+      "Rough": {
+        "path": "brown_brick_02_rough_2k.jpg",
+        "size": 909444,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_brick_02/brown_brick_02_rough_2k.jpg",
+        "md5": "7c45eac918c103e36af9d8ac2d6a5aaf"
+      },
+      "Displacement": {
+        "path": "brown_brick_02_disp_2k.jpg",
+        "size": 734740,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_brick_02/brown_brick_02_disp_2k.jpg",
+        "md5": "f3bf62b728366d633eb19f996e8a0096"
+      }
+    }
+  },
+  {
+    "id": "belfast_sunset_puresky",
+    "source": "https://polyhaven.com/a/belfast_sunset_puresky",
+    "license": "CC0-1.0",
+    "downloaded_on": "2026-10-22",
+    "files": {
+      "HDRI": {
+        "path": "belfast_sunset_puresky_2k.hdr",
+        "size": 4563204,
+        "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/belfast_sunset_puresky_2k.hdr",
+        "md5": "4bb56d6163ef1c7ec762e4a7ef8ede81"
+      }
+    }
+  }
+]

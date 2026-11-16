@@ -3,6 +3,8 @@ import { getDefaultSelectors } from "eslint-plugin-better-tailwindcss/api/defaul
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
+import classNamesPlugin from "./scripts/eslint-class-names.ts";
+
 export default tseslint.config(
   { ignores: ["dist", ".cache"] },
   {
@@ -16,10 +18,12 @@ export default tseslint.config(
     },
     plugins: {
       "better-tailwindcss": betterTailwindcss,
+      local: classNamesPlugin,
       "react-hooks": reactHooks,
     },
     rules: {
       ...reactHooks.configs.flat.recommended.rules,
+      "local/no-classname-concatenation": "error",
       "react-hooks/exhaustive-deps": "error",
       "better-tailwindcss/enforce-canonical-classes": "error",
       "better-tailwindcss/enforce-consistent-class-order": "error",

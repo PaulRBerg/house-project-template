@@ -1,0 +1,1912 @@
+{
+  "materials": [
+    {
+      "color": [0.121, 0.176, 0.03355, 1.0],
+      "id": "mat-baseline-20-foliage-1-002",
+      "metallic": 0.0,
+      "name": "20 · Foliage 1.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.96,
+      "source_name": "20 · Foliage 1.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.0495, 0.0935, 0.022, 1.0],
+      "id": "mat-baseline-20-foliage-3-002",
+      "metallic": 0.0,
+      "name": "20 · Foliage 3.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.96,
+      "source_name": "20 · Foliage 3.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.41, 0.43, 0.35, 1.0],
+      "id": "mat-baseline-book-cloth-0-002",
+      "metallic": 0.0,
+      "name": "Book cloth 0.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "Book cloth 0.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.72, 0.64, 0.51, 1.0],
+      "id": "mat-baseline-book-cloth-1-002",
+      "metallic": 0.0,
+      "name": "Book cloth 1.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "Book cloth 1.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.28, 0.33, 0.32, 1.0],
+      "id": "mat-baseline-book-cloth-2-002",
+      "metallic": 0.0,
+      "name": "Book cloth 2.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "Book cloth 2.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.48, 0.24, 0.13, 1.0],
+      "id": "mat-baseline-book-cloth-3-002",
+      "metallic": 0.0,
+      "name": "Book cloth 3.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "Book cloth 3.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.77, 0.75, 0.61, 1.0],
+      "id": "mat-baseline-book-cloth-4-002",
+      "metallic": 0.0,
+      "name": "Book cloth 4.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "Book cloth 4.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.008, 0.016, 0.018, 1.0],
+      "id": "mat-baseline-site-annotation-ink",
+      "name": "Site / annotation ink",
+      "node_types": ["ShaderNodeEmission", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "source_name": "Site / annotation ink",
+      "strength": 1.0
+    },
+    {
+      "color": [0.32, 0.145, 0.085, 1.0],
+      "id": "mat_accent",
+      "metallic": 0.0,
+      "name": "09 · Muted clay.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.95,
+      "source_name": "09 · Muted clay.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/caban_diff_1k.jpg",
+          "roughness": "interior/caban_rough_1k.jpg",
+          "height": "interior/caban_disp_1k.jpg"
+        },
+        "scale": [3.7, 3.7, 3.7],
+        "relief_m": 0.0011,
+        "monochrome": {
+          "gain": 4.436,
+          "contrast": 0.6
+        },
+        "source": "https://polyhaven.com/a/caban",
+        "sheen": 0.4,
+        "bump_strength": 0.5
+      }
+    },
+    {
+      "id": "mat_art_oat",
+      "name": "Art ground / oat pigment",
+      "role": "material",
+      "color": [0.48, 0.39, 0.265, 1.0],
+      "roughness": 0.95
+    },
+    {
+      "id": "mat_art_paper",
+      "name": "Art mat / cotton paper",
+      "role": "material",
+      "color": [0.84, 0.81, 0.75, 1.0],
+      "roughness": 0.95
+    },
+    {
+      "id": "mat_basin_steel",
+      "name": "Brushed dark steel sink",
+      "role": "material",
+      "color": [0.09, 0.09, 0.09, 1.0],
+      "roughness": 0.35,
+      "metallic": 0.85
+    },
+    {
+      "id": "mat_bed_linen",
+      "name": "Cream washed-cotton bedding",
+      "role": "material",
+      "color": [0.68, 0.625, 0.535, 1.0],
+      "roughness": 0.95,
+      "surface": {
+        "maps": {
+          "color": "interior/waffle_pique_cotton_diff_1k.jpg",
+          "roughness": "interior/waffle_pique_cotton_rough_1k.jpg",
+          "height": "interior/waffle_pique_cotton_disp_1k.jpg"
+        },
+        "scale": [3.6, 3.6, 3.6],
+        "relief_m": 0.0008,
+        "monochrome": {
+          "gain": 2.521,
+          "contrast": 0.35
+        },
+        "source": "https://polyhaven.com/a/waffle_pique_cotton",
+        "sheen": 0.3
+      }
+    },
+    {
+      "id": "mat_black_glass",
+      "name": "Black appliance glass",
+      "role": "material",
+      "color": [0.008, 0.008, 0.009, 1.0],
+      "roughness": 0.06
+    },
+    {
+      "color": [0.79, 0.76, 0.68, 1.0],
+      "id": "mat_cabinetry_chalk",
+      "metallic": 0.0,
+      "name": "02 · Chalk painted cabinetry.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.65,
+      "source_name": "02 · Chalk painted cabinetry.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.85, 0.85, 0.8, 1.0],
+      "id": "mat_ceramic_white",
+      "metallic": 0.0,
+      "name": "15 · Ceramic warm white.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.22,
+      "source_name": "15 · Ceramic warm white.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "id": "mat_curtain_linen",
+      "name": "Oat dim-out linen drape",
+      "role": "material",
+      "color": [0.6, 0.54, 0.45, 1.0],
+      "roughness": 0.97,
+      "surface": {
+        "maps": {
+          "color": "interior/rough_linen_diff_1k.jpg",
+          "roughness": "interior/rough_linen_rough_1k.jpg",
+          "height": "interior/rough_linen_disp_1k.jpg"
+        },
+        "scale": [3.0, 3.0, 3.0],
+        "relief_m": 0.0006,
+        "monochrome": {
+          "gain": 2.524,
+          "contrast": 0.5
+        },
+        "source": "https://polyhaven.com/a/rough_linen",
+        "sheen": 0.3
+      }
+    },
+    {
+      "id": "mat_curtain_taupe",
+      "name": "Taupe blackout linen drape",
+      "role": "material",
+      "color": [0.265, 0.215, 0.165, 1.0],
+      "roughness": 0.97,
+      "surface": {
+        "maps": {
+          "color": "interior/rough_linen_diff_1k.jpg",
+          "roughness": "interior/rough_linen_rough_1k.jpg",
+          "height": "interior/rough_linen_disp_1k.jpg"
+        },
+        "scale": [3.0, 3.0, 3.0],
+        "relief_m": 0.0006,
+        "monochrome": {
+          "gain": 2.524,
+          "contrast": 0.45
+        },
+        "source": "https://polyhaven.com/a/rough_linen",
+        "sheen": 0.3
+      }
+    },
+    {
+      "color": [0.34, 0.19, 0.087, 1.0],
+      "id": "mat_dark_wood",
+      "metallic": 0.0,
+      "name": "Atelier | warm oiled timber",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.57,
+      "source_name": "Atelier | warm oiled timber",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "exterior/wood_planks_diff_2k.jpg",
+          "roughness": "exterior/wood_planks_rough_2k.jpg",
+          "height": "exterior/wood_planks_disp_2k.jpg"
+        },
+        "scale": [0.42, 0.42, 0.42],
+        "tint": [0.9, 0.65, 0.42, 1],
+        "relief_m": 0.003,
+        "source": "https://polyhaven.com/a/wood_planks",
+        "rotation": [1.5707963267948966, 0, 0]
+      }
+    },
+    {
+      "id": "mat_dried_stems",
+      "name": "Dried grasses and stems",
+      "role": "material",
+      "color": [0.46, 0.37, 0.24, 1.0],
+      "roughness": 0.95
+    },
+    {
+      "id": "mat_exterior_concrete",
+      "name": "mat_exterior_concrete",
+      "role": "material",
+      "color": [0.43, 0.44, 0.43, 1],
+      "roughness": 0.8,
+      "surface": {
+        "maps": {
+          "color": "exterior/concrete_wall_008_diff_2k.jpg",
+          "roughness": "exterior/concrete_wall_008_rough_2k.jpg",
+          "height": "exterior/concrete_wall_008_disp_2k.jpg"
+        },
+        "scale": [0.45, 0.45, 0.45],
+        "tint": [0.85, 0.85, 0.82, 1],
+        "relief_m": 0.003,
+        "source": "https://polyhaven.com/a/concrete_wall_008"
+      }
+    },
+    {
+      "id": "mat_exterior_plinth",
+      "name": "Exterior plinth / dark warm basalt",
+      "role": "material",
+      "color": [0.16, 0.15, 0.14, 1],
+      "roughness": 0.7,
+      "surface": {
+        "maps": {
+          "color": "exterior/slate_floor_diff_2k.jpg",
+          "height": "exterior/slate_floor_disp_2k.jpg"
+        },
+        "scale": [0.6, 0.6, 0.6],
+        "monochrome": {
+          "gain": 63.41,
+          "contrast": 0.5
+        },
+        "relief_m": 0.002,
+        "source": "https://polyhaven.com/a/slate_floor"
+      }
+    },
+    {
+      "id": "mat_exterior_travertine",
+      "name": "Warm honed travertine / facade and paving",
+      "role": "material",
+      "color": [0.66, 0.6, 0.5, 1],
+      "roughness": 0.55,
+      "surface": {
+        "maps": {
+          "color": "interior/Travertine009_1K-JPG_Color.jpg",
+          "roughness": "interior/Travertine009_1K-JPG_Roughness.jpg",
+          "height": "interior/Travertine009_1K-JPG_Displacement.jpg"
+        },
+        "scale": [0.5, 0.5, 0.5],
+        "relief_m": 0.0006,
+        "tint": [0.93, 0.92, 0.9, 1],
+        "source": "https://ambientcg.com/view?id=Travertine009"
+      }
+    },
+    {
+      "id": "mat_exterior_white",
+      "name": "mat_exterior_white",
+      "role": "material",
+      "color": [0.86, 0.8, 0.7, 1.0],
+      "roughness": 0.72,
+      "surface": {
+        "maps": {
+          "color": "exterior/white_plaster_02_diff_2k.jpg",
+          "roughness": "exterior/white_plaster_02_rough_2k.jpg",
+          "height": "exterior/white_plaster_02_disp_2k.jpg"
+        },
+        "scale": [0.5, 0.5, 0.5],
+        "monochrome": {
+          "gain": 3.97,
+          "contrast": 0.3
+        },
+        "relief_m": 0.0007,
+        "source": "https://polyhaven.com/a/white_plaster_02"
+      }
+    },
+    {
+      "color": [0.47, 0.405, 0.315, 1.0],
+      "id": "mat_fabric_neutral",
+      "metallic": 0.0,
+      "name": "06 · Oatmeal woven linen.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.95,
+      "source_name": "06 · Oatmeal woven linen.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/rough_linen_diff_1k.jpg",
+          "roughness": "interior/rough_linen_rough_1k.jpg",
+          "height": "interior/rough_linen_disp_1k.jpg"
+        },
+        "scale": [3.69, 3.69, 3.69],
+        "relief_m": 0.0012,
+        "monochrome": {
+          "gain": 2.524,
+          "contrast": 0.75
+        },
+        "source": "https://polyhaven.com/a/rough_linen",
+        "sheen": 0.35,
+        "bump_strength": 0.6
+      }
+    },
+    {
+      "color": [0.3, 0.37, 0.4, 1],
+      "id": "mat_glass",
+      "metallic": 0.0,
+      "name": "13 · Clear glazing.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.09,
+      "source_name": "13 · Clear glazing.002",
+      "ior": 1.45,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "alpha": 0.24,
+      "surface_render_method": "BLENDED"
+    },
+    {
+      "id": "mat_glow_2700",
+      "name": "2700 K opal glass diffuser",
+      "role": "material",
+      "color": [0.92, 0.88, 0.8, 1.0],
+      "roughness": 0.35,
+      "emission_color": [1.0, 0.66, 0.38, 1.0],
+      "emission_strength": 3.0
+    },
+    {
+      "color": [0.133, 0.2, 0.094, 1.0],
+      "id": "mat_grass",
+      "metallic": 0.0,
+      "name": "18 · Meadow lawn.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.98,
+      "source_name": "18 · Meadow lawn.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "exterior/leafy_grass_diff_2k.jpg",
+          "roughness": "exterior/leafy_grass_rough_2k.jpg",
+          "height": "exterior/leafy_grass_disp_2k.jpg"
+        },
+        "scale": [0.35, 0.35, 0.35],
+        "monochrome": {
+          "gain": 4.043,
+          "contrast": 0.6
+        },
+        "relief_m": 0.003,
+        "source": "https://polyhaven.com/a/leafy_grass"
+      }
+    },
+    {
+      "color": [0.095, 0.13, 0.065, 1.0],
+      "id": "mat_green",
+      "metallic": 0.0,
+      "name": "08 · Soft olive wool.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.95,
+      "source_name": "08 · Soft olive wool.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/caban_diff_1k.jpg",
+          "roughness": "interior/caban_rough_1k.jpg",
+          "height": "interior/caban_disp_1k.jpg"
+        },
+        "scale": [3.7, 3.7, 3.7],
+        "relief_m": 0.0012,
+        "monochrome": {
+          "gain": 4.436,
+          "contrast": 0.6
+        },
+        "source": "https://polyhaven.com/a/caban",
+        "sheen": 0.4,
+        "bump_strength": 0.5
+      }
+    },
+    {
+      "id": "mat_led_2700",
+      "name": "2700 K diffused LED profile",
+      "role": "material",
+      "color": [1.0, 0.8, 0.6, 1.0],
+      "roughness": 0.5,
+      "emission_color": [1.0, 0.6, 0.3, 1.0],
+      "emission_strength": 8.0
+    },
+    {
+      "color": [0.022, 0.024, 0.026, 1],
+      "id": "mat_metal_dark",
+      "metallic": 0.15,
+      "name": "11 · Bronze charcoal metal.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.48,
+      "source_name": "11 · Bronze charcoal metal.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.85, 0.89, 0.91, 1.0],
+      "id": "mat_mirror",
+      "metallic": 1.0,
+      "name": "14 · Mirror.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.025,
+      "source_name": "14 · Mirror.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.5, 0.365, 0.23, 1.0],
+      "id": "mat_oak",
+      "metallic": 0.0,
+      "name": "03 · Pale natural oak | fine longitudinal grain.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.58,
+      "source_name": "03 · Pale natural oak | fine longitudinal grain.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/oak_veneer_02_diff_2k.jpg",
+          "roughness": "interior/oak_veneer_02_rough_2k.jpg",
+          "height": "interior/oak_veneer_02_disp_2k.jpg"
+        },
+        "scale": [1.0, 1.0, 1.0],
+        "relief_m": 0.0008,
+        "monochrome": {
+          "gain": 1.922,
+          "contrast": 1.8
+        },
+        "source": "https://polyhaven.com/a/oak_veneer_02"
+      }
+    },
+    {
+      "color": [0.79, 0.755, 0.69, 1.0],
+      "id": "mat_plaster_white",
+      "metallic": 0.0,
+      "name": "01 · Warm lime plaster.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.9,
+      "source_name": "01 · Warm lime plaster.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.0008,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.22
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_pot_terracotta",
+      "name": "Matte clay planter",
+      "role": "material",
+      "color": [0.3, 0.135, 0.075, 1.0],
+      "roughness": 0.88
+    },
+    {
+      "color": [0.013, 0.029, 0.042, 1.0],
+      "id": "mat_pv",
+      "metallic": 0.55,
+      "name": "21 · Graphite photovoltaic glass.002",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.34,
+      "source_name": "21 · Graphite photovoltaic glass.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "id": "mat_roof_membrane",
+      "name": "Membrană acoperiș gri deschis",
+      "role": "material",
+      "color": [0.4, 0.39, 0.35, 1],
+      "metallic": 0.3,
+      "roughness": 0.45
+    },
+    {
+      "id": "mat_rug_jute",
+      "name": "Natural jute rug",
+      "role": "material",
+      "color": [0.31, 0.235, 0.14, 1.0],
+      "roughness": 1.0,
+      "surface": {
+        "maps": {
+          "color": "interior/hessian_230_diff_1k.jpg",
+          "roughness": "interior/hessian_230_rough_1k.jpg",
+          "height": "interior/hessian_230_disp_1k.jpg"
+        },
+        "scale": [2.0, 2.0, 2.0],
+        "relief_m": 0.002,
+        "monochrome": {
+          "gain": 4.921,
+          "contrast": 0.85
+        },
+        "source": "https://polyhaven.com/a/hessian_230",
+        "bump_strength": 0.45
+      }
+    },
+    {
+      "id": "mat_rug_wool",
+      "name": "Undyed wool rug",
+      "role": "material",
+      "color": [0.44, 0.385, 0.295, 1.0],
+      "roughness": 1.0,
+      "surface": {
+        "maps": {
+          "color": "interior/Carpet016_1K-JPG_Color.jpg",
+          "height": "interior/Carpet016_1K-JPG_Displacement.jpg"
+        },
+        "scale": [1.0, 1.0, 1.0],
+        "relief_m": 0.002,
+        "monochrome": {
+          "gain": 2.277,
+          "contrast": 0.8
+        },
+        "source": "https://ambientcg.com/view?id=Carpet016",
+        "sheen": 0.6,
+        "bump_strength": 0.5
+      }
+    },
+    {
+      "color": [0.4, 0.48, 0.35, 1.0],
+      "id": "mat_sage",
+      "metallic": 0.0,
+      "name": "10 · Sage mineral paint.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.8,
+      "source_name": "10 · Sage mineral paint.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "id": "mat_shade_linen",
+      "name": "Backlit oat linen lampshade",
+      "role": "material",
+      "color": [0.78, 0.71, 0.58, 1.0],
+      "roughness": 0.95,
+      "emission_color": [1.0, 0.66, 0.4, 1.0],
+      "emission_strength": 0.6
+    },
+    {
+      "id": "mat_shadow_gap",
+      "name": "Shadow gap / plinth charcoal",
+      "role": "material",
+      "color": [0.018, 0.017, 0.016, 1.0],
+      "roughness": 0.9
+    },
+    {
+      "id": "mat_sheer",
+      "name": "Warm white linen sheer",
+      "role": "material",
+      "color": [0.86, 0.83, 0.77, 1.0],
+      "roughness": 0.95,
+      "alpha": 0.62,
+      "surface_render_method": "BLENDED"
+    },
+    {
+      "color": [0.075, 0.046, 0.022, 1.0],
+      "id": "mat_soil",
+      "metallic": 0.0,
+      "name": "17 · Planting soil.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 1.0,
+      "source_name": "17 · Planting soil.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.7, 0.62, 0.5, 1.0],
+      "id": "mat_stone_grey",
+      "metallic": 0.0,
+      "name": "05 · Honed warm limestone.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.42,
+      "source_name": "05 · Honed warm limestone.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/Travertine009_1K-JPG_Color.jpg",
+          "height": "interior/Travertine009_1K-JPG_Displacement.jpg"
+        },
+        "scale": [0.8333, 0.8333, 0.8333],
+        "relief_m": 0.0004,
+        "source": "https://ambientcg.com/view?id=Travertine009",
+        "tint": [0.96, 0.95, 0.93, 1]
+      }
+    },
+    {
+      "id": "mat_throw_wool",
+      "name": "Oat wool throw",
+      "role": "material",
+      "color": [0.34, 0.285, 0.205, 1.0],
+      "roughness": 0.97,
+      "surface": {
+        "maps": {
+          "color": "interior/caban_diff_1k.jpg",
+          "roughness": "interior/caban_rough_1k.jpg",
+          "height": "interior/caban_disp_1k.jpg"
+        },
+        "scale": [3.7, 3.7, 3.7],
+        "relief_m": 0.0012,
+        "monochrome": {
+          "gain": 4.436,
+          "contrast": 0.6
+        },
+        "source": "https://polyhaven.com/a/caban",
+        "sheen": 0.5,
+        "bump_strength": 0.5
+      }
+    },
+    {
+      "id": "mat_towel_oat",
+      "name": "Oat terry towel",
+      "role": "material",
+      "color": [0.68, 0.62, 0.52, 1.0],
+      "roughness": 1.0,
+      "surface": {
+        "maps": {
+          "color": "interior/terry_cloth_diff_1k.jpg",
+          "roughness": "interior/terry_cloth_rough_1k.jpg",
+          "height": "interior/terry_cloth_disp_1k.jpg"
+        },
+        "scale": [2.72, 2.72, 2.72],
+        "relief_m": 0.0015,
+        "monochrome": {
+          "gain": 14.398,
+          "contrast": 0.6
+        },
+        "source": "https://polyhaven.com/a/terry_cloth",
+        "sheen": 0.5
+      }
+    },
+    {
+      "color": [0.18, 0.125, 0.075, 1.0],
+      "id": "mat_tree_bark",
+      "metallic": 0.0,
+      "name": "19 · Tree bark.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.95,
+      "source_name": "19 · Tree bark.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "id": "mat_trim_white",
+      "name": "Warm white trim / tracks",
+      "role": "material",
+      "color": [0.78, 0.76, 0.71, 1.0],
+      "roughness": 0.6
+    },
+    {
+      "id": "mat_wall_cream",
+      "name": "Cream mineral paint",
+      "role": "material",
+      "color": [0.745, 0.61, 0.423, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.001,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.3
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_dusty_blue",
+      "name": "Dusty blue mineral paint",
+      "role": "material",
+      "color": [0.271, 0.342, 0.381, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.0008,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.22
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_greige",
+      "name": "Greige mineral paint",
+      "role": "material",
+      "color": [0.392, 0.301, 0.216, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.001,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.3
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_oat",
+      "name": "Oat mineral paint",
+      "role": "material",
+      "color": [0.651, 0.527, 0.361, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.001,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.3
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_sage",
+      "name": "Sage mineral paint",
+      "role": "material",
+      "color": [0.323, 0.381, 0.231, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.001,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.3
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_sand",
+      "name": "Sand mineral paint",
+      "role": "material",
+      "color": [0.631, 0.479, 0.296, 1.0],
+      "roughness": 0.87,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.3125, 0.3125, 0.3125],
+        "relief_m": 0.001,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.3
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04"
+      }
+    },
+    {
+      "id": "mat_wall_terracotta_limewash",
+      "name": "Terracotta limewash",
+      "role": "material",
+      "color": [0.474, 0.223, 0.114, 1.0],
+      "roughness": 0.9,
+      "surface": {
+        "coordinates": "object",
+        "maps": {
+          "color": "interior/plastered_wall_04_diff_1k.jpg",
+          "roughness": "interior/plastered_wall_04_rough_1k.jpg",
+          "height": "interior/plastered_wall_04_disp_1k.jpg"
+        },
+        "scale": [0.45, 0.45, 0.45],
+        "relief_m": 0.0022,
+        "monochrome": {
+          "gain": 3.892,
+          "contrast": 0.72
+        },
+        "source": "https://polyhaven.com/a/plastered_wall_04",
+        "bump_strength": 0.45
+      }
+    },
+    {
+      "color": [0.47, 0.385, 0.28, 1.0],
+      "id": "material-floor-oak",
+      "metallic": 0.0,
+      "name": "04 · Pale wide-board oak.002",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.55,
+      "source_name": "04 · Pale wide-board oak.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/oak_wood_planks_diff_2k.jpg",
+          "roughness": "interior/oak_wood_planks_rough_2k.jpg",
+          "height": "interior/oak_wood_planks_disp_2k.jpg"
+        },
+        "scale": [0.8333, 0.8333, 0.8333],
+        "relief_m": 0.0012,
+        "monochrome": {
+          "gain": 4.701,
+          "contrast": 0.85
+        },
+        "source": "https://polyhaven.com/a/oak_wood_planks",
+        "bump_strength": 0.4
+      }
+    },
+    {
+      "color": [0.62, 0.56, 0.47, 1.0],
+      "id": "material-floor-stone",
+      "metallic": 0.0,
+      "name": "material-floor-stone",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.5,
+      "source_name": "05 · Honed warm limestone.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "surface": {
+        "maps": {
+          "color": "interior/Travertine009_1K-JPG_Color.jpg",
+          "height": "interior/Travertine009_1K-JPG_Displacement.jpg"
+        },
+        "scale": [0.6, 0.6, 0.6],
+        "relief_m": 0.0004,
+        "source": "https://ambientcg.com/view?id=Travertine009",
+        "tint": [0.86, 0.85, 0.83, 1]
+      }
+    },
+    {
+      "color": [0.83, 0.93, 0.94, 1.0],
+      "id": "material-opening-concept",
+      "metallic": 0.0,
+      "name": "material-opening-concept",
+      "node_types": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "role": "material",
+      "roughness": 0.06,
+      "source_name": "13 · Clear glazing.002",
+      "ior": 1.45,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03,
+      "alpha": 0.2,
+      "surface_render_method": "BLENDED"
+    },
+    {
+      "color": [0.76, 0.71, 0.61, 1.0],
+      "id": "material-partition-concept",
+      "metallic": 0.0,
+      "name": "material-partition-concept",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.86,
+      "source_name": "01 · Warm lime plaster.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.66, 0.62, 0.52, 1.0],
+      "id": "material-slab-concept",
+      "metallic": 0.0,
+      "name": "material-slab-concept",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.77,
+      "source_name": "05 · Honed warm limestone.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.5, 0.5, 0.5, 1.0],
+      "id": "material-structure-concrete",
+      "metallic": 0.0,
+      "name": "material-structure-concrete",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.86,
+      "source_name": "01 · Warm lime plaster.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.76, 0.71, 0.61, 1.0],
+      "id": "material-wall-ceramic-brick",
+      "metallic": 0.0,
+      "name": "material-wall-ceramic-brick",
+      "node_types": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "role": "material",
+      "roughness": 0.86,
+      "source_name": "01 · Warm lime plaster.002",
+      "ior": 1.5,
+      "transmission_weight": 0.0,
+      "coat_roughness": 0.03
+    },
+    {
+      "color": [0.8, 0.8, 0.8, 1.0],
+      "id": "world-daylight",
+      "name": "Parcel / soft September sky",
+      "node_types": [
+        "ShaderNodeBackground",
+        "ShaderNodeMixRGB",
+        "ShaderNodeOutputWorld",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeTexSky",
+        "ShaderNodeValToRGB"
+      ],
+      "role": "world",
+      "source_name": "Parcel / soft September sky",
+      "strength": 1.0,
+      "environment": {
+        "map": "exterior/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+        "rotation_deg": 6.0,
+        "sun": {
+          "threshold": 10.0,
+          "angle_deg": 0.526,
+          "shadow_resolution_m": 0.001,
+          "texture_azimuth_deg": -34.3,
+          "elevation_deg": 47.9
+        }
+      },
+      "description": "Poly Haven CC0 kloofendal_48d_partly_cloudy_puresky; sun disc at texture azimuth -34.3 deg, elevation 47.9 deg."
+    },
+    {
+      "color": [0.16, 0.23, 0.36, 1.0],
+      "id": "world-evening",
+      "name": "Parcel / soft September sky.001",
+      "node_types": ["ShaderNodeBackground", "ShaderNodeOutputWorld", "ShaderNodeTexSky"],
+      "role": "world",
+      "source_name": "Parcel / soft September sky.001",
+      "strength": 0.8,
+      "environment": {
+        "map": "exterior/belfast_sunset_puresky_2k.hdr",
+        "rotation_deg": 103.7,
+        "sun": {
+          "threshold": 10.0,
+          "angle_deg": 0.526,
+          "shadow_resolution_m": 0.001,
+          "texture_azimuth_deg": -36.3,
+          "elevation_deg": 2.5
+        }
+      },
+      "description": "Poly Haven CC0 belfast_sunset_puresky; low setting sun at texture azimuth -36.3 deg, elevation 2.5 deg."
+    },
+    {
+      "color": [0.8, 0.8, 0.8, 1.0],
+      "id": "world-interior-daylight",
+      "name": "Interior / soft September sky",
+      "node_types": [
+        "ShaderNodeBackground",
+        "ShaderNodeMixRGB",
+        "ShaderNodeOutputWorld",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeTexSky",
+        "ShaderNodeValToRGB"
+      ],
+      "role": "world",
+      "source_name": "Parcel / soft September sky",
+      "strength": 0.8,
+      "environment": {
+        "map": "exterior/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+        "rotation_deg": 6.0,
+        "sun": {
+          "threshold": 10.0,
+          "angle_deg": 0.526,
+          "shadow_resolution_m": 0.001,
+          "texture_azimuth_deg": -34.3,
+          "elevation_deg": 47.9
+        }
+      },
+      "description": "Poly Haven CC0 kloofendal_48d_partly_cloudy_puresky; sun disc at texture azimuth -34.3 deg, elevation 47.9 deg."
+    }
+  ],
+  "lights": [
+    {
+      "id": "light-terrace-bounce",
+      "name": "Terasă / lumină de umplere",
+      "type": "AREA",
+      "energy": 60,
+      "size": 1.5,
+      "color": [0.85, 0.91, 1.0],
+      "matrix": [
+        [-1.0, 0.0, 0.0, 9.0],
+        [0.0, -0.246679, 0.969097, 23.5],
+        [0.0, 0.969097, 0.246679, 2.6],
+        [0, 0, 0, 1]
+      ]
+    },
+    {
+      "id": "light-entrance",
+      "name": "Intrare / aplică exterioară",
+      "type": "POINT",
+      "energy": 25,
+      "color": [1.0, 0.78, 0.55],
+      "matrix": [
+        [1, 0, 0, 8.6],
+        [0, 1, 0, 7.75],
+        [0, 0, 1, 2.35],
+        [0, 0, 0, 1]
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "id": "camera-garden",
+      "name": "01 Grădină",
+      "type": "PERSP",
+      "lens": 26.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.876812, -0.00544, 0.480802, 17.0],
+        [0.480833, -0.009919, 0.876756, 33.0],
+        [0.0, 0.999936, 0.011313, 3.2],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "garden",
+          "category": "exteriors",
+          "scene_id": "scene-garden",
+          "filename": "Gradina.png",
+          "default": true
+        },
+        {
+          "stem": "evening",
+          "category": "exteriors",
+          "scene_id": "scene-evening",
+          "filename": "Seara.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-garden",
+          "name": "01 • Casa Exemplu | Grădină",
+          "camera_id": "camera-garden",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "world_id": "world-daylight",
+          "exposure": -0.35,
+          "white_balance_temperature": 7500
+        },
+        {
+          "id": "scene-evening",
+          "name": "02 • Casa Exemplu | Seara",
+          "camera_id": "camera-garden",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "world_id": "world-evening",
+          "exposure": -0.6,
+          "evening": true
+        }
+      ]
+    },
+    {
+      "id": "camera-arrival",
+      "name": "02 Sosire din stradă",
+      "type": "PERSP",
+      "lens": 28.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.8508, -0.0275, 0.5248, 19.5],
+        [0.5255, 0.0445, -0.8496, -7.0],
+        [0.0, 0.9986, 0.0523, 3.0],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "arrival",
+          "category": "exteriors",
+          "scene_id": "scene-arrival",
+          "filename": "Sosire din strada.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-arrival",
+          "name": "03 • Casa Exemplu | Sosire",
+          "camera_id": "camera-arrival",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "world_id": "world-daylight",
+          "exposure": -0.35,
+          "white_balance_temperature": 7500
+        }
+      ]
+    },
+    {
+      "id": "camera-site-plan",
+      "name": "03 Plan parcelă",
+      "type": "ORTHO",
+      "lens": 40.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.0, -1.0, 0.0, 12.0],
+        [1.0, 0.0, 0.0, 19.0],
+        [0.0, 0.0, 1.0, 60.0],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "site-plan",
+          "category": "exteriors",
+          "scene_id": "scene-site-plan",
+          "filename": "Plan parcela.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-site-plan",
+          "name": "04 • Casa Exemplu | Plan parcelă",
+          "camera_id": "camera-site-plan",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "plan",
+          "excluded_collections": ["G | Annotations", "U | Annotations"],
+          "world_id": "world-daylight",
+          "exposure": -0.65
+        }
+      ],
+      "ortho_scale": 48.0
+    },
+    {
+      "id": "camera-g-plan",
+      "name": "Plan parter",
+      "type": "ORTHO",
+      "lens": 40.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.0, -1.0, 0.0, 8.0],
+        [1.0, 0.0, 0.0, 13.0],
+        [0.0, 0.0, 1.0, 35.0],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "ground-plan",
+          "category": "plans",
+          "scene_id": "scene-g-plan",
+          "filename": "Plan parter.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-g-plan",
+          "name": "Casa Exemplu | Plan parter",
+          "camera_id": "camera-g-plan",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "plan",
+          "level_id": "G",
+          "excluded_collections": [
+            "00 | Site & landscape",
+            "Exterior | Details",
+            "Exterior | Electric blinds",
+            "Exterior | Furniture",
+            "Exterior | Heat pump",
+            "Exterior | Terrace",
+            "G | Ceiling",
+            "G | Frame",
+            "G | Lighting & services",
+            "G | Openings",
+            "G | Wall finishes high",
+            "G | Walls high",
+            "Roof | Cap & solar",
+            "Site | Annotations",
+            "U | Annotations",
+            "U | Ceiling",
+            "U | Details",
+            "U | Floors",
+            "U | Frame",
+            "U | Furniture • Bathrooms",
+            "U | Furniture • Bedroom",
+            "U | Furniture • Child",
+            "U | Furniture • Lobby",
+            "U | Lighting & services",
+            "U | Openings",
+            "U | Structure",
+            "U | Wall finishes high",
+            "U | Wall finishes low",
+            "U | Walls high",
+            "U | Walls low"
+          ],
+          "world_id": "world-daylight",
+          "exposure": -0.65
+        }
+      ],
+      "ortho_scale": 13.0
+    },
+    {
+      "id": "camera-g-cutaway",
+      "name": "Secțiune parter",
+      "type": "ORTHO",
+      "lens": 40.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.707107, -0.442912, 0.551207, 30.0],
+        [0.707107, 0.442912, -0.551207, -9.0],
+        [-0.0, 0.779525, 0.626372, 26.0],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "ground-cutaway",
+          "category": "plans",
+          "scene_id": "scene-g-cutaway",
+          "filename": "Sectiune parter.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-g-cutaway",
+          "name": "Casa Exemplu | Secțiune parter",
+          "camera_id": "camera-g-cutaway",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "section",
+          "level_id": "G",
+          "excluded_collections": [
+            "00 | Site & landscape",
+            "Exterior | Details",
+            "Exterior | Electric blinds",
+            "Exterior | Furniture",
+            "Exterior | Heat pump",
+            "Exterior | Terrace",
+            "G | Ceiling",
+            "G | Frame",
+            "G | Lighting & services",
+            "G | Openings",
+            "G | Wall finishes high",
+            "G | Walls high",
+            "Roof | Cap & solar",
+            "Site | Annotations",
+            "U | Annotations",
+            "U | Ceiling",
+            "U | Details",
+            "U | Floors",
+            "U | Frame",
+            "U | Furniture • Bathrooms",
+            "U | Furniture • Bedroom",
+            "U | Furniture • Child",
+            "U | Furniture • Lobby",
+            "U | Lighting & services",
+            "U | Openings",
+            "U | Structure",
+            "U | Wall finishes high",
+            "U | Wall finishes low",
+            "U | Walls high",
+            "U | Walls low"
+          ],
+          "world_id": "world-daylight",
+          "exposure": -0.65
+        }
+      ],
+      "ortho_scale": 16.0
+    },
+    {
+      "id": "camera-u-plan",
+      "name": "Plan etaj",
+      "type": "ORTHO",
+      "lens": 40.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.0, -1.0, 0.0, 8.0],
+        [1.0, 0.0, 0.0, 13.0],
+        [0.0, 0.0, 1.0, 35.0],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "upper-plan",
+          "category": "plans",
+          "scene_id": "scene-u-plan",
+          "filename": "Plan etaj.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-u-plan",
+          "name": "Casa Exemplu | Plan etaj",
+          "camera_id": "camera-u-plan",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "plan",
+          "level_id": "U",
+          "excluded_collections": [
+            "00 | Site & landscape",
+            "Exterior | Details",
+            "Exterior | Electric blinds",
+            "Exterior | Furniture",
+            "Exterior | Heat pump",
+            "Exterior | Terrace",
+            "G | Annotations",
+            "G | Ceiling",
+            "G | Details",
+            "G | Floors",
+            "G | Frame",
+            "G | Furniture • Bathrooms",
+            "G | Furniture • Hall",
+            "G | Furniture • Kitchen",
+            "G | Furniture • Living",
+            "G | Furniture • Office",
+            "G | Furniture • Service",
+            "G | Lighting & services",
+            "G | Openings",
+            "G | Stair",
+            "G | Structure",
+            "G | Wall finishes high",
+            "G | Wall finishes low",
+            "G | Walls high",
+            "G | Walls low",
+            "Roof | Cap & solar",
+            "Site | Annotations",
+            "U | Ceiling",
+            "U | Frame",
+            "U | Lighting & services",
+            "U | Openings",
+            "U | Wall finishes high",
+            "U | Walls high"
+          ],
+          "world_id": "world-daylight",
+          "exposure": -0.65
+        }
+      ],
+      "ortho_scale": 13.0
+    },
+    {
+      "id": "camera-u-cutaway",
+      "name": "Secțiune etaj",
+      "type": "ORTHO",
+      "lens": 40.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.707107, -0.442912, 0.551207, 30.0],
+        [0.707107, 0.442912, -0.551207, -9.0],
+        [-0.0, 0.779525, 0.626372, 28.8],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "upper-cutaway",
+          "category": "plans",
+          "scene_id": "scene-u-cutaway",
+          "filename": "Sectiune etaj.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-u-cutaway",
+          "name": "Casa Exemplu | Secțiune etaj",
+          "camera_id": "camera-u-cutaway",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "section",
+          "level_id": "U",
+          "excluded_collections": [
+            "00 | Site & landscape",
+            "Exterior | Details",
+            "Exterior | Electric blinds",
+            "Exterior | Furniture",
+            "Exterior | Heat pump",
+            "Exterior | Terrace",
+            "G | Annotations",
+            "G | Ceiling",
+            "G | Details",
+            "G | Floors",
+            "G | Frame",
+            "G | Furniture • Bathrooms",
+            "G | Furniture • Hall",
+            "G | Furniture • Kitchen",
+            "G | Furniture • Living",
+            "G | Furniture • Office",
+            "G | Furniture • Service",
+            "G | Lighting & services",
+            "G | Openings",
+            "G | Stair",
+            "G | Structure",
+            "G | Wall finishes high",
+            "G | Wall finishes low",
+            "G | Walls high",
+            "G | Walls low",
+            "Roof | Cap & solar",
+            "Site | Annotations",
+            "U | Ceiling",
+            "U | Frame",
+            "U | Lighting & services",
+            "U | Openings",
+            "U | Wall finishes high",
+            "U | Walls high"
+          ],
+          "world_id": "world-daylight",
+          "exposure": -0.65
+        }
+      ],
+      "ortho_scale": 16.0
+    },
+    {
+      "id": "camera-living",
+      "name": "05 Living",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.817482, 0.037374, -0.57474, 7.72],
+        [-0.575954, -0.053046, 0.81576, 17.22],
+        [0.0, 0.997892, 0.06489, 1.45],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "living",
+          "category": "interiors",
+          "scene_id": "scene-living",
+          "filename": "Living.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-living",
+          "name": "05 • Casa Exemplu | Living",
+          "camera_id": "camera-living",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    },
+    {
+      "id": "camera-kitchen",
+      "name": "06 Bucătărie",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [0.138196, -0.079583, 0.987202, 8.92],
+        [0.990405, 0.011105, -0.137749, 15.62],
+        [-0.0, 0.996766, 0.080354, 1.45],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "kitchen",
+          "category": "interiors",
+          "scene_id": "scene-kitchen",
+          "filename": "Bucatarie.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-kitchen",
+          "name": "06 • Casa Exemplu | Bucătărie",
+          "camera_id": "camera-kitchen",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    },
+    {
+      "id": "camera-office",
+      "name": "07 Birou",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.697355, -0.123096, 0.706076, 7.07],
+        [0.716726, -0.119769, 0.686993, 10.42],
+        [0.0, 0.985141, 0.171748, 1.45],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "office",
+          "category": "interiors",
+          "scene_id": "scene-office",
+          "filename": "Birou.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-office",
+          "name": "07 • Casa Exemplu | Birou",
+          "camera_id": "camera-office",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    },
+    {
+      "id": "camera-main-bedroom",
+      "name": "08 Dormitor matrimonial",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.043, -0.104, 0.994, 11.35],
+        [0.999, -0.004, 0.042, 16.2],
+        [0.0, 0.995, 0.105, 4.25],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "main-bedroom",
+          "category": "interiors",
+          "scene_id": "scene-main-bedroom",
+          "filename": "Dormitor matrimonial.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-main-bedroom",
+          "name": "08 • Casa Exemplu | Dormitor matrimonial",
+          "camera_id": "camera-main-bedroom",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    },
+    {
+      "id": "camera-child-room",
+      "name": "09 Camera copilului",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.935, -0.058, 0.349, 6.4],
+        [0.354, -0.154, 0.922, 12.05],
+        [0.0, 0.986, 0.165, 4.25],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "child-room",
+          "category": "interiors",
+          "scene_id": "scene-child-room",
+          "filename": "Camera copilului.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-child-room",
+          "name": "09 • Casa Exemplu | Camera copilului",
+          "camera_id": "camera-child-room",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    },
+    {
+      "id": "camera-upper-bathroom",
+      "name": "10 Baie etaj",
+      "type": "PERSP",
+      "lens": 14.0,
+      "clip_start": 0.05,
+      "clip_end": 200.0,
+      "matrix": [
+        [-0.339, -0.196, 0.92, 7.1],
+        [0.941, -0.07, 0.331, 13.5],
+        [0.0, 0.978, 0.208, 4.25],
+        [0, 0, 0, 1]
+      ],
+      "render_jobs": [
+        {
+          "stem": "upper-bathroom",
+          "category": "interiors",
+          "scene_id": "scene-upper-bathroom",
+          "filename": "Baie etaj.png"
+        }
+      ],
+      "scene_definitions": [
+        {
+          "id": "scene-upper-bathroom",
+          "name": "10 • Casa Exemplu | Baie etaj",
+          "camera_id": "camera-upper-bathroom",
+          "view_transform": "AgX",
+          "look": "AgX - Medium High Contrast",
+          "cutaway": "none",
+          "excluded_collections": ["Site | Annotations", "G | Annotations", "U | Annotations"],
+          "interior": true,
+          "world_id": "world-interior-daylight",
+          "exposure": 0.0
+        }
+      ]
+    }
+  ]
+}

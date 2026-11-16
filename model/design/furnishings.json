@@ -1,0 +1,2865 @@
+{
+  "furnishings": [
+    {
+      "id": "g-liv-media",
+      "name": "Living / consolă media suspendată",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [3.43, -0.89, 0.466],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [1.6, 0.42, 0.42],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "underglow": true,
+          "handle": "none",
+          "columns": [{}, {}]
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-tv",
+      "name": "Living / televizor pe peretele media",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [3.61, -0.89, 1.3],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [1.45, 0.05, 0.83],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.01,
+          "role": "appliance"
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-sofa",
+      "name": "Living / canapea existentă reutilizată",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [1.225, -0.89, 0.416],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [2.2, 0.95, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "sofa",
+        "params": {
+          "seat_height": 0.43,
+          "arm_width": 0.18,
+          "seats": 3
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-coffee-table",
+      "name": "Living / măsuță joasă din lemn masiv",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [2.32, -0.89, 0.206],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.0, 0.6, 0.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table",
+        "params": {
+          "shape": "rect",
+          "corner_radius": 0.05,
+          "base": "legs"
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-rug",
+      "name": "Living / covor din lână",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [2.2, -0.89, 0.013],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [2.0, 1.6, 0.014],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "rug",
+        "params": {
+          "corner_radius": 0.04,
+          "border": 0.08
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-dining-table",
+      "name": "Living / masă de dining pentru șase persoane",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-0.4, -0.65, 0.381],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.8, 0.9, 0.75],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table",
+        "params": {
+          "shape": "rect",
+          "corner_radius": 0.02,
+          "base": "legs"
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-w0",
+      "name": "Living / scaun de dining 1",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-1.14, -1.25, 0.416],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-e0",
+      "name": "Living / scaun de dining 4",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [0.34, -1.25, 0.416],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-w1",
+      "name": "Living / scaun de dining 2",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-1.14, -0.65, 0.416],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-e1",
+      "name": "Living / scaun de dining 5",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [0.34, -0.65, 0.416],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-w2",
+      "name": "Living / scaun de dining 3",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-1.14, -0.05, 0.416],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-chair-e2",
+      "name": "Living / scaun de dining 6",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [0.34, -0.05, 0.416],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-pendant",
+      "name": "Living / pendul deasupra mesei",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-0.4, -0.65, 2.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.45, 0.45, 0.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "pendant",
+        "params": {
+          "shape": "dome",
+          "shade_height": 0.22,
+          "energy": 30.0,
+          "beam": 100
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-liv-sheer",
+      "name": "Living / voal alb cald la fereastra spre grădină",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [-1.545, -0.8, 1.256],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [2.0, 0.15, 2.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "curtain",
+        "params": {
+          "layers": [
+            {
+              "role": "sheer",
+              "depth": 0.08
+            }
+          ]
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-floor-lamp",
+      "name": "Living / lampă de citit",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [1.45, 0.4, 0.781],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.3, 0.3, 1.55],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "floor_lamp",
+        "params": {
+          "style": "reading",
+          "energy": 12.0
+        }
+      },
+      "collection": "G | Furniture • Living"
+    },
+    {
+      "id": "g-liv-downlight-nook",
+      "name": "Living / spot încastrat cald",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [2.6, -0.89, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-liv-downlight-main",
+      "name": "Living / spot încastrat cald",
+      "room_id": "G-LIV",
+      "anchor": "room",
+      "position": [0.0, 1.3, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-kit-base-run",
+      "name": "Bucătărie / front liniar cu sertare și cuptor",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.25, 1.13, 0.441],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [2.6, 0.62, 0.87],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.1,
+          "top": "open",
+          "handle": "groove",
+          "columns": [
+            {
+              "width": 0.6,
+              "cells": [
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                }
+              ]
+            },
+            {
+              "width": 0.6,
+              "cells": [
+                {
+                  "type": "drawer",
+                  "height": 0.2
+                },
+                {
+                  "type": "oven"
+                }
+              ]
+            },
+            {
+              "width": 0.8,
+              "cells": [
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                }
+              ]
+            },
+            {
+              "width": 0.6,
+              "cells": [
+                {
+                  "type": "door"
+                }
+              ]
+            }
+          ]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_cabinetry_chalk"
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-base-top",
+      "name": "Bucătărie / blat cu plită cu inducție și chiuvetă",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.25, 1.12, 0.896],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [2.62, 0.64, 0.04],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "worktop",
+        "params": {
+          "hobs": [
+            {
+              "x": -0.6,
+              "width": 0.6,
+              "depth": 0.52
+            }
+          ],
+          "sinks": [
+            {
+              "x": 0.6,
+              "y": -0.02,
+              "width": 0.5,
+              "depth": 0.4
+            }
+          ],
+          "taps": [
+            {
+              "x": 0.6,
+              "y": 0.24,
+              "reach": 0.2
+            }
+          ]
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-fridge",
+      "name": "Bucătărie / coloană cu frigider combinat integrat",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [1.4, 1.12, 1.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.62, 0.64, 2.3],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.1,
+          "handle": "bar",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "door"
+                },
+                {
+                  "type": "door",
+                  "height": 0.5
+                }
+              ]
+            }
+          ]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_cabinetry_chalk"
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-uppers",
+      "name": "Bucătărie / corpuri suspendate",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [0.3, 1.265, 1.816],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.5, 0.35, 0.72],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "none",
+          "columns": [{}, {}]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_cabinetry_chalk"
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-hood",
+      "name": "Bucătărie / hotă",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.85, 1.24, 1.781],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.6, 0.4, 0.45],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.01,
+          "role": "metal"
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-task-light",
+      "name": "Bucătărie / iluminat de lucru sub corpuri",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [0.3, 1.18, 1.44],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.4, 0.05, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "led_line",
+        "params": {
+          "facing": "down",
+          "w_per_m": 8.0,
+          "spread": 100
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-kit-island",
+      "name": "Bucătărie / insulă cu sertare",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.3, -0.62, 0.441],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [1.8, 0.8, 0.87],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.1,
+          "top": "open",
+          "handle": "groove",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "type": "door"
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                },
+                {
+                  "type": "drawer"
+                }
+              ]
+            }
+          ]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_cabinetry_chalk"
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-island-top",
+      "name": "Bucătărie / blat insulă cu loc pentru mic dejun",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.3, -0.72, 0.896],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [2.0, 1.0, 0.04],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "worktop"
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-stool-0",
+      "name": "Bucătărie / taburet 1",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.75, -1.27, 0.446],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [0.44, 0.44, 0.88],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair",
+        "params": {
+          "seat_height": 0.65,
+          "style": "shell",
+          "arm_height": 0.1
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-pendant-0",
+      "name": "Bucătărie / pendul peste insulă 1",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.7, -0.67, 2.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.35, 0.35, 0.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "pendant",
+        "params": {
+          "shape": "dome",
+          "shade_height": 0.2,
+          "energy": 25.0,
+          "beam": 100
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-kit-stool-1",
+      "name": "Bucătărie / taburet 2",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [0.15, -1.27, 0.446],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [0.44, 0.44, 0.88],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair",
+        "params": {
+          "seat_height": 0.65,
+          "style": "shell",
+          "arm_height": 0.1
+        }
+      },
+      "collection": "G | Furniture • Kitchen"
+    },
+    {
+      "id": "g-kit-pendant-1",
+      "name": "Bucătărie / pendul peste insulă 2",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [0.2, -0.67, 2.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.35, 0.35, 0.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "pendant",
+        "params": {
+          "shape": "dome",
+          "shade_height": 0.2,
+          "energy": 25.0,
+          "beam": 100
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-kit-downlight",
+      "name": "Bucătărie / spot încastrat cald",
+      "room_id": "G-KIT",
+      "anchor": "room",
+      "position": [-0.3, 0.28, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-hall-wardrobe",
+      "name": "Hol / dulap încastrat pentru haine",
+      "room_id": "G-HALL",
+      "anchor": "room",
+      "position": [2.205, 0.64, 1.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.25, 0.5, 2.3],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.07,
+          "handle": "none",
+          "columns": [{}, {}]
+        }
+      },
+      "collection": "G | Furniture • Hall"
+    },
+    {
+      "id": "g-hall-bench",
+      "name": "Hol / bancă pentru încălțat cu pantofar",
+      "room_id": "G-HALL",
+      "anchor": "room",
+      "position": [0.31, -0.7, 0.246],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [0.82, 0.38, 0.48],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.05,
+          "handle": "none",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "open",
+                  "shelves": 1
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "type": "open",
+                  "shelves": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "G | Furniture • Hall"
+    },
+    {
+      "id": "g-hall-mirror",
+      "name": "Hol / oglindă",
+      "room_id": "G-HALL",
+      "anchor": "room",
+      "position": [0.31, -0.88, 1.55],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [0.5, 0.02, 1.0],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "mirror",
+        "params": {
+          "frame": true,
+          "corner_radius": 0.04
+        }
+      },
+      "collection": "G | Furniture • Hall"
+    },
+    {
+      "id": "g-hall-downlight-1",
+      "name": "Hol / spot încastrat cald",
+      "room_id": "G-HALL",
+      "anchor": "room",
+      "position": [-1.62, 0.0, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-hall-downlight-2",
+      "name": "Hol / spot încastrat cald",
+      "room_id": "G-HALL",
+      "anchor": "room",
+      "position": [1.38, 0.0, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-stair-storage",
+      "name": "Scară / rafturi închise sub podest",
+      "room_id": "G-STAIR",
+      "anchor": "room",
+      "position": [-1.47, -0.83, 0.506],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [0.9, 0.45, 1.0],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.05,
+          "handle": "none",
+          "columns": [{}, {}]
+        }
+      },
+      "collection": "G | Furniture • Hall"
+    },
+    {
+      "id": "g-stair-downlight",
+      "name": "Scară / spot încastrat cald",
+      "room_id": "G-STAIR",
+      "anchor": "room",
+      "position": [1.41, 0.05, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-bath-vanity",
+      "name": "Baie parter / mobilier suspendat cu sertar",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.681],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.8, 0.46, 0.35],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "bathroom-vanity",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "groove",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                }
+              ]
+            }
+          ]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_oak"
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-vanity-top",
+      "name": "Baie parter / blat lavoar",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.871],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.82, 0.46, 0.03],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "worktop"
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-basin",
+      "name": "Baie parter / lavoar ceramic",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.961],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.42, 0.36, 0.15],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "basin",
+        "params": {
+          "shape": "round"
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-mirror",
+      "name": "Baie parter / oglindă",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.88, -0.92, 1.55],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.7, 0.02, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "mirror",
+        "params": {
+          "corner_radius": 0.05
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-wc",
+      "name": "Baie parter / vas WC suspendat",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.615, 0.03, 0.406],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.38, 0.55, 0.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "toilet",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.12,
+          "role": "ceramic"
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-screen",
+      "name": "Baie parter / perete de sticlă la dușul walk-in",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [-0.39, 0.48, 1.006],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.0, 0.3, 2.0],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "glass_screen",
+        "params": {
+          "stay": false
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-shower-set",
+      "name": "Baie parter / baterie de duș",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [-0.6, 1.23, 1.156],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.3, 0.42, 2.3],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "shower",
+      "generated": {
+        "kind": "shower_set"
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-towel-cabinet",
+      "name": "Baie parter / dulap pentru prosoape",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [-0.715, -0.17, 0.956],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.6, 0.35, 1.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "none",
+          "columns": [{}]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_oak"
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-towel-rail",
+      "name": "Baie parter / port-prosop lângă duș",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [-0.86, 0.33, 1.2],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.5, 0.06, 1.2],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "towel_rail",
+        "params": {
+          "bars": 6,
+          "towels_at": [0.3]
+        }
+      },
+      "collection": "G | Furniture • Bathrooms"
+    },
+    {
+      "id": "g-bath-downlight",
+      "name": "Baie parter / spot încastrat cald",
+      "room_id": "G-BATH",
+      "anchor": "room",
+      "position": [0.0, -0.42, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-tech-panel",
+      "name": "Cameră tehnică / tablou electric",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.68, -1.12, 1.6],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.5, 0.12, 0.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "electrical-panel",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.01,
+          "role": "trim"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-network",
+      "name": "Cameră tehnică / punct central de rețea",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.665, -0.57, 1.75],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.4, 0.15, 0.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "network-rack",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.01,
+          "role": "appliance"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-washer",
+      "name": "Cameră tehnică / mașină de spălat",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.43, -0.02, 0.431],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.6, 0.62, 0.85],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "washing-machine",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.03,
+          "role": "ceramic"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-dryer",
+      "name": "Cameră tehnică / uscător suprapus",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.43, -0.02, 1.281],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.6, 0.62, 0.85],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "tumble-dryer",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.03,
+          "role": "ceramic"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-folding",
+      "name": "Cameră tehnică / corp cu blat pentru împăturit",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.44, 0.66, 0.456],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.7, 0.6, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.1,
+          "handle": "groove",
+          "columns": [{}]
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-dhw",
+      "name": "Cameră tehnică / boiler ACM de circa 200 l",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [-0.4, 1.13, 0.831],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.6, 0.6, 1.65],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "domestic-hot-water-storage-tank",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.25,
+          "role": "trim"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-mvhr",
+      "name": "Cameră tehnică / unitate MVHR",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.35, 1.14, 1.956],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.7, 0.6, 0.6],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "mvhr-unit",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.03,
+          "role": "trim"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-heat-pump",
+      "name": "Cameră tehnică / unitatea interioară a pompei de căldură",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [-0.565, 0.18, 1.481],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.45, 0.35, 0.75],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "heat-pump-indoor-unit",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.03,
+          "role": "trim"
+        }
+      },
+      "collection": "G | Furniture • Service"
+    },
+    {
+      "id": "g-tech-downlight",
+      "name": "Cameră tehnică / spot încastrat cald",
+      "room_id": "G-TECH",
+      "anchor": "room",
+      "position": [0.0, -0.22, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "g-off-sofa-bed",
+      "name": "Birou / canapea extensibilă pentru oaspeți",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [-0.07, 0.99, 0.406],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [2.0, 0.9, 0.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "sofa",
+        "params": {
+          "seat_height": 0.44,
+          "arm_width": 0.12,
+          "seats": 2
+        }
+      },
+      "collection": "G | Furniture • Office"
+    },
+    {
+      "id": "g-off-desk",
+      "name": "Birou / birou reglabil pe înălțime spre fereastră",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [0.74, -0.62, 0.376],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.4, 0.7, 0.74],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table",
+        "params": {
+          "shape": "rect",
+          "corner_radius": 0.01,
+          "base": "legs",
+          "top_role": "wood"
+        }
+      },
+      "collection": "G | Furniture • Office"
+    },
+    {
+      "id": "g-off-chair",
+      "name": "Birou / scaun de lucru existent",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [0.08, -0.57, 0.456],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.5, 0.5, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair",
+        "params": {
+          "style": "shell",
+          "seat_height": 0.47,
+          "arm_height": 0.2
+        }
+      },
+      "collection": "G | Furniture • Office"
+    },
+    {
+      "id": "g-off-storage",
+      "name": "Birou / dulap închis pentru documente",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [-1.01, -0.295, 0.606],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.75, 0.4, 1.2],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.05,
+          "handle": "none",
+          "columns": [{}]
+        }
+      },
+      "collection": "G | Furniture • Office"
+    },
+    {
+      "id": "g-off-task-lamp",
+      "name": "Birou / veioză de lucru",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [0.88, -1.17, 0.916],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.24, 0.24, 0.34],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table_lamp",
+        "params": {
+          "style": "mushroom",
+          "energy": 5.0,
+          "temperature": 3000
+        }
+      },
+      "collection": "G | Furniture • Office"
+    },
+    {
+      "id": "g-off-downlight",
+      "name": "Birou / spot încastrat cald",
+      "room_id": "G-OFF",
+      "anchor": "room",
+      "position": [-0.07, -0.42, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "G | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-lobby-bookcase",
+      "name": "Hol etaj / bibliotecă",
+      "room_id": "U-LOBBY",
+      "anchor": "room",
+      "position": [-1.34, -1.65, 0.956],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [1.2, 0.32, 1.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "shelving",
+        "params": {
+          "shelves": 5,
+          "books": 0.6
+        }
+      },
+      "collection": "U | Furniture • Lobby"
+    },
+    {
+      "id": "u-lobby-night-path",
+      "name": "Hol etaj / lumină de veghe la nivel jos",
+      "room_id": "U-LOBBY",
+      "anchor": "room",
+      "position": [0.93, 0.87, 0.3],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [3.6, 0.05, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "led_line",
+        "params": {
+          "facing": "down",
+          "w_per_m": 1.5,
+          "spread": 100
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-lobby-downlight-1",
+      "name": "Hol etaj / spot încastrat cald",
+      "room_id": "U-LOBBY",
+      "anchor": "room",
+      "position": [-2.12, 0.0, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-lobby-downlight-2",
+      "name": "Hol etaj / spot încastrat cald",
+      "room_id": "U-LOBBY",
+      "anchor": "room",
+      "position": [0.88, 0.0, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-lobby-downlight-bay",
+      "name": "Hol etaj / spot încastrat cald",
+      "room_id": "U-LOBBY",
+      "anchor": "room",
+      "position": [2.38, -2.15, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-mbed-bed",
+      "name": "Dormitor / pat 160 × 200 cm",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [0.06, 2.565, 0.556],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.72, 2.15, 1.1],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "bed",
+        "params": {
+          "mattress_width": 1.6,
+          "mattress_length": 2.0,
+          "headboard": "upholstered",
+          "headboard_thickness": 0.1,
+          "frame_height": 0.3,
+          "frame_width": 1.72,
+          "pillows": 2
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-nightstand-left",
+      "name": "Dormitor / noptieră (left)",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [-1.3, 3.45, 0.231],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.45, 0.38, 0.45],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "groove",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-sconce-left",
+      "name": "Dormitor / aplică de citit (left)",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [-1.3, 3.56, 1.2],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.18, 0.16, 0.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "sconce",
+        "params": {
+          "style": "arm",
+          "energy": 4.0
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-mbed-nightstand-right",
+      "name": "Dormitor / noptieră (right)",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [1.42, 3.45, 0.231],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.45, 0.38, 0.45],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "groove",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-sconce-right",
+      "name": "Dormitor / aplică de citit (right)",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [1.42, 3.56, 1.2],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.18, 0.16, 0.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "sconce",
+        "params": {
+          "style": "arm",
+          "energy": 4.0
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-mbed-wardrobe",
+      "name": "Dormitor / dulap pe toată înălțimea",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [1.43, -0.82, 1.156],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [2.4, 0.62, 2.3],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.07,
+          "handle": "none",
+          "columns": [{}, {}, {}]
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-chair",
+      "name": "Dormitor / fotoliu lângă fereastră",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [-0.95, -1.32, 0.481],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.8, 0.85, 0.95],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "lounge_chair",
+        "params": {
+          "seat_height": 0.42
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-rug",
+      "name": "Dormitor / covor la pat",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [0.06, 1.78, 0.013],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [2.6, 1.6, 0.014],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "rug",
+        "params": {
+          "corner_radius": 0.04,
+          "border": 0.08
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-curtain-garden",
+      "name": "Dormitor / perdea opacă la fereastra spre grădină",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [-1.545, -1.32, 1.256],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [2.2, 0.15, 2.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "curtain",
+        "params": {
+          "layers": [
+            {
+              "role": "blackout",
+              "depth": 0.08,
+              "panels": [
+                [-1.1, -0.72],
+                [0.72, 1.1]
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-curtain-east",
+      "name": "Dormitor / perdea opacă la fereastra de est",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [-0.3, -3.565, 1.256],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.6, 0.15, 2.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "curtain",
+        "params": {
+          "layers": [
+            {
+              "role": "blackout",
+              "depth": 0.08,
+              "panels": [
+                [-0.8, -0.45],
+                [0.45, 0.8]
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Bedroom"
+    },
+    {
+      "id": "u-mbed-downlight-1",
+      "name": "Dormitor / spot încastrat cald",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [0.0, -1.82, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-mbed-downlight-2",
+      "name": "Dormitor / spot încastrat cald",
+      "room_id": "U-MBED",
+      "anchor": "room",
+      "position": [0.0, 0.78, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-child-bed",
+      "name": "Camera copilului / pat de o persoană",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [-0.97, 0.84, 0.456],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.0, 2.08, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "bed",
+        "params": {
+          "mattress_width": 0.9,
+          "mattress_length": 2.0,
+          "headboard": "upholstered",
+          "headboard_thickness": 0.06,
+          "frame_height": 0.28,
+          "frame_width": 1.0,
+          "pillows": 1
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-desk",
+      "name": "Camera copilului / birou de studiu",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [1.43, -0.62, 0.366],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.2, 0.6, 0.72],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table",
+        "params": {
+          "shape": "rect",
+          "corner_radius": 0.01,
+          "base": "legs"
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-chair",
+      "name": "Camera copilului / scaun de birou",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [0.83, -0.62, 0.416],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.45, 0.5, 0.82],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "chair"
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-wardrobe",
+      "name": "Camera copilului / dulap",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [-0.02, -1.26, 1.106],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [1.5, 0.6, 2.2],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.07,
+          "handle": "none",
+          "columns": [{}, {}]
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-shelf",
+      "name": "Camera copilului / raft jos pentru jucării și cărți",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [1.74, 0.78, 0.456],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [1.0, 0.3, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "shelving",
+        "params": {
+          "shelves": 2,
+          "books": 0.5
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-rug",
+      "name": "Camera copilului / covor de joacă",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [0.03, -0.27, 0.013],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.6, 1.1, 0.014],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "rug",
+        "params": {
+          "corner_radius": 0.3,
+          "border": 0.06
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-curtain-west",
+      "name": "Camera copilului / perdea opacă la fereastra de vest",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [1.03, 1.38, 1.256],
+      "rotation": [0.0, 0.0, 3.141593],
+      "dimensions": [1.6, 0.12, 2.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "curtain",
+        "params": {
+          "layers": [
+            {
+              "role": "blackout",
+              "depth": 0.07,
+              "panels": [
+                [-0.8, -0.45],
+                [0.45, 0.8]
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-curtain-street",
+      "name": "Camera copilului / perdea opacă la fereastra spre stradă",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [1.83, -0.52, 1.256],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [1.6, 0.12, 2.5],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "curtain",
+        "params": {
+          "layers": [
+            {
+              "role": "blackout",
+              "depth": 0.07,
+              "panels": [
+                [-0.8, -0.45],
+                [0.45, 0.8]
+              ]
+            }
+          ]
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-desk-lamp",
+      "name": "Camera copilului / veioză",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [1.53, -1.07, 0.896],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.24, 0.24, 0.34],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "table_lamp",
+        "params": {
+          "style": "mushroom",
+          "energy": 5.0,
+          "temperature": 3000
+        }
+      },
+      "collection": "U | Furniture • Child"
+    },
+    {
+      "id": "u-child-downlight",
+      "name": "Camera copilului / spot încastrat cald",
+      "room_id": "U-CHILD",
+      "anchor": "room",
+      "position": [0.03, -0.12, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    },
+    {
+      "id": "u-bath-vanity",
+      "name": "Baie etaj / mobilier suspendat cu sertar",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.681],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.8, 0.46, 0.35],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "bathroom-vanity",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "groove",
+          "columns": [
+            {
+              "cells": [
+                {
+                  "type": "drawer"
+                }
+              ]
+            }
+          ]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_oak"
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-vanity-top",
+      "name": "Baie etaj / blat lavoar",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.871],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.82, 0.46, 0.03],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "worktop"
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-basin",
+      "name": "Baie etaj / lavoar ceramic",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.66, -0.92, 0.961],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.42, 0.36, 0.15],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "basin",
+        "params": {
+          "shape": "round"
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-mirror",
+      "name": "Baie etaj / oglindă",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.88, -0.92, 1.55],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.7, 0.02, 0.9],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "mirror",
+        "params": {
+          "corner_radius": 0.05
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-wc",
+      "name": "Baie etaj / vas WC suspendat",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.615, 0.03, 0.406],
+      "rotation": [0.0, 0.0, -1.570796],
+      "dimensions": [0.38, 0.55, 0.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "toilet",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.12,
+          "role": "ceramic"
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-tub",
+      "name": "Baie etaj / cadă utilizabilă și ca duș",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.0, 1.065, 0.296],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [1.7, 0.75, 0.58],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "bathtub",
+      "generated": {
+        "kind": "soft_box",
+        "params": {
+          "radius": 0.08,
+          "role": "ceramic"
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-tub-screen",
+      "name": "Baie etaj / paravan de sticlă la cadă",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [-0.45, 0.72, 1.286],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.8, 0.3, 1.4],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "glass_screen",
+        "params": {
+          "stay": false
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-shower-set",
+      "name": "Baie etaj / baterie de cadă și duș",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [-0.6, 1.36, 1.406],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.3, 0.15, 1.6],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "shower",
+      "generated": {
+        "kind": "shower_set"
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-storage",
+      "name": "Baie etaj / dulap pentru depozitare",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [-0.74, -0.27, 0.906],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.6, 0.3, 1.8],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "floor",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "joinery",
+        "params": {
+          "plinth": 0.0,
+          "handle": "none",
+          "columns": [{}]
+        },
+        "materials": {
+          "carcass": "mat_oak",
+          "front": "mat_oak"
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-towel-rail",
+      "name": "Baie etaj / port-prosop",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [-0.86, 0.33, 1.2],
+      "rotation": [0.0, 0.0, 1.570796],
+      "dimensions": [0.5, 0.06, 1.2],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "towel_rail",
+        "params": {
+          "bars": 6,
+          "towels_at": [0.3]
+        }
+      },
+      "collection": "U | Furniture • Bathrooms"
+    },
+    {
+      "id": "u-bath-downlight",
+      "name": "Baie etaj / spot încastrat cald",
+      "room_id": "U-BATH",
+      "anchor": "room",
+      "position": [0.0, -0.42, 2.546],
+      "rotation": [0.0, 0.0, 0.0],
+      "dimensions": [0.08, 0.08, 0.02],
+      "clearance_m": {
+        "back": 0.0,
+        "front": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "clearance_status": "not-modeled",
+      "containment_policy": "room-envelope",
+      "purpose": "furnishing",
+      "generated": {
+        "kind": "downlight",
+        "params": {
+          "beam": 60,
+          "energy": 12.0,
+          "temperature": 2700
+        }
+      },
+      "collection": "U | Lighting & services",
+      "cutaway_hidden": true
+    }
+  ]
+}

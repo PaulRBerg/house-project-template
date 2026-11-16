@@ -1,19 +1,39 @@
 {
   "schemaVersion": 1,
   "project": {
-    "id": "demo-house",
-    "name": "Demo House",
-    "location": "Not specified",
+    "id": "casa-exemplu",
+    "name": "Casa Exemplu",
+    "location": "Comuna Exemplu, județul Exemplu, România",
     "currency": "EUR",
-    "builtAreaSqm": 48,
-    "annualGrowthBps": 500,
-    "contingencyBps": 1000
+    "builtAreaSqm": 160
   },
   "milestones": [
-    { "id": "la-rosu", "label": "La roșu", "date": "2030-03" },
-    { "id": "la-gri", "label": "La gri", "date": "2030-06" },
-    { "id": "la-cheie", "label": "La cheie", "date": "2030-09" },
-    { "id": "la-mutat", "label": "La mutat", "date": "2030-10" }
+    {
+      "id": "la-rosu",
+      "label": "La roșu",
+      "date": "2027-09"
+    },
+    {
+      "id": "la-gri",
+      "label": "La gri",
+      "date": "2027-12"
+    },
+    {
+      "id": "la-cheie",
+      "label": "La cheie",
+      "date": "2028-09"
+    },
+    {
+      "id": "la-mutat",
+      "label": "La mutat",
+      "date": "2029-06"
+    },
+    {
+      "id": "extra",
+      "label": "Extra",
+      "startDate": "2029-06",
+      "date": "2031-06"
+    }
   ],
   "groups": [
     {
@@ -21,7 +41,39 @@
       "label": "La roșu",
       "parentId": null,
       "milestoneId": "la-rosu",
-      "sortOrder": 0,
+      "sortOrder": 1,
+      "archived": false
+    },
+    {
+      "id": "professional-site",
+      "label": "Studii, proiectare și avize",
+      "parentId": "construction",
+      "milestoneId": "la-rosu",
+      "sortOrder": 2,
+      "archived": false
+    },
+    {
+      "id": "construction-connections",
+      "label": "Branșamente",
+      "parentId": "construction",
+      "milestoneId": "la-rosu",
+      "sortOrder": 3,
+      "archived": false
+    },
+    {
+      "id": "construction-structure",
+      "label": "Structură și zidărie",
+      "parentId": "construction",
+      "milestoneId": "la-rosu",
+      "sortOrder": 4,
+      "archived": false
+    },
+    {
+      "id": "construction-roof",
+      "label": "Acoperiș",
+      "parentId": "construction",
+      "milestoneId": "la-rosu",
+      "sortOrder": 5,
       "archived": false
     },
     {
@@ -29,7 +81,47 @@
       "label": "La gri",
       "parentId": null,
       "milestoneId": "la-gri",
-      "sortOrder": 1,
+      "sortOrder": 6,
+      "archived": false
+    },
+    {
+      "id": "rough-windows-doors",
+      "label": "Ferestre, uși și fațadă",
+      "parentId": "rough",
+      "milestoneId": "la-gri",
+      "sortOrder": 7,
+      "archived": false
+    },
+    {
+      "id": "rough-electrical",
+      "label": "Instalații electrice și date",
+      "parentId": "rough",
+      "milestoneId": "la-gri",
+      "sortOrder": 8,
+      "archived": false
+    },
+    {
+      "id": "rough-hvac",
+      "label": "Instalații termice și ventilație",
+      "parentId": "rough",
+      "milestoneId": "la-gri",
+      "sortOrder": 9,
+      "archived": false
+    },
+    {
+      "id": "rough-sanitary",
+      "label": "Instalații sanitare și hidroizolații băi",
+      "parentId": "rough",
+      "milestoneId": "la-gri",
+      "sortOrder": 10,
+      "archived": false
+    },
+    {
+      "id": "rough-interior",
+      "label": "Tencuieli și șape",
+      "parentId": "rough",
+      "milestoneId": "la-gri",
+      "sortOrder": 11,
       "archived": false
     },
     {
@@ -37,7 +129,47 @@
       "label": "La cheie",
       "parentId": null,
       "milestoneId": "la-cheie",
-      "sortOrder": 2,
+      "sortOrder": 12,
+      "archived": false
+    },
+    {
+      "id": "finish-energy",
+      "label": "Echipamente energetice și punere în funcțiune",
+      "parentId": "finish",
+      "milestoneId": "la-cheie",
+      "sortOrder": 13,
+      "archived": false
+    },
+    {
+      "id": "finish-bathrooms",
+      "label": "Băi",
+      "parentId": "finish",
+      "milestoneId": "la-cheie",
+      "sortOrder": 14,
+      "archived": false
+    },
+    {
+      "id": "finish-kitchen-storage",
+      "label": "Bucătărie și mobilier fix",
+      "parentId": "finish",
+      "milestoneId": "la-cheie",
+      "sortOrder": 15,
+      "archived": false
+    },
+    {
+      "id": "finish-surfaces",
+      "label": "Pardoseli, pereți, uși și scară",
+      "parentId": "finish",
+      "milestoneId": "la-cheie",
+      "sortOrder": 16,
+      "archived": false
+    },
+    {
+      "id": "finish-site",
+      "label": "Terasă, acces și împrejmuire",
+      "parentId": "finish",
+      "milestoneId": "la-cheie",
+      "sortOrder": 17,
       "archived": false
     },
     {
@@ -45,68 +177,622 @@
       "label": "La mutat",
       "parentId": null,
       "milestoneId": "la-mutat",
-      "sortOrder": 3,
+      "sortOrder": 18,
+      "archived": false
+    },
+    {
+      "id": "move-furniture",
+      "label": "Mobilier",
+      "parentId": "move",
+      "milestoneId": "la-mutat",
+      "sortOrder": 19,
+      "archived": false
+    },
+    {
+      "id": "move-appliances",
+      "label": "Electrocasnice",
+      "parentId": "move",
+      "milestoneId": "la-mutat",
+      "sortOrder": 20,
+      "archived": false
+    },
+    {
+      "id": "move-garden",
+      "label": "Curte și grădină",
+      "parentId": "move",
+      "milestoneId": "la-mutat",
+      "sortOrder": 21,
+      "archived": false
+    },
+    {
+      "id": "extras",
+      "label": "Extra",
+      "parentId": null,
+      "milestoneId": "extra",
+      "sortOrder": 22,
+      "archived": false
+    },
+    {
+      "id": "extra-furniture",
+      "label": "Mobilier",
+      "parentId": "extras",
+      "milestoneId": "extra",
+      "sortOrder": 23,
+      "archived": false
+    },
+    {
+      "id": "extra-systems",
+      "label": "Sisteme și dispozitive",
+      "parentId": "extras",
+      "milestoneId": "extra",
+      "sortOrder": 24,
       "archived": false
     }
   ],
   "items": [
     {
-      "id": "foundation",
-      "label": "Foundation allowance",
-      "groupId": "construction",
-      "areaId": "whole-house",
-      "milestoneId": "la-rosu",
-      "sortOrder": 0,
-      "costScope": "core",
-      "costType": "work",
-      "paymentMode": "partial-progress",
-      "contingencyEligible": true,
-      "included": true,
-      "archived": false,
-      "ownership": "planned",
-      "completion": { "complete": false },
-      "estimate": {
-        "kind": "total",
-        "amounts": { "baseCents": 100000, "highCents": 125000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
-      },
-      "briefReferences": [],
-      "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
-    },
-    {
-      "id": "wall-framing",
-      "label": "Wall framing allowance",
-      "groupId": "construction",
-      "areaId": "whole-house",
+      "id": "topographic-survey",
+      "label": "Ridicare topografică",
+      "groupId": "professional-site",
       "milestoneId": "la-rosu",
       "sortOrder": 1,
       "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 50000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-12"
+      },
+      "briefReferences": [
+        {
+          "recordId": "HH-05"
+        },
+        {
+          "recordId": "SITE-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Alocație demonstrativă pentru ridicarea topografică a parcelei. Se înlocuiește cu o ofertă locală."
+    },
+    {
+      "id": "geotechnical-study",
+      "label": "Studiu geotehnic",
+      "groupId": "professional-site",
+      "milestoneId": "la-rosu",
+      "sortOrder": 2,
+      "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 60000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-12"
+      },
+      "briefReferences": [
+        {
+          "recordId": "HH-05"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Alocație demonstrativă pentru foraje și raport geotehnic."
+    },
+    {
+      "id": "architecture-project",
+      "label": "Proiect de arhitectură",
+      "groupId": "professional-site",
+      "milestoneId": "la-rosu",
+      "sortOrder": 3,
+      "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 160,
+        "quantityBasis": "built-area",
+        "unit": "m²",
+        "rates": {
+          "baseCents": 2500
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-14"
+      },
+      "briefReferences": [
+        {
+          "recordId": "HH-05"
+        },
+        {
+          "recordId": "LAY-01"
+        },
+        {
+          "recordId": "LAY-06"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Tarif demonstrativ pe m² construit, pentru fazele DTAC și proiect tehnic. Se confirmă prin ofertă de la proiectant."
+    },
+    {
+      "id": "structural-engineering",
+      "label": "Proiect de structură",
+      "groupId": "professional-site",
+      "milestoneId": "la-rosu",
+      "sortOrder": 4,
+      "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 240000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-14"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-05"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Alocație demonstrativă pentru calculul și detaliile cadrului din beton armat."
+    },
+    {
+      "id": "mep-design",
+      "label": "Proiectare instalații",
+      "groupId": "professional-site",
+      "milestoneId": "la-rosu",
+      "sortOrder": 5,
+      "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 280000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-14"
+      },
+      "briefReferences": [
+        {
+          "recordId": "EN-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Alocație demonstrativă pentru proiectul instalațiilor termice, sanitare, electrice și de ventilație."
+    },
+    {
+      "id": "permit-and-utility-admin",
+      "label": "Autorizație de construire și avize",
+      "groupId": "professional-site",
+      "milestoneId": "la-rosu",
+      "sortOrder": 6,
+      "costScope": "core",
+      "costType": "other",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 180000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-20"
+      },
+      "briefReferences": [
+        {
+          "recordId": "HH-05"
+        }
+      ],
+      "sourceIds": [
+        "legislation-portal"
+      ],
+      "notes": "Taxe și avize demonstrative. Lista reală se stabilește după certificatul de urbanism."
+    },
+    {
+      "id": "utility-connections",
+      "label": "Branșamente electric, apă și canalizare",
+      "groupId": "construction-connections",
+      "milestoneId": "la-rosu",
+      "sortOrder": 7,
+      "costScope": "core",
       "costType": "work",
       "paymentMode": "partial-progress",
       "contingencyEligible": true,
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 120000, "highCents": 150000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 350000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-20"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "SITE-07"
+        }
+      ],
+      "sourceIds": [
+        "anre-connection-tariffs"
+      ],
+      "notes": "Alocație demonstrativă. Disponibilitatea și costul real se stabilesc cu operatorii locali."
+    },
+    {
+      "id": "foundation-concrete",
+      "label": "Fundații și placă pe sol",
+      "groupId": "construction-structure",
+      "milestoneId": "la-rosu",
+      "sortOrder": 8,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 1400000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-25"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-05"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Alocație demonstrativă pentru beton, armătură și hidroizolație de fundație."
+    },
+    {
+      "id": "structural-frame",
+      "label": "Cadru din beton armat",
+      "groupId": "construction-structure",
+      "milestoneId": "la-rosu",
+      "sortOrder": 9,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 160,
+        "quantityBasis": "built-area",
+        "unit": "m²",
+        "rates": {
+          "baseCents": 25000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-25"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-05"
+        },
+        {
+          "recordId": "LAY-07"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Stâlpi, grinzi și planșee, beton C25/30 conceptual. Cantitate bazată pe aria construită."
+    },
+    {
+      "id": "masonry-exterior",
+      "label": "Zidărie ceramică",
+      "groupId": "construction-structure",
+      "milestoneId": "la-rosu",
+      "sortOrder": 10,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 1500000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-25"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-04"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Zidărie neportantă din cărămidă ceramică pentru pereții exteriori și principali."
+    },
+    {
+      "id": "construction-labour",
+      "label": "Manoperă la roșu",
+      "groupId": "construction-structure",
+      "beneficiaryId": "antreprenor-general-exemplu",
+      "milestoneId": "la-rosu",
+      "sortOrder": 11,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 2200000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-28"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-03"
+        },
+        {
+          "recordId": "LAY-06"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+      "notes": "Pachet de manoperă demonstrativ pentru faza la roșu, cu un antreprenor general fictiv."
+    },
+    {
+      "id": "roof-slab",
+      "label": "Planșeu terasă și atic",
+      "groupId": "construction-roof",
+      "milestoneId": "la-rosu",
+      "sortOrder": 12,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 800000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-28"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-06"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Planșeu de acoperiș cu pante conceptuale mici și atic perimetral."
+    },
+    {
+      "id": "roof-covering",
+      "label": "Termoizolație și membrană acoperiș",
+      "groupId": "construction-roof",
+      "milestoneId": "la-rosu",
+      "sortOrder": 13,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 900000
+        },
+        "fixed": false,
+        "pricedOn": "2026-10-28"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-06"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Acoperiș cald plat cu membrană, în spatele aticului."
+    },
+    {
+      "id": "windows-performance",
+      "label": "Ferestre cu performanță termică",
+      "groupId": "rough-windows-doors",
+      "milestoneId": "la-gri",
+      "sortOrder": 14,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 1450000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-02"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-09"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Alocație demonstrativă pentru tâmplărie cu geam triplu. Numărul și dimensiunile golurilor se stabilesc în proiect."
+    },
+    {
+      "id": "external-doors",
+      "label": "Ușă de intrare și ușă de terasă",
+      "groupId": "rough-windows-doors",
+      "milestoneId": "la-gri",
+      "sortOrder": 15,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 320000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-02"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-09"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Ușa principală de intrare și ușa către terasă din living."
+    },
+    {
+      "id": "facade-insulation",
+      "label": "Termosistem fațadă",
+      "groupId": "rough-windows-doors",
+      "milestoneId": "la-gri",
+      "sortOrder": 16,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 190,
+        "unit": "m²",
+        "rates": {
+          "baseCents": 8500
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-02"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-04"
+        },
+        {
+          "recordId": "LAY-06"
+        }
+      ],
+      "sourceIds": [
+        "price-index-ins"
+      ],
+      "notes": "Suprafață aproximativă de fațadă; se recalculează din model după proiectare."
     },
     {
       "id": "electrical-rough-in",
-      "label": "Electrical rough-in allowance",
-      "groupId": "rough",
-      "areaId": "whole-house",
+      "label": "Instalație electrică și date, trasee",
+      "groupId": "rough-electrical",
       "milestoneId": "la-gri",
-      "sortOrder": 0,
+      "sortOrder": 17,
       "costScope": "core",
       "costType": "system",
       "paymentMode": "partial-progress",
@@ -114,24 +800,31 @@
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 80000, "highCents": 100000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 900000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-02"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "TECH-03"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+      "notes": "Trasee, doze, tablou și cablare de date, fără corpuri de iluminat."
     },
     {
-      "id": "plumbing-rough-in",
-      "label": "Plumbing rough-in allowance",
-      "groupId": "rough",
-      "areaId": "bathroom",
+      "id": "ventilation-ductwork",
+      "label": "Trasee de ventilare cu recuperare",
+      "groupId": "rough-hvac",
       "milestoneId": "la-gri",
-      "sortOrder": 1,
+      "sortOrder": 18,
       "costScope": "core",
       "costType": "system",
       "paymentMode": "partial-progress",
@@ -139,52 +832,69 @@
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 90000, "highCents": 110000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 450000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-03"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "EN-05"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+      "notes": "Tubulatură și difuzoare pentru ventilarea mecanică cu recuperare de căldură."
     },
     {
-      "id": "interior-finishes",
-      "label": "Interior finishes allowance",
-      "groupId": "finish",
-      "areaId": "whole-house",
-      "milestoneId": "la-cheie",
-      "sortOrder": 0,
+      "id": "underfloor-heating",
+      "label": "Încălzire în pardoseală",
+      "groupId": "rough-hvac",
+      "milestoneId": "la-gri",
+      "sortOrder": 19,
       "costScope": "core",
-      "costType": "work",
+      "costType": "system",
       "paymentMode": "partial-progress",
       "contingencyEligible": true,
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "quantity-rate",
-        "quantity": 48,
+        "quantity": 160,
         "quantityBasis": "built-area",
         "unit": "m²",
-        "rates": { "baseCents": 1000, "highCents": 1250 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "rates": {
+          "baseCents": 4500
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-03"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "EN-03"
+        },
+        {
+          "recordId": "LAY-06"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional rate for demonstrating area-based estimates; not a price claim."
+      "notes": "Tarif demonstrativ pe m² construit, fără scară și băi separate."
     },
     {
-      "id": "kitchen-fixtures",
-      "label": "Kitchen fixtures allowance",
-      "groupId": "finish",
-      "areaId": "kitchen",
-      "milestoneId": "la-cheie",
-      "sortOrder": 1,
+      "id": "rough-plumbing",
+      "label": "Instalații sanitare și canalizare",
+      "groupId": "rough-sanitary",
+      "milestoneId": "la-gri",
+      "sortOrder": 20,
       "costScope": "core",
       "costType": "system",
       "paymentMode": "partial-progress",
@@ -192,24 +902,31 @@
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 70000, "highCents": 90000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 650000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-03"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "RM-HOUSE-01"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+      "notes": "Trasee de alimentare și scurgere pentru două băi, bucătărie și camera tehnică."
     },
     {
-      "id": "moving-services",
-      "label": "Moving services allowance",
-      "groupId": "move",
-      "areaId": "whole-house",
-      "milestoneId": "la-mutat",
-      "sortOrder": 0,
+      "id": "wet-room-waterproofing",
+      "label": "Hidroizolații băi",
+      "groupId": "rough-sanitary",
+      "milestoneId": "la-gri",
+      "sortOrder": 21,
       "costScope": "core",
       "costType": "work",
       "paymentMode": "one-off",
@@ -217,24 +934,640 @@
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 30000, "highCents": 40000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 120000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-03"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "RM-BATH-01"
+        },
+        {
+          "recordId": "RM-UBATH-01"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
+      "notes": "Hidroizolație sub gresie pentru ambele băi."
     },
     {
-      "id": "starter-furniture",
-      "label": "Starter furniture allowance",
-      "groupId": "move",
-      "areaId": "living-room",
+      "id": "internal-plaster",
+      "label": "Tencuieli interioare",
+      "groupId": "rough-interior",
+      "milestoneId": "la-gri",
+      "sortOrder": 22,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 750000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-04"
+      },
+      "briefReferences": [
+        {
+          "recordId": "STY-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Tencuieli pe toți pereții interiori, pregătite pentru zugrăveală."
+    },
+    {
+      "id": "floor-screeds",
+      "label": "Șape",
+      "groupId": "rough-interior",
+      "milestoneId": "la-gri",
+      "sortOrder": 23,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 160,
+        "quantityBasis": "built-area",
+        "unit": "m²",
+        "rates": {
+          "baseCents": 3000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-04"
+      },
+      "briefReferences": [
+        {
+          "recordId": "LAY-06"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Șape la ambele niveluri."
+    },
+    {
+      "id": "heat-pump-system",
+      "label": "Pompă de căldură și boiler ACM",
+      "groupId": "finish-energy",
+      "milestoneId": "la-cheie",
+      "sortOrder": 24,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 1150000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-05"
+      },
+      "briefReferences": [
+        {
+          "recordId": "EN-03"
+        },
+        {
+          "recordId": "EN-04"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Unitate interioară, boiler de apă caldă și punere în funcțiune de bază."
+    },
+    {
+      "id": "hrv-unit",
+      "label": "Centrală de ventilare MVHR",
+      "groupId": "finish-energy",
+      "milestoneId": "la-cheie",
+      "sortOrder": 25,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 420000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-05"
+      },
+      "briefReferences": [
+        {
+          "recordId": "EN-05"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Centrală cu recuperare de căldură pentru toată casa."
+    },
+    {
+      "id": "solar-pv",
+      "label": "Panouri fotovoltaice",
+      "groupId": "finish-energy",
+      "milestoneId": "la-cheie",
+      "sortOrder": 26,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 780000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-05"
+      },
+      "briefReferences": [
+        {
+          "recordId": "EN-07"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Sistem fotovoltaic demonstrativ pe acoperișul plat, fără baterie."
+    },
+    {
+      "id": "commissioning-and-tests",
+      "label": "Punere în funcțiune și test de etanșeitate",
+      "groupId": "finish-energy",
+      "milestoneId": "la-cheie",
+      "sortOrder": 27,
+      "costScope": "core",
+      "costType": "professional-fee",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 180000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-05"
+      },
+      "briefReferences": [
+        {
+          "recordId": "SITE-08"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Reglaje, probe și un singur test blower-door. Fără certificare voluntară."
+    },
+    {
+      "id": "bathroom-ground",
+      "label": "Baie parter",
+      "groupId": "finish-bathrooms",
+      "milestoneId": "la-cheie",
+      "sortOrder": 28,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 480000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-06"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-BATH-01"
+        },
+        {
+          "recordId": "STY-04"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Duș, vas WC, lavoar, gresie și faianță."
+    },
+    {
+      "id": "bathroom-upper",
+      "label": "Baie etaj",
+      "groupId": "finish-bathrooms",
+      "milestoneId": "la-cheie",
+      "sortOrder": 29,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 560000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-06"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-UBATH-01"
+        },
+        {
+          "recordId": "STY-04"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Cadă utilizabilă și ca duș, vas WC, lavoar, gresie și faianță."
+    },
+    {
+      "id": "kitchen-cabinetry",
+      "label": "Bucătărie pe comandă",
+      "groupId": "finish-kitchen-storage",
+      "milestoneId": "la-cheie",
+      "sortOrder": 30,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 900000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-06"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-KIT-01"
+        },
+        {
+          "recordId": "LAY-03"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Mobilier liniar plus peninsulă sau insulă. Electrocasnicele sunt articole separate."
+    },
+    {
+      "id": "fixed-wardrobes",
+      "label": "Dulapuri fixe dormitoare",
+      "groupId": "finish-kitchen-storage",
+      "milestoneId": "la-cheie",
+      "sortOrder": 31,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 350000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-06"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-MBED-01"
+        },
+        {
+          "recordId": "RM-CHILD-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Garderobă în dormitorul matrimonial și în camera copilului."
+    },
+    {
+      "id": "floor-finishes",
+      "label": "Parchet stejar și gresie",
+      "groupId": "finish-surfaces",
+      "milestoneId": "la-cheie",
+      "sortOrder": 32,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "quantity-rate",
+        "quantity": 110,
+        "unit": "m²",
+        "rates": {
+          "baseCents": 6500
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-06"
+      },
+      "briefReferences": [
+        {
+          "recordId": "STY-03"
+        },
+        {
+          "recordId": "STY-04"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Parchet stratificat stejar deschis în spațiile uscate; gresia băilor este în pachetele lor."
+    },
+    {
+      "id": "interior-paint",
+      "label": "Zugrăveli și vopsitorii",
+      "groupId": "finish-surfaces",
+      "milestoneId": "la-cheie",
+      "sortOrder": 33,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 360000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-07"
+      },
+      "briefReferences": [
+        {
+          "recordId": "STY-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Culoare caldă de bază pe cameră, cu un perete accent și tavane alb cald."
+    },
+    {
+      "id": "interior-doors",
+      "label": "Uși interioare",
+      "groupId": "finish-surfaces",
+      "milestoneId": "la-cheie",
+      "sortOrder": 34,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 320000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-07"
+      },
+      "briefReferences": [
+        {
+          "recordId": "STY-02"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Uși cu balamaua pe montantul cel mai apropiat de peretele perpendicular, deschise în camera deservită."
+    },
+    {
+      "id": "stair-finish",
+      "label": "Finisaj scară",
+      "groupId": "finish-surfaces",
+      "milestoneId": "la-cheie",
+      "sortOrder": 35,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 240000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-07"
+      },
+      "briefReferences": [
+        {
+          "recordId": "LAY-04"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Trepte și contratrepte închise, balustradă."
+    },
+    {
+      "id": "terrace-paving",
+      "label": "Terasă pavată",
+      "groupId": "finish-site",
+      "milestoneId": "la-cheie",
+      "sortOrder": 36,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 550000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-07"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-03"
+        },
+        {
+          "recordId": "SITE-02"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Terasă descoperită lângă living, cu pavaj exterior."
+    },
+    {
+      "id": "access-and-parking",
+      "label": "Acces auto și loc de parcare",
+      "groupId": "finish-site",
+      "milestoneId": "la-cheie",
+      "sortOrder": 37,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 600000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-08"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-04"
+        },
+        {
+          "recordId": "SITE-07"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Pavaj pentru un loc de parcare descoperit și accesul din stradă."
+    },
+    {
+      "id": "perimeter-fence",
+      "label": "Gard și porți",
+      "groupId": "finish-site",
+      "milestoneId": "la-cheie",
+      "sortOrder": 38,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 950000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-08"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-05"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Gard perimetral, poartă pietonală și poartă auto."
+    },
+    {
+      "id": "asset-sofa",
+      "label": "Canapea existentă",
+      "groupId": "move-furniture",
       "milestoneId": "la-mutat",
-      "sortOrder": 1,
+      "sortOrder": 39,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "owned",
+      "completion": {
+        "complete": true,
+        "completedOn": "2026-09-01"
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 60000
+        },
+        "fixed": true,
+        "pricedOn": "2026-11-08"
+      },
+      "briefReferences": [
+        {
+          "recordId": "AST-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Bun deja deținut, păstrat cu valoare istorică de referință. Nu este o achiziție nouă."
+    },
+    {
+      "id": "dining-table",
+      "label": "Masă și scaune dining",
+      "groupId": "move-furniture",
+      "milestoneId": "la-mutat",
+      "sortOrder": 40,
       "costScope": "movable",
       "costType": "movable-good",
       "paymentMode": "one-off",
@@ -242,75 +1575,955 @@
       "included": true,
       "archived": false,
       "ownership": "planned",
-      "completion": { "complete": false },
+      "completion": {
+        "complete": false
+      },
       "estimate": {
         "kind": "total",
-        "amounts": { "baseCents": 50000, "highCents": 65000 },
-        "fixed": true,
-        "pricedOn": "2030-01-01"
+        "amounts": {
+          "baseCents": 140000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-08"
       },
-      "briefReferences": [],
+      "briefReferences": [
+        {
+          "recordId": "RM-LIV-01"
+        }
+      ],
       "sourceIds": [],
-      "notes": "Fictional placeholder for demonstrating the planner; not a price claim."
-    }
-  ],
-  "sources": [],
-  "instalments": [
-    {
-      "id": "foundation-instalment",
-      "itemId": "foundation",
-      "label": "Foundation demo instalment",
-      "dueOn": "2030-03",
-      "projectedCents": 100000
+      "notes": "Masă pentru 6 persoane și scaune."
     },
     {
-      "id": "wall-framing-instalment",
-      "itemId": "wall-framing",
-      "label": "Wall framing demo instalment",
-      "dueOn": "2030-03",
+      "id": "master-bed",
+      "label": "Pat și saltea matrimonială",
+      "groupId": "move-furniture",
+      "milestoneId": "la-mutat",
+      "sortOrder": 41,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 180000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-08"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-MBED-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Pat 160 × 200 cm cu saltea."
+    },
+    {
+      "id": "child-bed-desk",
+      "label": "Pat și birou pentru copil",
+      "groupId": "move-furniture",
+      "milestoneId": "la-mutat",
+      "sortOrder": 42,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 90000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-08"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-CHILD-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Pat și birou pentru camera copilului."
+    },
+    {
+      "id": "office-desk-sofa",
+      "label": "Birou și canapea extensibilă",
+      "groupId": "move-furniture",
+      "milestoneId": "la-mutat",
+      "sortOrder": 43,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 110000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-OFF-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Birou pentru Adultul A și canapea extensibilă pentru oaspeți."
+    },
+    {
+      "id": "oven-and-hob",
+      "label": "Cuptor și plită",
+      "groupId": "move-appliances",
+      "milestoneId": "la-mutat",
+      "sortOrder": 44,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 130000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-KIT-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Cuptor încorporat și plită cu inducție."
+    },
+    {
+      "id": "dishwasher",
+      "label": "Mașină de spălat vase",
+      "groupId": "move-appliances",
+      "milestoneId": "la-mutat",
+      "sortOrder": 45,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 65000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "brand": "Bosch",
+      "briefReferences": [
+        {
+          "recordId": "RM-KIT-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Mașină încorporată, de 60 cm. Marca este doar un exemplu pentru pictograma de brand."
+    },
+    {
+      "id": "washing-machine",
+      "label": "Mașină de spălat și uscător",
+      "groupId": "move-appliances",
+      "milestoneId": "la-mutat",
+      "sortOrder": 46,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 120000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "RM-TECH-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Mașină de spălat și uscător în camera tehnică și spălătorie."
+    },
+    {
+      "id": "garden-lawn",
+      "label": "Gazon, arbori și arbuști",
+      "groupId": "move-garden",
+      "milestoneId": "la-mutat",
+      "sortOrder": 47,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "partial-progress",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 380000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-01"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Gazon rulat, câțiva arbori și arbuști, pentru o grădină cu întreținere redusă."
+    },
+    {
+      "id": "garden-walkway",
+      "label": "Alee perimetrală",
+      "groupId": "move-garden",
+      "milestoneId": "la-mutat",
+      "sortOrder": 48,
+      "costScope": "core",
+      "costType": "work",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 240000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-02"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Alee îngustă în jurul casei."
+    },
+    {
+      "id": "terrace-furniture",
+      "label": "Mobilier de terasă",
+      "groupId": "extra-furniture",
+      "milestoneId": "extra",
+      "sortOrder": 49,
+      "costScope": "movable",
+      "costType": "movable-good",
+      "paymentMode": "one-off",
+      "contingencyEligible": false,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 180000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "GAR-03"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Masă, scaune și canapea pentru terasa descoperită. Achiziție după mutare."
+    },
+    {
+      "id": "future-battery",
+      "label": "Baterie pentru sistemul fotovoltaic",
+      "groupId": "extra-systems",
+      "milestoneId": "extra",
+      "sortOrder": 50,
+      "costScope": "core",
+      "costType": "system",
+      "paymentMode": "one-off",
+      "contingencyEligible": true,
+      "included": true,
+      "archived": false,
+      "ownership": "planned",
+      "completion": {
+        "complete": false
+      },
+      "estimate": {
+        "kind": "total",
+        "amounts": {
+          "baseCents": 550000
+        },
+        "fixed": false,
+        "pricedOn": "2026-11-09"
+      },
+      "briefReferences": [
+        {
+          "recordId": "EN-12"
+        }
+      ],
+      "sourceIds": [],
+      "notes": "Extindere ulterioară a sistemului fotovoltaic. Luna este doar planificare provizorie."
+    }
+  ],
+  "sources": [
+    {
+      "id": "legislation-portal",
+      "title": "Portal legislativ — Legea 50/1991 și normative conexe",
+      "url": "https://legislatie.just.ro/",
+      "accessedOn": "2026-11-10",
+      "scope": "Portal public pentru textele consolidate ale legislației. Nu publică prețuri; susține doar lista de avize și taxe de verificat pentru autorizare.",
+      "tax": {
+        "status": "not-applicable"
+      },
+      "confidence": "low"
+    },
+    {
+      "id": "price-index-ins",
+      "title": "INS — indici ai prețurilor în construcții",
+      "url": "https://insse.ro/",
+      "accessedOn": "2026-11-10",
+      "scope": "Statistică publică națională a evoluției prețurilor în construcții. Nu conține prețuri unitare pentru această casă; alocațiile din catalog sunt demonstrative.",
+      "tax": {
+        "status": "not-applicable"
+      },
+      "confidence": "low"
+    },
+    {
+      "id": "anre-connection-tariffs",
+      "title": "ANRE — tarife reglementate de racordare",
+      "url": "https://www.anre.ro/",
+      "accessedOn": "2026-11-10",
+      "scope": "Autoritatea de reglementare publică pentru tarifele de racordare la rețelele de energie. Valorile din catalog sunt alocații demonstrative, nu o ofertă.",
+      "tax": {
+        "status": "unknown"
+      },
+      "confidence": "low"
+    }
+  ],
+  "beneficiaries": [
+    {
+      "id": "antreprenor-general-exemplu",
+      "name": "Antreprenor general (exemplu)"
+    }
+  ],
+  "instalments": [
+    {
+      "id": "ins-topographic-survey-1",
+      "itemId": "topographic-survey",
+      "label": "Plată unică",
+      "dueOn": "2027-01",
+      "projectedCents": 50000
+    },
+    {
+      "id": "ins-geotechnical-study-1",
+      "itemId": "geotechnical-study",
+      "label": "Plată unică",
+      "dueOn": "2027-01",
+      "projectedCents": 60000
+    },
+    {
+      "id": "ins-architecture-project-1",
+      "itemId": "architecture-project",
+      "label": "Avans",
+      "dueOn": "2027-01",
       "projectedCents": 120000
     },
     {
-      "id": "electrical-rough-in-instalment",
-      "itemId": "electrical-rough-in",
-      "label": "Electrical demo instalment",
-      "dueOn": "2030-06",
-      "projectedCents": 80000
+      "id": "ins-architecture-project-2",
+      "itemId": "architecture-project",
+      "label": "Etapa intermediară",
+      "dueOn": "2027-03",
+      "projectedCents": 160000
     },
     {
-      "id": "plumbing-rough-in-instalment",
-      "itemId": "plumbing-rough-in",
-      "label": "Plumbing demo instalment",
-      "dueOn": "2030-06",
+      "id": "ins-architecture-project-3",
+      "itemId": "architecture-project",
+      "label": "Finalizare",
+      "dueOn": "2027-05",
+      "projectedCents": 120000
+    },
+    {
+      "id": "ins-structural-engineering-1",
+      "itemId": "structural-engineering",
+      "label": "Avans",
+      "dueOn": "2027-02",
+      "projectedCents": 72000
+    },
+    {
+      "id": "ins-structural-engineering-2",
+      "itemId": "structural-engineering",
+      "label": "Finalizare",
+      "dueOn": "2027-04",
+      "projectedCents": 168000
+    },
+    {
+      "id": "ins-mep-design-1",
+      "itemId": "mep-design",
+      "label": "Avans",
+      "dueOn": "2027-02",
+      "projectedCents": 84000
+    },
+    {
+      "id": "ins-mep-design-2",
+      "itemId": "mep-design",
+      "label": "Finalizare",
+      "dueOn": "2027-04",
+      "projectedCents": 196000
+    },
+    {
+      "id": "ins-permit-and-utility-admin-1",
+      "itemId": "permit-and-utility-admin",
+      "label": "Avans",
+      "dueOn": "2027-03",
+      "projectedCents": 54000
+    },
+    {
+      "id": "ins-permit-and-utility-admin-2",
+      "itemId": "permit-and-utility-admin",
+      "label": "Finalizare",
+      "dueOn": "2027-05",
+      "projectedCents": 126000
+    },
+    {
+      "id": "ins-utility-connections-1",
+      "itemId": "utility-connections",
+      "label": "Avans",
+      "dueOn": "2027-06",
+      "projectedCents": 105000
+    },
+    {
+      "id": "ins-utility-connections-2",
+      "itemId": "utility-connections",
+      "label": "Finalizare",
+      "dueOn": "2027-08",
+      "projectedCents": 245000
+    },
+    {
+      "id": "ins-foundation-concrete-1",
+      "itemId": "foundation-concrete",
+      "label": "Avans",
+      "dueOn": "2027-04",
+      "projectedCents": 420000
+    },
+    {
+      "id": "ins-foundation-concrete-2",
+      "itemId": "foundation-concrete",
+      "label": "Finalizare",
+      "dueOn": "2027-06",
+      "projectedCents": 980000
+    },
+    {
+      "id": "ins-structural-frame-1",
+      "itemId": "structural-frame",
+      "label": "Avans",
+      "dueOn": "2027-06",
+      "projectedCents": 1200000
+    },
+    {
+      "id": "ins-structural-frame-2",
+      "itemId": "structural-frame",
+      "label": "Etapa intermediară",
+      "dueOn": "2027-07",
+      "projectedCents": 1600000
+    },
+    {
+      "id": "ins-structural-frame-3",
+      "itemId": "structural-frame",
+      "label": "Finalizare",
+      "dueOn": "2027-09",
+      "projectedCents": 1200000
+    },
+    {
+      "id": "ins-masonry-exterior-1",
+      "itemId": "masonry-exterior",
+      "label": "Avans",
+      "dueOn": "2027-07",
+      "projectedCents": 450000
+    },
+    {
+      "id": "ins-masonry-exterior-2",
+      "itemId": "masonry-exterior",
+      "label": "Finalizare",
+      "dueOn": "2027-09",
+      "projectedCents": 1050000
+    },
+    {
+      "id": "ins-construction-labour-1",
+      "itemId": "construction-labour",
+      "label": "Avans",
+      "dueOn": "2027-05",
+      "projectedCents": 660000
+    },
+    {
+      "id": "ins-construction-labour-2",
+      "itemId": "construction-labour",
+      "label": "Etapa intermediară",
+      "dueOn": "2027-07",
+      "projectedCents": 880000
+    },
+    {
+      "id": "ins-construction-labour-3",
+      "itemId": "construction-labour",
+      "label": "Finalizare",
+      "dueOn": "2027-09",
+      "projectedCents": 660000
+    },
+    {
+      "id": "ins-roof-slab-1",
+      "itemId": "roof-slab",
+      "label": "Avans",
+      "dueOn": "2027-08",
+      "projectedCents": 240000
+    },
+    {
+      "id": "ins-roof-slab-2",
+      "itemId": "roof-slab",
+      "label": "Finalizare",
+      "dueOn": "2027-09",
+      "projectedCents": 560000
+    },
+    {
+      "id": "ins-roof-covering-1",
+      "itemId": "roof-covering",
+      "label": "Avans",
+      "dueOn": "2027-09",
+      "projectedCents": 270000
+    },
+    {
+      "id": "ins-roof-covering-2",
+      "itemId": "roof-covering",
+      "label": "Finalizare",
+      "dueOn": "2027-11",
+      "projectedCents": 630000
+    },
+    {
+      "id": "ins-windows-performance-1",
+      "itemId": "windows-performance",
+      "label": "Avans",
+      "dueOn": "2027-10",
+      "projectedCents": 435000
+    },
+    {
+      "id": "ins-windows-performance-2",
+      "itemId": "windows-performance",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 1015000
+    },
+    {
+      "id": "ins-external-doors-1",
+      "itemId": "external-doors",
+      "label": "Plată unică",
+      "dueOn": "2027-11",
+      "projectedCents": 320000
+    },
+    {
+      "id": "ins-facade-insulation-1",
+      "itemId": "facade-insulation",
+      "label": "Avans",
+      "dueOn": "2027-10",
+      "projectedCents": 484500
+    },
+    {
+      "id": "ins-facade-insulation-2",
+      "itemId": "facade-insulation",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 1130500
+    },
+    {
+      "id": "ins-electrical-rough-in-1",
+      "itemId": "electrical-rough-in",
+      "label": "Avans",
+      "dueOn": "2027-10",
+      "projectedCents": 270000
+    },
+    {
+      "id": "ins-electrical-rough-in-2",
+      "itemId": "electrical-rough-in",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 630000
+    },
+    {
+      "id": "ins-ventilation-ductwork-1",
+      "itemId": "ventilation-ductwork",
+      "label": "Avans",
+      "dueOn": "2027-10",
+      "projectedCents": 135000
+    },
+    {
+      "id": "ins-ventilation-ductwork-2",
+      "itemId": "ventilation-ductwork",
+      "label": "Finalizare",
+      "dueOn": "2027-11",
+      "projectedCents": 315000
+    },
+    {
+      "id": "ins-underfloor-heating-1",
+      "itemId": "underfloor-heating",
+      "label": "Avans",
+      "dueOn": "2027-11",
+      "projectedCents": 216000
+    },
+    {
+      "id": "ins-underfloor-heating-2",
+      "itemId": "underfloor-heating",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 504000
+    },
+    {
+      "id": "ins-rough-plumbing-1",
+      "itemId": "rough-plumbing",
+      "label": "Avans",
+      "dueOn": "2027-10",
+      "projectedCents": 195000
+    },
+    {
+      "id": "ins-rough-plumbing-2",
+      "itemId": "rough-plumbing",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 455000
+    },
+    {
+      "id": "ins-wet-room-waterproofing-1",
+      "itemId": "wet-room-waterproofing",
+      "label": "Plată unică",
+      "dueOn": "2027-12",
+      "projectedCents": 120000
+    },
+    {
+      "id": "ins-internal-plaster-1",
+      "itemId": "internal-plaster",
+      "label": "Avans",
+      "dueOn": "2027-11",
+      "projectedCents": 225000
+    },
+    {
+      "id": "ins-internal-plaster-2",
+      "itemId": "internal-plaster",
+      "label": "Finalizare",
+      "dueOn": "2027-12",
+      "projectedCents": 525000
+    },
+    {
+      "id": "ins-floor-screeds-1",
+      "itemId": "floor-screeds",
+      "label": "Plată unică",
+      "dueOn": "2027-12",
+      "projectedCents": 480000
+    },
+    {
+      "id": "ins-heat-pump-system-1",
+      "itemId": "heat-pump-system",
+      "label": "Avans",
+      "dueOn": "2028-03",
+      "projectedCents": 345000
+    },
+    {
+      "id": "ins-heat-pump-system-2",
+      "itemId": "heat-pump-system",
+      "label": "Finalizare",
+      "dueOn": "2028-06",
+      "projectedCents": 805000
+    },
+    {
+      "id": "ins-hrv-unit-1",
+      "itemId": "hrv-unit",
+      "label": "Plată unică",
+      "dueOn": "2028-04",
+      "projectedCents": 420000
+    },
+    {
+      "id": "ins-solar-pv-1",
+      "itemId": "solar-pv",
+      "label": "Avans",
+      "dueOn": "2028-05",
+      "projectedCents": 234000
+    },
+    {
+      "id": "ins-solar-pv-2",
+      "itemId": "solar-pv",
+      "label": "Finalizare",
+      "dueOn": "2028-07",
+      "projectedCents": 546000
+    },
+    {
+      "id": "ins-commissioning-and-tests-1",
+      "itemId": "commissioning-and-tests",
+      "label": "Plată unică",
+      "dueOn": "2028-08",
+      "projectedCents": 180000
+    },
+    {
+      "id": "ins-bathroom-ground-1",
+      "itemId": "bathroom-ground",
+      "label": "Avans",
+      "dueOn": "2028-05",
+      "projectedCents": 144000
+    },
+    {
+      "id": "ins-bathroom-ground-2",
+      "itemId": "bathroom-ground",
+      "label": "Finalizare",
+      "dueOn": "2028-07",
+      "projectedCents": 336000
+    },
+    {
+      "id": "ins-bathroom-upper-1",
+      "itemId": "bathroom-upper",
+      "label": "Avans",
+      "dueOn": "2028-05",
+      "projectedCents": 168000
+    },
+    {
+      "id": "ins-bathroom-upper-2",
+      "itemId": "bathroom-upper",
+      "label": "Finalizare",
+      "dueOn": "2028-07",
+      "projectedCents": 392000
+    },
+    {
+      "id": "ins-kitchen-cabinetry-1",
+      "itemId": "kitchen-cabinetry",
+      "label": "Avans",
+      "dueOn": "2028-06",
+      "projectedCents": 270000
+    },
+    {
+      "id": "ins-kitchen-cabinetry-2",
+      "itemId": "kitchen-cabinetry",
+      "label": "Finalizare",
+      "dueOn": "2028-08",
+      "projectedCents": 630000
+    },
+    {
+      "id": "ins-fixed-wardrobes-1",
+      "itemId": "fixed-wardrobes",
+      "label": "Plată unică",
+      "dueOn": "2028-07",
+      "projectedCents": 350000
+    },
+    {
+      "id": "ins-floor-finishes-1",
+      "itemId": "floor-finishes",
+      "label": "Avans",
+      "dueOn": "2028-07",
+      "projectedCents": 214500
+    },
+    {
+      "id": "ins-floor-finishes-2",
+      "itemId": "floor-finishes",
+      "label": "Finalizare",
+      "dueOn": "2028-08",
+      "projectedCents": 500500
+    },
+    {
+      "id": "ins-interior-paint-1",
+      "itemId": "interior-paint",
+      "label": "Plată unică",
+      "dueOn": "2028-08",
+      "projectedCents": 360000
+    },
+    {
+      "id": "ins-interior-doors-1",
+      "itemId": "interior-doors",
+      "label": "Plată unică",
+      "dueOn": "2028-08",
+      "projectedCents": 320000
+    },
+    {
+      "id": "ins-stair-finish-1",
+      "itemId": "stair-finish",
+      "label": "Avans",
+      "dueOn": "2028-08",
+      "projectedCents": 72000
+    },
+    {
+      "id": "ins-stair-finish-2",
+      "itemId": "stair-finish",
+      "label": "Finalizare",
+      "dueOn": "2028-09",
+      "projectedCents": 168000
+    },
+    {
+      "id": "ins-terrace-paving-1",
+      "itemId": "terrace-paving",
+      "label": "Avans",
+      "dueOn": "2028-07",
+      "projectedCents": 165000
+    },
+    {
+      "id": "ins-terrace-paving-2",
+      "itemId": "terrace-paving",
+      "label": "Finalizare",
+      "dueOn": "2028-09",
+      "projectedCents": 385000
+    },
+    {
+      "id": "ins-access-and-parking-1",
+      "itemId": "access-and-parking",
+      "label": "Avans",
+      "dueOn": "2028-06",
+      "projectedCents": 180000
+    },
+    {
+      "id": "ins-access-and-parking-2",
+      "itemId": "access-and-parking",
+      "label": "Finalizare",
+      "dueOn": "2028-08",
+      "projectedCents": 420000
+    },
+    {
+      "id": "ins-perimeter-fence-1",
+      "itemId": "perimeter-fence",
+      "label": "Avans",
+      "dueOn": "2028-06",
+      "projectedCents": 285000
+    },
+    {
+      "id": "ins-perimeter-fence-2",
+      "itemId": "perimeter-fence",
+      "label": "Finalizare",
+      "dueOn": "2028-09",
+      "projectedCents": 665000
+    },
+    {
+      "id": "ins-dining-table-1",
+      "itemId": "dining-table",
+      "label": "Plată unică",
+      "dueOn": "2029-04",
+      "projectedCents": 140000
+    },
+    {
+      "id": "ins-master-bed-1",
+      "itemId": "master-bed",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
+      "projectedCents": 180000
+    },
+    {
+      "id": "ins-child-bed-desk-1",
+      "itemId": "child-bed-desk",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
       "projectedCents": 90000
     },
     {
-      "id": "interior-finishes-instalment",
-      "itemId": "interior-finishes",
-      "label": "Interior finishes demo instalment",
-      "dueOn": "2030-09",
-      "projectedCents": 48000
+      "id": "ins-office-desk-sofa-1",
+      "itemId": "office-desk-sofa",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
+      "projectedCents": 110000
     },
     {
-      "id": "kitchen-fixtures-instalment",
-      "itemId": "kitchen-fixtures",
-      "label": "Kitchen fixtures demo instalment",
-      "dueOn": "2030-09",
-      "projectedCents": 70000
+      "id": "ins-oven-and-hob-1",
+      "itemId": "oven-and-hob",
+      "label": "Plată unică",
+      "dueOn": "2029-04",
+      "projectedCents": 130000
     },
     {
-      "id": "moving-services-instalment",
-      "itemId": "moving-services",
-      "label": "Moving services demo instalment",
-      "dueOn": "2030-10",
-      "projectedCents": 30000
+      "id": "ins-dishwasher-1",
+      "itemId": "dishwasher",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
+      "projectedCents": 65000
     },
     {
-      "id": "starter-furniture-instalment",
-      "itemId": "starter-furniture",
-      "label": "Starter furniture demo instalment",
-      "dueOn": "2030-10",
-      "projectedCents": 50000
+      "id": "ins-washing-machine-1",
+      "itemId": "washing-machine",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
+      "projectedCents": 120000
+    },
+    {
+      "id": "ins-garden-lawn-1",
+      "itemId": "garden-lawn",
+      "label": "Avans",
+      "dueOn": "2029-04",
+      "projectedCents": 114000
+    },
+    {
+      "id": "ins-garden-lawn-2",
+      "itemId": "garden-lawn",
+      "label": "Finalizare",
+      "dueOn": "2029-06",
+      "projectedCents": 266000
+    },
+    {
+      "id": "ins-garden-walkway-1",
+      "itemId": "garden-walkway",
+      "label": "Plată unică",
+      "dueOn": "2029-05",
+      "projectedCents": 240000
+    },
+    {
+      "id": "ins-terrace-furniture-1",
+      "itemId": "terrace-furniture",
+      "label": "Plată unică",
+      "dueOn": "2030-05",
+      "projectedCents": 180000
+    },
+    {
+      "id": "ins-future-battery-1",
+      "itemId": "future-battery",
+      "label": "Plată unică",
+      "dueOn": "2030-06",
+      "projectedCents": 550000
     }
   ],
   "payments": []

@@ -4,7 +4,12 @@ import { dirname } from "node:path";
 
 import type { z } from "zod";
 
-import { exchangeRateSchema, type ExchangeRate } from "../api/contracts.js";
+import {
+  BNR_EXCHANGE_RATE_PAGE_URL,
+  exchangeRateSchema,
+  type ExchangeRate,
+} from "../api/contracts.js";
+import { isCalendarDate } from "../domain/schema.js";
 
 const cachedRateSchema = exchangeRateSchema.omit({ stale: true });
 type CachedRate = z.infer<typeof cachedRateSchema>;
@@ -31,16 +36,9 @@ const RETRY_DELAY_MS = 15 * 60 * 1000;
 const FETCH_TIMEOUT_MS = 10_000;
 
 const BNR_XML_URL = "https://curs.bnr.ro/nbrfxrates.xml";
-const BNR_PAGE_URL = "https://www.bnr.ro/541-cursul-de-schimb";
 const ECB_XML_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 const ECB_PAGE_URL =
   "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html";
-
-function isIsoCalendarDate(value: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const parsed = new Date(`${value}T00:00:00Z`);
-  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-}
 
 function parsePositiveRate(value: string | undefined): number | undefined {
   if (!value) return undefined;
@@ -94,7 +92,8 @@ export class ExchangeRateCache {
   private async refresh(cached: CachedRate | undefined): Promise<ExchangeRate> {
     const fetched = (await this.fetchFromBnr()) ?? (await this.fetchFromEcb());
     if (fetched) {
-      await this.writeCache(fetched);
+      // A failed cache write must not discard a freshly fetched rate.
+      await this.writeCache(fetched).catch(() => undefined);
       return { ...fetched, stale: false };
     }
     this.retryNotBefore = this.now().getTime() + RETRY_DELAY_MS;
@@ -109,7 +108,7 @@ export class ExchangeRateCache {
     if (!xml) return undefined;
     const dateMatch = /<Cube date=["'](\d{4}-\d{2}-\d{2})["']/.exec(xml);
     const rateMatch = /<Rate currency=["']EUR["']>([\d.]+)<\/Rate>/.exec(xml);
-    return this.buildSnapshot(dateMatch?.[1], rateMatch?.[1], "BNR", BNR_PAGE_URL);
+    return this.buildCachedRate(dateMatch?.[1], rateMatch?.[1], "BNR", BNR_EXCHANGE_RATE_PAGE_URL);
   }
 
   private async fetchFromEcb(): Promise<CachedRate | undefined> {
@@ -117,17 +116,17 @@ export class ExchangeRateCache {
     if (!xml) return undefined;
     const dateMatch = /<Cube time=["'](\d{4}-\d{2}-\d{2})["']/.exec(xml);
     const rateMatch = /<Cube currency=["']RON["'] rate=["']([\d.]+)["']/.exec(xml);
-    return this.buildSnapshot(dateMatch?.[1], rateMatch?.[1], "ECB", ECB_PAGE_URL);
+    return this.buildCachedRate(dateMatch?.[1], rateMatch?.[1], "ECB", ECB_PAGE_URL);
   }
 
-  private buildSnapshot(
+  private buildCachedRate(
     rateDate: string | undefined,
     rateValue: string | undefined,
     source: ExchangeRate["source"],
     sourceUrl: string,
   ): CachedRate | undefined {
     const ronPerEur = parsePositiveRate(rateValue);
-    if (!rateDate || !isIsoCalendarDate(rateDate) || ronPerEur === undefined) return undefined;
+    if (!rateDate || !isCalendarDate(rateDate) || ronPerEur === undefined) return undefined;
     return { ronPerEur, rateDate, source, sourceUrl, fetchedAt: this.now().toISOString() };
   }
 

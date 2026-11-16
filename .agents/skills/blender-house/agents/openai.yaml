@@ -1,7 +1,0 @@
-interface:
-  display_name: "Blender House"
-  short_description: "Maintain a guarded canonical Blender house model"
-  default_prompt: "Use $blender-house to inspect or maintain the repository's canonical Blender model with save, reopen, and verification evidence."
-
-policy:
-  allow_implicit_invocation: true

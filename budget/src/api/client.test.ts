@@ -1,22 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { makeDocument } from "../domain/test-fixtures.js";
-import { BudgetApiError, BudgetConflictError, loadBudget, saveBudget } from "./client.js";
+import { jsonResponse, makeSnapshot, TEST_REVISION as revision } from "../test/api.js";
+import { makeDocument } from "../test/builders.js";
+import { BudgetApiError, loadBudget } from "./client.js";
 
-const revision = "a".repeat(64);
-const nextRevision = "b".repeat(64);
-
-function snapshot(revisionValue = revision, name = "Demo House") {
-  return {
-    document: makeDocument({
-      project: { ...makeDocument().project, name },
-    }),
-    revision: revisionValue,
-  };
-}
-
-function jsonResponse(body: unknown, status = 200): Response {
-  return Response.json(body, { status });
+function snapshot() {
+  return makeSnapshot(makeDocument());
 }
 
 function fetcher(response: Response): typeof fetch {
@@ -30,21 +19,6 @@ describe("clientul API pentru buget", () => {
     await expect(loadBudget(request)).resolves.toEqual(snapshot());
     expect(request).toHaveBeenCalledWith("/api/budget", {
       headers: { Accept: "application/json" },
-    });
-  });
-
-  it("trimite documentul și revizia așteptată prin contractul PUT", async () => {
-    const document = makeDocument();
-    const request = fetcher(jsonResponse(snapshot(nextRevision)));
-
-    await expect(saveBudget(revision, document, request)).resolves.toEqual(snapshot(nextRevision));
-    expect(request).toHaveBeenCalledWith("/api/budget", {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ expectedRevision: revision, document }),
     });
   });
 
@@ -75,37 +49,25 @@ describe("clientul API pentru buget", () => {
     });
   });
 
-  it("păstrează erorile API care nu sunt conflicte", async () => {
+  it("păstrează codul, mesajul și detaliile erorilor API", async () => {
     const request = fetcher(
       jsonResponse(
-        { error: { code: "WRITE_FAILED", message: "Discul nu poate fi scris.", details: ["EIO"] } },
+        {
+          error: {
+            code: "DATA_FILE_IO_ERROR",
+            message: "Discul nu poate fi citit.",
+            details: ["EIO"],
+          },
+        },
         500,
       ),
     );
 
-    await expect(saveBudget(revision, makeDocument(), request)).rejects.toMatchObject({
+    await expect(loadBudget(request)).rejects.toMatchObject({
       status: 500,
-      code: "WRITE_FAILED",
+      code: "DATA_FILE_IO_ERROR",
       details: ["EIO"],
     } satisfies Partial<BudgetApiError>);
-  });
-
-  it("decodează ultimul instantaneu dintr-un conflict de revizie", async () => {
-    const latest = snapshot(nextRevision, "Versiunea de pe disc");
-    const request = fetcher(
-      jsonResponse(
-        {
-          error: { code: "REVISION_CONFLICT", message: "Documentul s-a schimbat." },
-          latest,
-        },
-        409,
-      ),
-    );
-
-    await expect(saveBudget(revision, makeDocument(), request)).rejects.toMatchObject({
-      name: BudgetConflictError.name,
-      latest,
-    });
   });
 
   it("lasă vizibile eșecurile de transport", async () => {

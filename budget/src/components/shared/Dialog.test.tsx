@@ -118,11 +118,11 @@ describe("Dialog", () => {
     const trigger = screen.getByRole("button", { name: "Declanșator" });
     await user.click(trigger);
     await waitFor(() => expect(screen.getByRole("button", { name: "Închide" })).toHaveFocus());
-    vi.spyOn(HTMLElement.prototype, "getAnimations").mockImplementation(
-      function (this: HTMLElement) {
-        return this.getAttribute("role") === "dialog" ? [animation as Animation] : [];
-      },
-    );
+    vi.spyOn(HTMLElement.prototype, "getAnimations").mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      return this.getAttribute("role") === "dialog" ? [animation as Animation] : [];
+    });
 
     fireEvent.click(screen.getByRole("button", { name: "Închide controlat" }));
 

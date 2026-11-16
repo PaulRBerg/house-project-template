@@ -1,4 +1,4 @@
-import { BrickWall, Hammer, KeyRound, PackageOpen } from "lucide-react";
+import { BrickWall, CalendarPlus, Hammer, KeyRound, PackageOpen } from "lucide-react";
 
 import type { Milestone } from "../../domain/index.js";
 import { cn } from "./styles.js";
@@ -8,6 +8,7 @@ const STAGE_ICONS = {
   "la-gri": Hammer,
   "la-cheie": KeyRound,
   "la-mutat": PackageOpen,
+  extra: CalendarPlus,
 };
 
 export function StageIcon({

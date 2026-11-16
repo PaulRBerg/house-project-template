@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -e
+
+staged=$(git diff --cached --name-only)
+if [ -z "$staged" ]; then
+  exit 0
+fi
+
+# lint-staged cannot safely isolate partially staged files without temporarily
+# rewriting the shared worktree. Require whole-file staging instead.
+# Staged paths that also have unstaged changes; grep reads one fixed pattern per line.
+partially_staged=$(git diff --name-only | grep -Fx -- "$staged" || true)
+if [ -n "$partially_staged" ]; then
+  printf 'error: partially staged files are unsafe in the shared worktree:\n%s\n' "$partially_staged" >&2
+  exit 1
+fi
+
+na lint-staged --config .lintstagedrc.mjs --concurrent false --quiet --no-stash --no-hide-partially-staged

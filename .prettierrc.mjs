@@ -1,7 +1,10 @@
+import baseConfig from "@prb/devkit/prettier";
+
 const config = {
+  ...baseConfig,
   printWidth: 100,
-  trailingComma: "all",
   overrides: [
+    ...(baseConfig.overrides ?? []),
     {
       files: "*.md",
       options: {

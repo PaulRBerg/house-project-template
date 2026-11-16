@@ -1,94 +1,62 @@
 set default-list := true
 set dotenv-load := false
-set unstable := true
-set lists := true
+set fallback := true
+set positional-arguments
 
-repo_root := justfile_directory() / ".."
-supplemental_ox_paths := [
-    ".prettierrc.mjs",
-    ".vscode/settings.json",
-    "oxfmt.config.ts",
-    "oxlint.config.ts",
-    "package.json",
-]
+import "../node_modules/@prb/devkit/just/settings.just"
 
-# Check supplemental workspace scripts and configuration with Oxlint and Oxfmt.
-# The budget app is covered by `just check`; pass `budget` explicitly for a standalone Ox check.
-[group("checks")]
-[positional-arguments]
-@ox-check +paths=supplemental_ox_paths:
-    cd "{{repo_root}}" && ./node_modules/.bin/oxlint --format agent --config oxlint.config.ts --no-error-on-unmatched-pattern "$@"
-    cd "{{repo_root}}" && ./node_modules/.bin/oxfmt --check --config oxfmt.config.ts --no-error-on-unmatched-pattern "$@"
-alias oc := ox-check
+oxfmt := "na oxfmt --config ../oxfmt.config.ts"
+prose_files := '"**/*.{md,yml,yaml}"'
 
-# Apply Oxlint's safe fixes and formatting to supplemental workspace scripts and configuration.
-[group("checks")]
-[positional-arguments]
-@ox-write +paths=supplemental_ox_paths:
-    cd "{{repo_root}}" && ./node_modules/.bin/oxlint --fix --format agent --config oxlint.config.ts --no-error-on-unmatched-pattern "$@"
-    cd "{{repo_root}}" && ./node_modules/.bin/oxfmt --write --config oxfmt.config.ts --no-error-on-unmatched-pattern "$@"
-alias ow := ox-write
-
-default:
-    @just --list
-
-[positional-arguments]
 @dev *args:
-    ./node_modules/.bin/vite "$@"
+    na vite "$@"
 
-[positional-arguments]
 @preview *args:
-    ./node_modules/.bin/vite preview "$@"
+    na vite preview "$@"
 
-@format:
-    cd "{{repo_root}}" && ./node_modules/.bin/oxfmt --config oxfmt.config.ts --write budget
-    ./node_modules/.bin/prettier --write "**/*.{md,yml,yaml}"
+@format: format-prose
+    {{ oxfmt }} --write .
 
 @format-prose:
-    ./node_modules/.bin/prettier --write "**/*.{md,yml,yaml}"
+    na prettier --write {{ prose_files }}
 
-@format-check:
-    cd "{{repo_root}}" && ./node_modules/.bin/oxfmt --config oxfmt.config.ts --check budget
-    ./node_modules/.bin/prettier --check "**/*.{md,yml,yaml}"
+@format-check: format-prose-check
+    {{ oxfmt }} --check .
 
 @format-prose-check:
-    ./node_modules/.bin/prettier --check "**/*.{md,yml,yaml}"
+    na prettier --check {{ prose_files }}
 
-@lint:
-    cd "{{repo_root}}" && ./node_modules/.bin/oxlint --format agent --config oxlint.config.ts budget
-    just lint-eslint
+@lint: lint-eslint
+    na oxlint --format agent --config ../oxlint.config.ts .
 
-# Check Tailwind classes and React Hooks; pass --fix to apply safe ESLint fixes.
-[positional-arguments]
+# Check Tailwind classes and React Hooks in `src`; pass paths to narrow it or --fix to apply safe ESLint fixes.
 @lint-eslint *args:
-    ./node_modules/.bin/eslint "src/**/*.{ts,tsx}" "$@"
-alias lint-hooks := lint-eslint
+    na eslint "$@"
 
 @typecheck:
-    ./node_modules/.bin/tsc --noEmit
+    na tsc --noEmit
 
-[positional-arguments]
 @test *args:
-    ./node_modules/.bin/vitest run "$@"
+    na vitest run "$@"
 
-[positional-arguments]
+# Run the full suite with token-efficient agent output; accepts file filters and Vitest flags.
+@test-agent *args:
+    na vitest run --reporter=agent "$@"
+
 @test-node *args:
-    ./node_modules/.bin/vitest run --project node "$@"
+    na vitest run --project node "$@"
 
-[positional-arguments]
 @test-ui *args:
-    ./node_modules/.bin/vitest run --project ui "$@"
+    na vitest run --project ui "$@"
 
-[positional-arguments]
 @test-watch *args:
-    ./node_modules/.bin/vitest "$@"
+    na vitest "$@"
 
 @build:
-    ./node_modules/.bin/vite build
+    na vite build
 
-@check: format-check lint typecheck test build
+@check: typecheck test
 
-# Exercise the MCP task guard, namespace refresh and render receipt state without Blender.
-[group("model")]
-@blender-workflow-tests:
-    cd "{{repo_root}}" && uv run python model/scripts/test_blender_workflow.py
+# Edit one cost item in `data/project.json` with schema validation and an atomic write; run with no arguments for usage.
+@cost *args:
+    bun src/server/cost-cli.ts "$@"

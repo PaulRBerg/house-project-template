@@ -1,0 +1,1883 @@
+{
+  "schema_version": 1,
+  "materials": [
+    {
+      "diffuse_color": [0.76, 0.71, 0.61, 1.0],
+      "emission": null,
+      "name": "01 · Warm lime plaster.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.76, 0.71, 0.61, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.79, 0.76, 0.68, 1.0],
+      "emission": null,
+      "name": "02 · Chalk painted cabinetry.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.79, 0.76, 0.68, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.65
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.57, 0.4, 0.23, 1.0],
+      "emission": null,
+      "name": "03 · Pale natural oak | fine longitudinal grain.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.57, 0.4, 0.23, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.62
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.65, 0.48, 0.3, 1.0],
+      "emission": null,
+      "name": "04 · Pale wide-board oak.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.65, 0.48, 0.3, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.65
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.66, 0.62, 0.52, 1.0],
+      "emission": null,
+      "name": "05 · Honed warm limestone.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.66, 0.62, 0.52, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.77
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.77, 0.71, 0.59, 1.0],
+      "emission": null,
+      "name": "06 · Oatmeal woven linen.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.77, 0.71, 0.59, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.92
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.86, 0.82, 0.71, 1.0],
+      "emission": null,
+      "name": "07 · Ivory boucle.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.86, 0.82, 0.71, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.95
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.23, 0.28, 0.17, 1.0],
+      "emission": null,
+      "name": "08 · Soft olive wool.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.23, 0.28, 0.17, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.91
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.39, 0.23, 0.17, 1.0],
+      "emission": null,
+      "name": "09 · Muted clay.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.39, 0.23, 0.17, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.9
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.4, 0.48, 0.35, 1.0],
+      "emission": null,
+      "name": "10 · Sage mineral paint.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.4, 0.48, 0.35, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.046, 0.052, 0.043, 1.0],
+      "emission": null,
+      "name": "11 · Bronze charcoal metal.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.046, 0.052, 0.043, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.7
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.48
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.012, 0.016, 0.018, 1.0],
+      "emission": null,
+      "name": "12 · Soft black.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.012, 0.016, 0.018, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.48
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.83, 0.93, 0.94, 1.0],
+      "emission": null,
+      "name": "13 · Clear glazing.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.83, 0.93, 0.94, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.45
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.06
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 1.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.85, 0.89, 0.91, 1.0],
+      "emission": null,
+      "name": "14 · Mirror.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.85, 0.89, 0.91, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 1.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.025
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.85, 0.85, 0.8, 1.0],
+      "emission": null,
+      "name": "15 · Ceramic warm white.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.85, 0.85, 0.8, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.22
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.043, 0.05, 0.045, 1.0],
+      "emission": null,
+      "name": "16 · Black rubber.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.043, 0.05, 0.045, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.95
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.075, 0.046, 0.022, 1.0],
+      "emission": null,
+      "name": "17 · Planting soil.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.075, 0.046, 0.022, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 1.0
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.1, 0.15, 0.035, 1.0],
+      "emission": null,
+      "name": "18 · Meadow lawn.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.18, 0.25, 0.072, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.98
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.18, 0.125, 0.075, 1.0],
+      "emission": null,
+      "name": "19 · Tree bark.002",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.18, 0.125, 0.075, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.95
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.12, 0.21, 0.035, 1.0],
+      "emission": null,
+      "name": "20 · Foliage 0.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.066, 0.1155, 0.01925, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.22, 0.32, 0.061, 1.0],
+      "emission": null,
+      "name": "20 · Foliage 1.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.121, 0.176, 0.03355, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.32, 0.38, 0.08, 1.0],
+      "emission": null,
+      "name": "20 · Foliage 2.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.176, 0.209, 0.044, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.09, 0.17, 0.04, 1.0],
+      "emission": null,
+      "name": "20 · Foliage 3.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.0495, 0.0935, 0.022, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.26, 0.31, 0.13, 1.0],
+      "emission": null,
+      "name": "20 · Foliage 4.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.143, 0.1705, 0.0715, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.013, 0.029, 0.042, 1.0],
+      "emission": null,
+      "name": "21 · Graphite photovoltaic glass.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.013, 0.029, 0.042, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.55
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.34
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.95, 0.7, 0.36, 1.0],
+      "emission": null,
+      "name": "23 · Warm concealed lighting.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.95, 0.7, 0.36, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.4
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.012, 0.016, 0.019, 1.0],
+      "emission": null,
+      "name": "Atelier | matte graphite",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.012, 0.016, 0.019, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.55
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.075, 0.073, 0.065, 1.0],
+      "emission": null,
+      "name": "Atelier | split stone 0",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.075, 0.073, 0.065, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.082, 0.08, 0.071, 1.0],
+      "emission": null,
+      "name": "Atelier | split stone 1",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.082, 0.08, 0.071, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.089, 0.087, 0.077, 1.0],
+      "emission": null,
+      "name": "Atelier | split stone 2",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.089, 0.087, 0.077, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.096, 0.094, 0.083, 1.0],
+      "emission": null,
+      "name": "Atelier | split stone 3",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.096, 0.094, 0.083, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.103, 0.101, 0.089, 1.0],
+      "emission": null,
+      "name": "Atelier | split stone 4",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.103, 0.101, 0.089, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.86
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.95, 0.66, 0.32, 1.0],
+      "emission": null,
+      "name": "Atelier | warm light",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.95, 0.66, 0.32, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.4
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.34, 0.19, 0.087, 1.0],
+      "emission": null,
+      "name": "Atelier | warm oiled timber",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.34, 0.19, 0.087, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.57
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.055, 0.12, 0.023, 1.0],
+      "emission": null,
+      "name": "Backdrop | foliage 0",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.055, 0.12, 0.023, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.88
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.1, 0.19, 0.035, 1.0],
+      "emission": null,
+      "name": "Backdrop | foliage 1",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.1, 0.19, 0.035, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.88
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.15, 0.235, 0.055, 1.0],
+      "emission": null,
+      "name": "Backdrop | foliage 2",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.15, 0.235, 0.055, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.88
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.075, 0.145, 0.052, 1.0],
+      "emission": null,
+      "name": "Backdrop | foliage 3",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.075, 0.145, 0.052, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.88
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.21, 0.29, 0.08, 1.0],
+      "emission": null,
+      "name": "Backdrop | foliage 4",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.21, 0.29, 0.08, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.88
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.055, 0.11, 0.025, 1.0],
+      "emission": null,
+      "name": "Backdrop | meadow",
+      "nodes": [
+        "ShaderNodeBsdfPrincipled",
+        "ShaderNodeBump",
+        "ShaderNodeOutputMaterial",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeValToRGB",
+        "ShaderNodeVectorMath"
+      ],
+      "principled": {
+        "Base Color": {
+          "linked": true,
+          "value": [0.055, 0.11, 0.025, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.96
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.41, 0.43, 0.35, 1.0],
+      "emission": null,
+      "name": "Book cloth 0.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.41, 0.43, 0.35, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.72, 0.64, 0.51, 1.0],
+      "emission": null,
+      "name": "Book cloth 1.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.72, 0.64, 0.51, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.28, 0.33, 0.32, 1.0],
+      "emission": null,
+      "name": "Book cloth 2.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.28, 0.33, 0.32, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.48, 0.24, 0.13, 1.0],
+      "emission": null,
+      "name": "Book cloth 3.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.48, 0.24, 0.13, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.77, 0.75, 0.61, 1.0],
+      "emission": null,
+      "name": "Book cloth 4.002",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.77, 0.75, 0.61, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.8
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.042977, 0.042977, 0.042977, 1.0],
+      "emission": null,
+      "name": "Frame",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.042977, 0.042977, 0.042977, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.5
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.8, 1.0, 1.0, 0.2],
+      "emission": null,
+      "name": "Glass",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.8, 1.0, 1.0, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.5
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "BLENDED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.184475, 0.184475, 0.184475, 1.0],
+      "emission": null,
+      "name": "Panel",
+      "nodes": ["ShaderNodeBsdfPrincipled", "ShaderNodeOutputMaterial"],
+      "principled": {
+        "Base Color": {
+          "linked": false,
+          "value": [0.184475, 0.184475, 0.184475, 1.0]
+        },
+        "Coat Roughness": {
+          "linked": false,
+          "value": 0.03
+        },
+        "IOR": {
+          "linked": false,
+          "value": 1.5
+        },
+        "Metallic": {
+          "linked": false,
+          "value": 0.0
+        },
+        "Roughness": {
+          "linked": false,
+          "value": 0.5
+        },
+        "Transmission Weight": {
+          "linked": false,
+          "value": 0.0
+        }
+      },
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.8, 0.8, 0.8, 1.0],
+      "emission": {
+        "Color": {
+          "linked": false,
+          "value": [0.008, 0.016, 0.018, 1.0]
+        },
+        "Strength": {
+          "linked": false,
+          "value": 1.0
+        }
+      },
+      "name": "Site / annotation ink",
+      "nodes": ["ShaderNodeEmission", "ShaderNodeOutputMaterial"],
+      "principled": null,
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    },
+    {
+      "diffuse_color": [0.8, 0.8, 0.8, 1.0],
+      "emission": {
+        "Color": {
+          "linked": false,
+          "value": [0.85, 0.85, 0.85, 1.0]
+        },
+        "Strength": {
+          "linked": false,
+          "value": 1.0
+        }
+      },
+      "name": "Site / white annotation ink",
+      "nodes": ["ShaderNodeEmission", "ShaderNodeOutputMaterial"],
+      "principled": null,
+      "surface_render_method": "DITHERED",
+      "use_nodes": true
+    }
+  ],
+  "worlds": [
+    {
+      "background": {
+        "Color": {
+          "linked": true,
+          "value": [0.8, 0.8, 0.8, 1.0]
+        },
+        "Strength": {
+          "linked": false,
+          "value": 0.35
+        }
+      },
+      "color": [0.05, 0.05, 0.05],
+      "name": "Parcel / soft September sky",
+      "nodes": [
+        "ShaderNodeBackground",
+        "ShaderNodeMixRGB",
+        "ShaderNodeOutputWorld",
+        "ShaderNodeTexCoord",
+        "ShaderNodeTexNoise",
+        "ShaderNodeTexSky",
+        "ShaderNodeValToRGB"
+      ],
+      "use_nodes": true
+    },
+    {
+      "background": {
+        "Color": {
+          "linked": false,
+          "value": [0.16, 0.23, 0.36, 1.0]
+        },
+        "Strength": {
+          "linked": false,
+          "value": 0.5
+        }
+      },
+      "color": [0.05, 0.05, 0.05],
+      "name": "Parcel / soft September sky.001",
+      "nodes": ["ShaderNodeBackground", "ShaderNodeOutputWorld", "ShaderNodeTexSky"],
+      "use_nodes": true
+    }
+  ]
+}

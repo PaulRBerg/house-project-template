@@ -1,14 +1,13 @@
 # Dependencies
 .venv/
 node_modules/
-dist/
-coverage/
 
 # Python
 __pycache__/
 *.py[cod]
 
 # Tool state
+.ai/
 .cache/
 .serena/
 
@@ -16,15 +15,10 @@ __pycache__/
 model/*.blend[0-9]*
 model/*.blend@*
 model/*.blend~
-model/*.recovery.blend
-model/.house-model-*
-model/.house-model/
-model/recovery/
 model/renders/
+model/renders-cycles/
 model/.generated/
-model/backups/
 
 # Files
 .env
-.env.*
 *.log

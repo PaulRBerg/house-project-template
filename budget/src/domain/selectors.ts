@@ -1,42 +1,39 @@
-import { BUDGET_AREAS, FALLBACK_BUDGET_AREA_ID, type BudgetAreaId } from "./areas.js";
-import { daysBetween, monthKey } from "./dates.js";
+import { BUDGET_AREAS, itemAreaId, type BudgetAreaId } from "./areas.js";
+import { groupBy, sumCents, UI_LOCALE } from "./collections.js";
+import { compareUndatedLast, dateSpan, monthKey } from "./dates.js";
 import {
-  MAX_ANNUAL_GROWTH_BPS,
-  MAX_GROWTH_DAYS,
+  BPS_DENOMINATOR,
+  CONTINGENCY_BPS,
+  EXTRA_MILESTONE_ID,
   MAX_MONEY_CENTS,
+  quantityRateCents,
   type BudgetDocument,
   type BudgetGroup,
   type BudgetItem,
   type Estimate,
+  type Instalment,
   type Milestone,
-  type Scenario,
+  type Payment,
 } from "./schema.js";
 
-export interface SelectOptions {
-  scenario: Scenario;
+const ROMANIAN_COLLATOR = new Intl.Collator(UI_LOCALE);
+
+export interface BudgetViewOptions {
+  /** Extra is a separate budget; callers must explicitly request it. */
+  scope?: "initial" | "extra" | "all";
   /** Calendar date in the user's locale, as YYYY-MM-DD. */
   asOf: string;
 }
-
-export type BudgetWarningCode =
-  | "estimate-under-scheduled"
-  | "estimate-unallocated"
-  | "instalment-overpaid"
-  | "instalment-overdue";
 
 export interface DerivedInstalment {
   id: string;
   itemId: string;
   label: string;
   dueOn?: string;
-  /** Stored base-scenario plan before scenario scaling. */
+  /** Stored plan before subtracting actual payments. */
   projectedCents: number;
-  /** Plan for the selected scenario, before subtracting actual payments. */
-  scenarioProjectedCents: number;
   actualPaidCents: number;
-  remainingRawCents: number;
-  remainingForecastCents: number;
-  overspendCents: number;
+  remainingCents: number;
   overdue: boolean;
   active: boolean;
 }
@@ -54,38 +51,27 @@ export interface DerivedItem {
   scheduleStartOn?: string;
   scheduleFinalOn?: string;
   estimateCents: number;
-  /** Fixed, owned, and land costs retain their base estimate in every view. */
-  estimateScenario: Scenario;
   actualPaidCents: number;
   /** Table value includes active owned purchases at their historical price, counted once. */
   totalCents: number;
   /** Recorded payments plus historical owned value absent from the payment ledger. */
   settledCents: number;
-  scheduledRemainingRawCents: number;
-  scheduledRemainingForecastCents: number;
+  scheduledRemainingCents: number;
   unallocatedFutureCents: number;
-  excludedFutureCents: number;
   contingencyCents: number;
   forecastBeforeContingencyCents: number;
   forecastCents: number;
+  /** Forecast still to be paid: active future obligations plus their contingency. */
+  remainingForecastCents: number;
   overdueCents: number;
   discrepancy: EstimateDiscrepancy;
-  warnings: BudgetWarningCode[];
   instalments: DerivedInstalment[];
 }
 
 export interface BudgetSummary {
-  scenario: Scenario;
   actualPaidCents: number;
-  scheduledFutureCents: number;
-  unallocatedFutureCents: number;
-  contingencyCents: number;
-  coreBeforeContingencyCents: number;
-  coreForecastCents: number;
-  movableForecastCents: number;
   totalCashForecastCents: number;
   remainingCashForecastCents: number;
-  optionalExcludedFutureCents: number;
 }
 
 export interface BudgetHierarchyItem {
@@ -107,10 +93,6 @@ export interface BudgetHierarchyGroup {
   archived: boolean;
   scheduleStartOn?: string;
   scheduleFinalOn?: string;
-  actualPaidCents: number;
-  futureCents: number;
-  contingencyCents: number;
-  forecastCents: number;
   /** Current estimates for outstanding items plus settled values, including owned purchases. */
   estimateCents: number;
   totalCents: number;
@@ -131,10 +113,12 @@ export interface CashFlowAllocation {
 }
 
 export interface CashFlowBucket {
-  month: string;
+  periodKey: string;
   actualCents: number;
   scheduledCents: number;
   unallocatedCents: number;
+  /** Base obligation: scheduled plus unallocated amounts, excluding the reserve. */
+  plannedCents: number;
   contingencyCents: number;
   totalCents: number;
   allocations: CashFlowAllocation[];
@@ -145,17 +129,8 @@ export interface MonthlyCashFlow {
   undated: CashFlowBucket;
 }
 
-export interface CumulativeCashPoint {
-  month: string;
-  monthCents: number;
-  cumulativeCents: number;
-}
-
 export interface BudgetTimelineEntry {
   milestone: Milestone;
-  actualPaidCents: number;
-  futureCents: number;
-  contingencyCents: number;
   forecastCents: number;
   itemCount: number;
   completeItemCount: number;
@@ -178,77 +153,33 @@ export interface BudgetView {
   summary: BudgetSummary;
   items: DerivedItem[];
   hierarchy: BudgetHierarchyGroup[];
-  monthlyCashFlow: MonthlyCashFlow;
-  cumulativeCashFlow: CumulativeCashPoint[];
   timeline: BudgetTimelineEntry[];
   upcomingPayments: UpcomingPayment[];
   allocations: CashFlowAllocation[];
 }
 
-interface ItemWork {
+interface ItemLedger {
   item: BudgetItem;
-  effectiveArchived: boolean;
+  effectivelyArchived: boolean;
   active: boolean;
   estimateCents: number;
-  estimateScenario: Scenario;
   actualPaidCents: number;
   instalments: DerivedInstalment[];
-  scheduledRemainingRawCents: number;
-  scheduledRemainingForecastCents: number;
+  scheduledRemainingCents: number;
   unallocatedFutureCents: number;
-  excludedFutureCents: number;
   overdueCents: number;
   discrepancy: EstimateDiscrepancy;
-  warnings: BudgetWarningCode[];
 }
 
-export function estimateCents(estimate: Estimate, scenario: Scenario): number {
-  const key = `${scenario}Cents` as const;
+export function estimateCents(estimate: Estimate): number {
   if (estimate.kind === "total") {
-    const amountCents = estimate.amounts[key];
+    const amountCents = estimate.amounts.baseCents;
     assertSafeCentAmount(amountCents, "Estimarea totală");
     return amountCents;
   }
-  const amountCents = Math.round(estimate.quantity * estimate.rates[key]);
+  const amountCents = quantityRateCents(estimate);
   assertSafeCentAmount(amountCents, "Estimarea cantitate × tarif");
   return amountCents;
-}
-
-/** Compounds whole-cent estimates and never deflates when the payment date is earlier. */
-export function growCents(
-  amountCents: number,
-  pricedOn: string,
-  paymentOn: string | undefined,
-  annualGrowthBps: number,
-): number {
-  if (!paymentOn || amountCents === 0) return amountCents;
-  if (
-    !Number.isInteger(annualGrowthBps) ||
-    annualGrowthBps < 0 ||
-    annualGrowthBps > MAX_ANNUAL_GROWTH_BPS
-  ) {
-    throw new RangeError(
-      `Rata anuală trebuie să fie între 0 și ${MAX_ANNUAL_GROWTH_BPS} puncte de bază.`,
-    );
-  }
-  const elapsedDays = Math.max(0, daysBetween(pricedOn, paymentOn));
-  if (elapsedDays > MAX_GROWTH_DAYS) {
-    throw new RangeError(`Intervalul de creștere nu poate depăși ${MAX_GROWTH_DAYS} zile.`);
-  }
-  const years = elapsedDays / 365.2425;
-  const result = Math.round(amountCents * (1 + annualGrowthBps / 10_000) ** years);
-  assertSafeCentAmount(result, "Estimarea după creștere");
-  return result;
-}
-
-function sum(values: readonly number[]): number {
-  return values.reduce((total, value) => {
-    const result = total + value;
-    if (!Number.isSafeInteger(result)) {
-      throw new RangeError("Totalul monetar depășește limita sigură pentru cenți întregi.");
-    }
-    return result;
-  }, 0);
 }
 
 function assertSafeCentAmount(amountCents: number, label: string): void {
@@ -279,8 +210,8 @@ function roundedRatio(value: number, multiplier: number, divisor: number): numbe
   return result;
 }
 
-function allocateProportionally(targetCents: number, weights: readonly number[]): number[] {
-  const weightTotal = sum(weights);
+export function allocateProportionally(targetCents: number, weights: readonly number[]): number[] {
+  const weightTotal = sumCents(weights);
   if (targetCents === 0) return weights.map(() => 0);
   if (weightTotal === 0) {
     throw new RangeError("O sumă pozitivă nu poate fi repartizată peste ponderi zero.");
@@ -294,7 +225,7 @@ function allocateProportionally(targetCents: number, weights: readonly number[])
       remainder: numerator % denominator,
     };
   });
-  let centsLeft = targetCents - sum(shares.map((share) => share.cents));
+  let centsLeft = targetCents - sumCents(shares.map((share) => share.cents));
   const ranked = [...shares].sort((left, right) =>
     left.remainder === right.remainder
       ? left.order - right.order
@@ -330,130 +261,73 @@ function getArchivedGroupIds(groups: BudgetGroup[]): Set<string> {
   return archived;
 }
 
-function deriveOwnedItemWork(
+interface LedgerContext {
+  archivedGroupIds: Set<string>;
+  instalmentsByItem: Map<string, Instalment[]>;
+  paymentsByItem: Map<string, Payment[]>;
+  paidByInstalment: Map<string, number>;
+  asOfMonth: string;
+}
+
+function deriveInstalment(
   item: BudgetItem,
-  itemInstalments: BudgetDocument["instalments"],
-  payments: BudgetDocument["payments"],
-  effectivelyArchived: boolean,
+  instalment: Instalment,
+  paidCents: number,
   active: boolean,
-  historicalEstimateCents: number,
-): ItemWork {
-  const actualPaidCents = sum(payments.map((payment) => payment.amountCents));
-  const instalments: DerivedInstalment[] = itemInstalments.map((instalment) => {
-    const paidCents = sum(
-      payments
-        .filter((payment) => payment.instalmentId === instalment.id)
-        .map((payment) => payment.amountCents),
-    );
-    return {
-      id: instalment.id,
-      itemId: item.id,
-      label: instalment.label,
-      ...(instalment.dueOn === undefined ? {} : { dueOn: instalment.dueOn }),
-      projectedCents: instalment.projectedCents,
-      scenarioProjectedCents: instalment.projectedCents,
-      actualPaidCents: paidCents,
-      remainingRawCents: 0,
-      remainingForecastCents: 0,
-      overspendCents: Math.max(paidCents - instalment.projectedCents, 0),
-      overdue: false,
-      active,
-    };
-  });
+  asOfMonth: string,
+): DerivedInstalment {
+  // Owned purchases are settled: their instalments keep payment history but plan nothing.
+  const remainingCents =
+    item.ownership === "owned" ? 0 : Math.max(instalment.projectedCents - paidCents, 0);
   return {
-    item,
-    effectiveArchived: effectivelyArchived,
+    id: instalment.id,
+    itemId: item.id,
+    label: instalment.label,
+    ...(instalment.dueOn === undefined ? {} : { dueOn: instalment.dueOn }),
+    projectedCents: instalment.projectedCents,
+    actualPaidCents: paidCents,
+    remainingCents,
+    overdue:
+      active &&
+      instalment.dueOn !== undefined &&
+      instalment.dueOn < asOfMonth &&
+      remainingCents > 0,
     active,
-    estimateCents: historicalEstimateCents,
-    estimateScenario: "base",
-    actualPaidCents,
-    instalments,
-    scheduledRemainingRawCents: 0,
-    scheduledRemainingForecastCents: 0,
-    unallocatedFutureCents: 0,
-    excludedFutureCents: 0,
-    overdueCents: 0,
-    discrepancy: { amountCents: 0, kind: "balanced" },
-    warnings: [],
   };
 }
 
-function deriveItemWork(
-  document: BudgetDocument,
-  item: BudgetItem,
-  archivedGroupIds: Set<string>,
-  options: SelectOptions,
-): ItemWork {
-  const itemInstalments = document.instalments.filter((entry) => entry.itemId === item.id);
-  const payments = document.payments.filter((payment) => payment.itemId === item.id);
-  const actualPaidCents = sum(payments.map((payment) => payment.amountCents));
-  const effectivelyArchived = item.archived || archivedGroupIds.has(item.groupId);
+function deriveItemLedger(item: BudgetItem, context: LedgerContext): ItemLedger {
+  const payments = context.paymentsByItem.get(item.id) ?? [];
+  const actualPaidCents = sumCents(payments.map((payment) => payment.amountCents));
+  const effectivelyArchived = item.archived || context.archivedGroupIds.has(item.groupId);
   const active = item.included && !effectivelyArchived;
-  const baseEstimateCents = estimateCents(item.estimate, "base");
-  if (item.ownership === "owned") {
-    return deriveOwnedItemWork(
+  const itemEstimateCents = estimateCents(item.estimate);
+  const instalments = (context.instalmentsByItem.get(item.id) ?? []).map((instalment) =>
+    deriveInstalment(
       item,
-      itemInstalments,
-      payments,
+      instalment,
+      context.paidByInstalment.get(instalment.id) ?? 0,
+      active,
+      context.asOfMonth,
+    ),
+  );
+  if (item.ownership === "owned") {
+    return {
+      item,
       effectivelyArchived,
       active,
-      baseEstimateCents,
-    );
-  }
-  const shouldGrow = !item.estimate.fixed && item.costType !== "land";
-  const estimateScenario = shouldGrow ? options.scenario : "base";
-  const selectedEstimateCents = estimateCents(item.estimate, estimateScenario);
-  const basePlanCents = sum(itemInstalments.map((instalment) => instalment.projectedCents));
-  const selectedPlanCents =
-    shouldGrow && baseEstimateCents > 0
-      ? roundedRatio(basePlanCents, selectedEstimateCents, baseEstimateCents)
-      : basePlanCents;
-  const scenarioPlans =
-    shouldGrow && baseEstimateCents > 0
-      ? allocateProportionally(
-          selectedPlanCents,
-          itemInstalments.map((instalment) => instalment.projectedCents),
-        )
-      : itemInstalments.map((instalment) => instalment.projectedCents);
-
-  const instalments: DerivedInstalment[] = itemInstalments.map((instalment, index) => {
-    const instalmentPayments = payments.filter((payment) => payment.instalmentId === instalment.id);
-    const paidCents = sum(instalmentPayments.map((payment) => payment.amountCents));
-    const scenarioProjectedCents = scenarioPlans[index] ?? 0;
-    const remainingRawCents = Math.max(scenarioProjectedCents - paidCents, 0);
-    const remainingForecastCents = shouldGrow
-      ? growCents(
-          remainingRawCents,
-          item.estimate.pricedOn,
-          instalment.dueOn,
-          document.project.annualGrowthBps,
-        )
-      : remainingRawCents;
-    return {
-      id: instalment.id,
-      itemId: item.id,
-      label: instalment.label,
-      ...(instalment.dueOn === undefined ? {} : { dueOn: instalment.dueOn }),
-      projectedCents: instalment.projectedCents,
-      scenarioProjectedCents,
-      actualPaidCents: paidCents,
-      remainingRawCents,
-      remainingForecastCents,
-      overspendCents: Math.max(paidCents - scenarioProjectedCents, 0),
-      overdue:
-        active &&
-        instalment.dueOn !== undefined &&
-        instalment.dueOn < monthKey(options.asOf) &&
-        remainingRawCents > 0,
-      active,
+      estimateCents: itemEstimateCents,
+      actualPaidCents,
+      instalments,
+      scheduledRemainingCents: 0,
+      unallocatedFutureCents: 0,
+      overdueCents: 0,
+      discrepancy: { amountCents: 0, kind: "balanced" },
     };
-  });
+  }
 
-  const scheduledRemainingRawCents = sum(instalments.map((entry) => entry.remainingRawCents));
-  const scheduledRemainingForecastCents = sum(
-    instalments.map((entry) => entry.remainingForecastCents),
-  );
-  const discrepancyAmount = selectedEstimateCents - actualPaidCents - scheduledRemainingRawCents;
+  const scheduledRemainingCents = sumCents(instalments.map((entry) => entry.remainingCents));
+  const discrepancyAmount = itemEstimateCents - actualPaidCents - scheduledRemainingCents;
   const discrepancy: EstimateDiscrepancy = {
     amountCents: discrepancyAmount,
     kind:
@@ -464,38 +338,28 @@ function deriveItemWork(
           : "over-scheduled",
   };
   const unallocatedFutureCents = active ? Math.max(discrepancyAmount, 0) : 0;
-  const excludedFutureCents =
-    !item.included && !effectivelyArchived
-      ? scheduledRemainingForecastCents + Math.max(discrepancyAmount, 0)
-      : 0;
   const overdueCents = active
-    ? sum(instalments.filter((entry) => entry.overdue).map((entry) => entry.remainingForecastCents))
+    ? sumCents(instalments.filter((entry) => entry.overdue).map((entry) => entry.remainingCents))
     : 0;
-  const warnings: BudgetWarningCode[] = [];
-  if (discrepancy.kind === "unallocated") warnings.push("estimate-unallocated");
-  if (discrepancy.kind === "over-scheduled") warnings.push("estimate-under-scheduled");
-  if (instalments.some((entry) => entry.overspendCents > 0)) warnings.push("instalment-overpaid");
-  if (instalments.some((entry) => entry.overdue)) warnings.push("instalment-overdue");
 
   return {
     item,
-    effectiveArchived: effectivelyArchived,
+    effectivelyArchived,
     active,
-    estimateCents: selectedEstimateCents,
-    estimateScenario,
+    estimateCents: itemEstimateCents,
     actualPaidCents,
     instalments,
-    scheduledRemainingRawCents,
-    scheduledRemainingForecastCents,
+    scheduledRemainingCents,
     unallocatedFutureCents,
-    excludedFutureCents,
     overdueCents,
     discrepancy,
-    warnings,
   };
 }
 
-function makeBaseAllocations(document: BudgetDocument, work: ItemWork[]): CashFlowAllocation[] {
+function makeBaseAllocations(
+  document: BudgetDocument,
+  ledgers: ItemLedger[],
+): CashFlowAllocation[] {
   const allocations: CashFlowAllocation[] = document.payments.map((payment) => ({
     id: `actual-${payment.id}`,
     itemId: payment.itemId,
@@ -505,25 +369,25 @@ function makeBaseAllocations(document: BudgetDocument, work: ItemWork[]): CashFl
     amountCents: payment.amountCents,
   }));
 
-  for (const entry of work) {
-    if (!entry.active) continue;
-    for (const instalment of entry.instalments) {
-      if (instalment.remainingForecastCents === 0) continue;
+  for (const ledger of ledgers) {
+    if (!ledger.active) continue;
+    for (const instalment of ledger.instalments) {
+      if (instalment.remainingCents === 0) continue;
       allocations.push({
         id: `scheduled-${instalment.id}`,
-        itemId: entry.item.id,
+        itemId: ledger.item.id,
         instalmentId: instalment.id,
         kind: "scheduled",
         ...(instalment.dueOn === undefined ? {} : { date: instalment.dueOn }),
-        amountCents: instalment.remainingForecastCents,
+        amountCents: instalment.remainingCents,
       });
     }
-    if (entry.unallocatedFutureCents > 0) {
+    if (ledger.unallocatedFutureCents > 0) {
       allocations.push({
-        id: `unallocated-${entry.item.id}`,
-        itemId: entry.item.id,
+        id: `unallocated-${ledger.item.id}`,
+        itemId: ledger.item.id,
         kind: "unallocated",
-        amountCents: entry.unallocatedFutureCents,
+        amountCents: ledger.unallocatedFutureCents,
       });
     }
   }
@@ -531,14 +395,13 @@ function makeBaseAllocations(document: BudgetDocument, work: ItemWork[]): CashFl
 }
 
 function allocateContingency(
-  document: BudgetDocument,
-  work: ItemWork[],
+  ledgers: ItemLedger[],
   allocations: CashFlowAllocation[],
 ): CashFlowAllocation[] {
   const eligibleItems = new Set(
-    work
-      .filter((entry) => entry.active && entry.item.contingencyEligible)
-      .map((entry) => entry.item.id),
+    ledgers
+      .filter((ledger) => ledger.active && ledger.item.contingencyEligible)
+      .map((ledger) => ledger.item.id),
   );
   const eligible = allocations.filter(
     (allocation) =>
@@ -546,8 +409,8 @@ function allocateContingency(
       (allocation.kind === "scheduled" || allocation.kind === "unallocated") &&
       allocation.amountCents > 0,
   );
-  const eligibleTotal = sum(eligible.map((allocation) => allocation.amountCents));
-  const target = roundedRatio(eligibleTotal, document.project.contingencyBps, 10_000);
+  const eligibleTotal = sumCents(eligible.map((allocation) => allocation.amountCents));
+  const target = roundedRatio(eligibleTotal, CONTINGENCY_BPS, BPS_DENOMINATOR);
   if (target === 0 || eligibleTotal === 0) return [];
 
   const shares = allocateProportionally(
@@ -568,77 +431,59 @@ function allocateContingency(
     }));
 }
 
-function buildDerivedItems(work: ItemWork[], allocations: CashFlowAllocation[]): DerivedItem[] {
-  return work.map((entry) => {
-    const scheduleDates = entry.instalments
-      .flatMap((instalment) => (instalment.dueOn ? [instalment.dueOn] : []))
-      .sort();
-    const scheduleStartOn = scheduleDates[0];
-    const scheduleFinalOn = scheduleDates.at(-1);
-    const contingencyCents = sum(
-      allocations
-        .filter(
-          (allocation) => allocation.itemId === entry.item.id && allocation.kind === "contingency",
-        )
-        .map((allocation) => allocation.amountCents),
+function buildDerivedItems(
+  ledgers: ItemLedger[],
+  allocations: CashFlowAllocation[],
+): DerivedItem[] {
+  const contingencyByItem = groupBy(
+    allocations.filter((allocation) => allocation.kind === "contingency"),
+    (allocation) => allocation.itemId,
+  );
+  return ledgers.map((ledger) => {
+    const { start: scheduleStartOn, end: scheduleFinalOn } = dateSpan(
+      ledger.instalments.map((instalment) => instalment.dueOn),
     );
-    const activeFutureCents = entry.active
-      ? entry.scheduledRemainingForecastCents + entry.unallocatedFutureCents
+    const contingencyCents = sumCents(
+      (contingencyByItem.get(ledger.item.id) ?? []).map((allocation) => allocation.amountCents),
+    );
+    const activeFutureCents = ledger.active
+      ? ledger.scheduledRemainingCents + ledger.unallocatedFutureCents
       : 0;
-    const forecastBeforeContingencyCents = entry.actualPaidCents + activeFutureCents;
+    const forecastBeforeContingencyCents = ledger.actualPaidCents + activeFutureCents;
     const settledCents =
-      entry.active && entry.item.ownership === "owned"
-        ? Math.max(entry.estimateCents, entry.actualPaidCents)
-        : entry.actualPaidCents;
+      ledger.active && ledger.item.ownership === "owned"
+        ? Math.max(ledger.estimateCents, ledger.actualPaidCents)
+        : ledger.actualPaidCents;
     return {
-      item: entry.item,
-      active: entry.active,
-      effectivelyArchived: entry.effectiveArchived,
+      item: ledger.item,
+      active: ledger.active,
+      effectivelyArchived: ledger.effectivelyArchived,
       ...(scheduleStartOn === undefined ? {} : { scheduleStartOn }),
       ...(scheduleFinalOn === undefined ? {} : { scheduleFinalOn }),
-      estimateCents: entry.estimateCents,
-      estimateScenario: entry.estimateScenario,
-      actualPaidCents: entry.actualPaidCents,
-      totalCents: sum([settledCents, activeFutureCents, contingencyCents]),
+      estimateCents: ledger.estimateCents,
+      actualPaidCents: ledger.actualPaidCents,
+      totalCents: sumCents([settledCents, activeFutureCents, contingencyCents]),
       settledCents,
-      scheduledRemainingRawCents: entry.scheduledRemainingRawCents,
-      scheduledRemainingForecastCents: entry.active ? entry.scheduledRemainingForecastCents : 0,
-      unallocatedFutureCents: entry.unallocatedFutureCents,
-      excludedFutureCents: entry.excludedFutureCents,
+      scheduledRemainingCents: ledger.active ? ledger.scheduledRemainingCents : 0,
+      unallocatedFutureCents: ledger.unallocatedFutureCents,
       contingencyCents,
       forecastBeforeContingencyCents,
       forecastCents: forecastBeforeContingencyCents + contingencyCents,
-      overdueCents: entry.overdueCents,
-      discrepancy: entry.discrepancy,
-      warnings: entry.warnings,
-      instalments: entry.instalments,
+      remainingForecastCents: activeFutureCents + contingencyCents,
+      overdueCents: ledger.overdueCents,
+      discrepancy: ledger.discrepancy,
+      instalments: ledger.instalments,
     };
   });
 }
 
-function buildSummary(items: DerivedItem[], scenario: Scenario): BudgetSummary {
-  const coreItems = items.filter((entry) => entry.item.costScope === "core");
-  const movableItems = items.filter((entry) => entry.item.costScope === "movable");
-  const coreBeforeContingencyCents = sum(
-    coreItems.map((entry) => entry.forecastBeforeContingencyCents),
-  );
-  const contingencyCents = sum(coreItems.map((entry) => entry.contingencyCents));
-  const coreForecastCents = coreBeforeContingencyCents + contingencyCents;
-  const movableForecastCents = sum(movableItems.map((entry) => entry.forecastCents));
-  const actualPaidCents = sum(items.map((entry) => entry.actualPaidCents));
-  const totalCashForecastCents = coreForecastCents + movableForecastCents;
+function buildSummary(items: DerivedItem[]): BudgetSummary {
+  const actualPaidCents = sumCents(items.map((entry) => entry.actualPaidCents));
+  const totalCashForecastCents = sumCents(items.map((entry) => entry.forecastCents));
   return {
-    scenario,
     actualPaidCents,
-    scheduledFutureCents: sum(items.map((entry) => entry.scheduledRemainingForecastCents)),
-    unallocatedFutureCents: sum(items.map((entry) => entry.unallocatedFutureCents)),
-    contingencyCents,
-    coreBeforeContingencyCents,
-    coreForecastCents,
-    movableForecastCents,
     totalCashForecastCents,
     remainingCashForecastCents: totalCashForecastCents - actualPaidCents,
-    optionalExcludedFutureCents: sum(items.map((entry) => entry.excludedFutureCents)),
   };
 }
 
@@ -646,7 +491,7 @@ function byCatalogueOrder<T extends { sortOrder: number; label: string }>(
   left: T,
   right: T,
 ): number {
-  return left.sortOrder - right.sortOrder || left.label.localeCompare(right.label, "ro");
+  return left.sortOrder - right.sortOrder || ROMANIAN_COLLATOR.compare(left.label, right.label);
 }
 
 function byHierarchyOrder(
@@ -658,40 +503,16 @@ function byHierarchyOrder(
   const rightValue = right.kind === "item" ? right.derived : right;
   return (
     rightValue.totalCents - leftValue.totalCents ||
-    (leftValue.scheduleStartOn ?? "9999-12-31").localeCompare(
-      rightValue.scheduleStartOn ?? "9999-12-31",
-    ) ||
+    compareUndatedLast(leftValue.scheduleStartOn, rightValue.scheduleStartOn) ||
     byCatalogueOrder(left, right)
   );
 }
 
 function buildHierarchy(document: BudgetDocument, items: DerivedItem[]): BudgetHierarchyGroup[] {
-  const itemsByGroup = new Map<string, DerivedItem[]>();
-  items.forEach((item) => {
-    const siblings = itemsByGroup.get(item.item.groupId) ?? [];
-    siblings.push(item);
-    itemsByGroup.set(item.item.groupId, siblings);
-  });
-  const groupsByParent = new Map<string | null, BudgetGroup[]>();
-  document.groups.forEach((group) => {
-    const siblings = groupsByParent.get(group.parentId) ?? [];
-    siblings.push(group);
-    groupsByParent.set(group.parentId, siblings);
-  });
-  const build = (group: BudgetGroup): BudgetHierarchyGroup => {
-    const childGroups = (groupsByParent.get(group.id) ?? []).map(build);
-    const childItems: BudgetHierarchyItem[] = (itemsByGroup.get(group.id) ?? []).map((derived) => ({
-      kind: "item",
-      id: derived.item.id,
-      label: derived.item.label,
-      sortOrder: derived.item.sortOrder,
-      derived,
-    }));
-    const children: Array<BudgetHierarchyGroup | BudgetHierarchyItem> = [
-      ...childGroups,
-      ...childItems,
-    ].sort(byHierarchyOrder);
-    return makeHierarchyGroup(
+  const itemsByGroup = groupBy(items, (item) => item.item.groupId);
+  const groupsByParent = groupBy(document.groups, (group) => group.parentId);
+  const build = (group: BudgetGroup): BudgetHierarchyGroup =>
+    makeHierarchyGroup(
       {
         id: group.id,
         label: group.label,
@@ -699,9 +520,17 @@ function buildHierarchy(document: BudgetDocument, items: DerivedItem[]): BudgetH
         sortOrder: group.sortOrder,
         archived: group.archived,
       },
-      children,
+      [
+        ...(groupsByParent.get(group.id) ?? []).map(build),
+        ...(itemsByGroup.get(group.id) ?? []).map((derived): BudgetHierarchyItem => ({
+          kind: "item",
+          id: derived.item.id,
+          label: derived.item.label,
+          sortOrder: derived.item.sortOrder,
+          derived,
+        })),
+      ],
     );
-  };
   return (groupsByParent.get(null) ?? []).sort(byCatalogueOrder).map(build);
 }
 
@@ -711,41 +540,34 @@ type HierarchyGroupMetadata = Pick<
 > &
   Pick<Partial<BudgetHierarchyGroup>, "sourceGroupId">;
 
+/** Current estimate for outstanding items, settled value otherwise. */
+export function hierarchyEstimateCents(entry: DerivedItem): number {
+  return entry.active && entry.totalCents > entry.settledCents
+    ? entry.estimateCents
+    : entry.settledCents;
+}
+
+/** Rolls totals up from direct children; child groups already carry their subtree totals. */
 function makeHierarchyGroup(
   metadata: HierarchyGroupMetadata,
   children: Array<BudgetHierarchyGroup | BudgetHierarchyItem>,
 ): BudgetHierarchyGroup {
-  const descendantItems = flattenHierarchyItems(children);
-  const scheduleDates = descendantItems
-    .flatMap((entry) =>
-      [entry.scheduleStartOn, entry.scheduleFinalOn].filter(
-        (date): date is string => date !== undefined,
-      ),
-    )
-    .sort();
-  const scheduleStartOn = scheduleDates[0];
-  const scheduleFinalOn = scheduleDates.at(-1);
-  const actualPaidCents = sum(descendantItems.map((entry) => entry.actualPaidCents));
-  const contingencyCents = sum(descendantItems.map((entry) => entry.contingencyCents));
-  const forecastCents = sum(descendantItems.map((entry) => entry.forecastCents));
+  const parts = children.map((child) =>
+    child.kind === "group"
+      ? child
+      : { ...child.derived, estimateCents: hierarchyEstimateCents(child.derived) },
+  );
+  const { start: scheduleStartOn, end: scheduleFinalOn } = dateSpan(
+    parts.flatMap((part) => [part.scheduleStartOn, part.scheduleFinalOn]),
+  );
   return {
     kind: "group",
     ...metadata,
     ...(scheduleStartOn === undefined ? {} : { scheduleStartOn }),
     ...(scheduleFinalOn === undefined ? {} : { scheduleFinalOn }),
-    actualPaidCents,
-    futureCents: forecastCents - actualPaidCents - contingencyCents,
-    contingencyCents,
-    forecastCents,
-    estimateCents: sum(
-      descendantItems.map((entry) =>
-        entry.active && entry.totalCents > entry.settledCents
-          ? entry.estimateCents
-          : entry.settledCents,
-      ),
-    ),
-    totalCents: sum(descendantItems.map((entry) => entry.totalCents)),
-    settledCents: sum(descendantItems.map((entry) => entry.settledCents)),
+    estimateCents: sumCents(parts.map((part) => part.estimateCents)),
+    totalCents: sumCents(parts.map((part) => part.totalCents)),
+    settledCents: sumCents(parts.map((part) => part.settledCents)),
     children: children.sort(byHierarchyOrder),
   };
 }
@@ -754,17 +576,22 @@ function areaNamespace(areaId: BudgetAreaId): string {
   return `area-${areaId.toLowerCase()}`;
 }
 
+function filterChildrenByArea(
+  children: Array<BudgetHierarchyGroup | BudgetHierarchyItem>,
+  areaId: BudgetAreaId,
+): Array<BudgetHierarchyGroup | BudgetHierarchyItem> {
+  return children.flatMap<BudgetHierarchyGroup | BudgetHierarchyItem>((child) => {
+    if (child.kind === "item") return itemAreaId(child.derived.item) === areaId ? [child] : [];
+    const filtered = filterHierarchyGroupByArea(child, areaId);
+    return filtered ? [filtered] : [];
+  });
+}
+
 function filterHierarchyGroupByArea(
   group: BudgetHierarchyGroup,
   areaId: BudgetAreaId,
 ): BudgetHierarchyGroup | undefined {
-  const children = group.children.flatMap<BudgetHierarchyGroup | BudgetHierarchyItem>((child) => {
-    if (child.kind === "item") {
-      return (child.derived.item.areaId ?? FALLBACK_BUDGET_AREA_ID) === areaId ? [child] : [];
-    }
-    const filtered = filterHierarchyGroupByArea(child, areaId);
-    return filtered ? [filtered] : [];
-  });
+  const children = filterChildrenByArea(group.children, areaId);
   if (children.length === 0) return undefined;
   const sourceGroupId = group.sourceGroupId ?? group.id;
   return makeHierarchyGroup(
@@ -780,24 +607,10 @@ function filterHierarchyGroupByArea(
   );
 }
 
-function flattenHierarchyItems(
-  children: Array<BudgetHierarchyGroup | BudgetHierarchyItem>,
-): DerivedItem[] {
-  return children.flatMap((child) =>
-    child.kind === "item" ? [child.derived] : flattenHierarchyItems(child.children),
-  );
-}
-
 /** Derives the room/area presentation from one existing stage hierarchy root. */
 export function getBudgetAreaHierarchy(root: BudgetHierarchyGroup): BudgetHierarchyGroup[] {
   return BUDGET_AREAS.flatMap((area, sortOrder) => {
-    const children = root.children.flatMap<BudgetHierarchyGroup | BudgetHierarchyItem>((child) => {
-      if (child.kind === "item") {
-        return (child.derived.item.areaId ?? FALLBACK_BUDGET_AREA_ID) === area.id ? [child] : [];
-      }
-      const filtered = filterHierarchyGroupByArea(child, area.id);
-      return filtered ? [filtered] : [];
-    });
+    const children = filterChildrenByArea(root.children, area.id);
     if (children.length === 0) return [];
     return [
       makeHierarchyGroup(
@@ -808,67 +621,77 @@ export function getBudgetAreaHierarchy(root: BudgetHierarchyGroup): BudgetHierar
           sortOrder,
           archived: root.archived,
         },
-        children.sort(byHierarchyOrder),
+        children,
       ),
     ];
   });
 }
 
-function emptyBucket(month: string): CashFlowBucket {
+export function emptyCashFlowBucket(periodKey: string): CashFlowBucket {
   return {
-    month,
+    periodKey,
     actualCents: 0,
     scheduledCents: 0,
     unallocatedCents: 0,
+    plannedCents: 0,
     contingencyCents: 0,
     totalCents: 0,
     allocations: [],
   };
 }
 
-function buildMonthlyCashFlow(allocations: CashFlowAllocation[]): MonthlyCashFlow {
+export function addToCashFlowBucket(bucket: CashFlowBucket, allocation: CashFlowAllocation): void {
+  bucket.allocations.push(allocation);
+  bucket.totalCents += allocation.amountCents;
+  if (allocation.kind === "actual") bucket.actualCents += allocation.amountCents;
+  if (allocation.kind === "scheduled") bucket.scheduledCents += allocation.amountCents;
+  if (allocation.kind === "unallocated") bucket.unallocatedCents += allocation.amountCents;
+  if (allocation.kind === "scheduled" || allocation.kind === "unallocated") {
+    bucket.plannedCents += allocation.amountCents;
+  }
+  if (allocation.kind === "contingency") bucket.contingencyCents += allocation.amountCents;
+}
+
+export function buildMonthlyCashFlow(allocations: readonly CashFlowAllocation[]): MonthlyCashFlow {
   const byMonth = new Map<string, CashFlowBucket>();
-  const undated = emptyBucket("undated");
+  const undated = emptyCashFlowBucket("undated");
   for (const allocation of allocations) {
-    const bucket = allocation.date
-      ? (byMonth.get(monthKey(allocation.date)) ?? emptyBucket(monthKey(allocation.date)))
-      : undated;
-    bucket.allocations.push(allocation);
-    bucket.totalCents += allocation.amountCents;
-    if (allocation.kind === "actual") bucket.actualCents += allocation.amountCents;
-    if (allocation.kind === "scheduled") bucket.scheduledCents += allocation.amountCents;
-    if (allocation.kind === "unallocated") bucket.unallocatedCents += allocation.amountCents;
-    if (allocation.kind === "contingency") bucket.contingencyCents += allocation.amountCents;
-    if (allocation.date) byMonth.set(bucket.month, bucket);
+    let bucket = undated;
+    if (allocation.date) {
+      const month = monthKey(allocation.date);
+      bucket = byMonth.get(month) ?? emptyCashFlowBucket(month);
+      byMonth.set(month, bucket);
+    }
+    addToCashFlowBucket(bucket, allocation);
   }
   return {
-    months: [...byMonth.values()].sort((left, right) => left.month.localeCompare(right.month)),
+    months: [...byMonth.values()].sort((left, right) =>
+      left.periodKey.localeCompare(right.periodKey),
+    ),
     undated,
   };
 }
 
-function buildCumulativeCashFlow(monthly: MonthlyCashFlow): CumulativeCashPoint[] {
+/** Adds the running cash total through each bucket, in one pass. */
+export function withCumulativeCents<T extends { totalCents: number }>(
+  buckets: readonly T[],
+): Array<T & { cumulativeCents: number }> {
   let cumulativeCents = 0;
-  return monthly.months.map((bucket) => {
+  return buckets.map((bucket) => {
     cumulativeCents += bucket.totalCents;
-    return { month: bucket.month, monthCents: bucket.totalCents, cumulativeCents };
+    return { ...bucket, cumulativeCents };
   });
 }
 
 function buildTimeline(document: BudgetDocument, items: DerivedItem[]): BudgetTimelineEntry[] {
+  const itemsByMilestone = groupBy(items, (entry) => entry.item.milestoneId);
   return document.milestones
     .map((milestone) => {
-      const stageItems = items.filter((entry) => entry.item.milestoneId === milestone.id);
+      const stageItems = itemsByMilestone.get(milestone.id) ?? [];
       const activeItems = stageItems.filter((entry) => entry.active);
-      const actualPaidCents = sum(stageItems.map((entry) => entry.actualPaidCents));
-      const contingencyCents = sum(stageItems.map((entry) => entry.contingencyCents));
-      const forecastCents = sum(stageItems.map((entry) => entry.forecastCents));
       return {
         milestone,
-        actualPaidCents,
-        futureCents: forecastCents - actualPaidCents - contingencyCents,
-        contingencyCents,
-        forecastCents,
+        forecastCents: sumCents(stageItems.map((entry) => entry.forecastCents)),
         itemCount: activeItems.length,
         completeItemCount: activeItems.filter((entry) => entry.item.completion.complete).length,
       };
@@ -879,17 +702,15 @@ function buildTimeline(document: BudgetDocument, items: DerivedItem[]): BudgetTi
 function buildUpcomingPayments(
   items: DerivedItem[],
   allocations: CashFlowAllocation[],
-  asOf: string,
+  asOfMonth: string,
 ): UpcomingPayment[] {
   const byItem = new Map(items.map((entry) => [entry.item.id, entry]));
   const contingencyByAllocation = new Map<string, number>();
-  allocations
-    .filter((allocation) => allocation.kind === "contingency")
-    .forEach((allocation) => {
-      if (allocation.relatedAllocationId) {
-        contingencyByAllocation.set(allocation.relatedAllocationId, allocation.amountCents);
-      }
-    });
+  for (const allocation of allocations) {
+    if (allocation.kind === "contingency" && allocation.relatedAllocationId) {
+      contingencyByAllocation.set(allocation.relatedAllocationId, allocation.amountCents);
+    }
+  }
   return allocations
     .filter((allocation) => allocation.kind === "scheduled" || allocation.kind === "unallocated")
     .map((allocation) => {
@@ -907,76 +728,68 @@ function buildUpcomingPayments(
         ...(allocation.date === undefined ? {} : { dueOn: allocation.date }),
         amountCents: allocation.amountCents,
         contingencyCents: contingencyByAllocation.get(allocation.id) ?? 0,
-        overdue: allocation.date !== undefined && allocation.date < monthKey(asOf),
+        overdue: allocation.date !== undefined && allocation.date < asOfMonth,
         unallocated: allocation.kind === "unallocated",
       };
     })
     .sort((left, right) => {
       if (left.dueOn === undefined) return right.dueOn === undefined ? 0 : 1;
       if (right.dueOn === undefined) return -1;
-      return left.dueOn.localeCompare(right.dueOn) || left.label.localeCompare(right.label, "ro");
+      return (
+        left.dueOn.localeCompare(right.dueOn) || ROMANIAN_COLLATOR.compare(left.label, right.label)
+      );
     });
 }
 
-export function selectBudgetView(document: BudgetDocument, options: SelectOptions): BudgetView {
-  const archivedGroupIds = getArchivedGroupIds(document.groups);
-  const work = document.items.map((item) =>
-    deriveItemWork(document, item, archivedGroupIds, options),
+export function selectBudgetView(source: BudgetDocument, options: BudgetViewOptions): BudgetView {
+  let document = source;
+  const scope = options.scope ?? "initial";
+  if (scope !== "all") {
+    const includesMilestone = (id: Milestone["id"]): boolean =>
+      (id === EXTRA_MILESTONE_ID) === (scope === "extra");
+    const items = document.items.filter((item) => includesMilestone(item.milestoneId));
+    const itemIds = new Set(items.map((item) => item.id));
+    document = {
+      ...document,
+      items,
+      groups: document.groups.filter((group) => includesMilestone(group.milestoneId)),
+      milestones: document.milestones.filter((milestone) => includesMilestone(milestone.id)),
+      instalments: document.instalments.filter((entry) => itemIds.has(entry.itemId)),
+      payments: document.payments.filter((entry) => itemIds.has(entry.itemId)),
+    };
+  }
+  const asOfMonth = monthKey(options.asOf);
+  const context: LedgerContext = {
+    archivedGroupIds: getArchivedGroupIds(document.groups),
+    instalmentsByItem: groupBy(document.instalments, (entry) => entry.itemId),
+    paymentsByItem: groupBy(document.payments, (payment) => payment.itemId),
+    paidByInstalment: new Map(
+      [...groupBy(document.payments, (payment) => payment.instalmentId)].map(
+        ([instalmentId, payments]) => [
+          instalmentId,
+          sumCents(payments.map((payment) => payment.amountCents)),
+        ],
+      ),
+    ),
+    asOfMonth,
+  };
+  const ledgers = document.items.map((item) => deriveItemLedger(item, context));
+  const baseAllocations = makeBaseAllocations(document, ledgers);
+  // Separate budgets retain the same cent rounding when displayed together.
+  const contingencyAllocations = [false, true].flatMap((extra) =>
+    allocateContingency(
+      ledgers.filter((ledger) => (ledger.item.milestoneId === EXTRA_MILESTONE_ID) === extra),
+      baseAllocations,
+    ),
   );
-  const baseAllocations = makeBaseAllocations(document, work);
-  const contingencyAllocations = allocateContingency(document, work, baseAllocations);
   const allocations = [...baseAllocations, ...contingencyAllocations];
-  const items = buildDerivedItems(work, allocations);
-  const monthlyCashFlow = buildMonthlyCashFlow(allocations);
+  const items = buildDerivedItems(ledgers, allocations);
   return {
-    summary: buildSummary(items, options.scenario),
+    summary: buildSummary(items),
     items,
     hierarchy: buildHierarchy(document, items),
-    monthlyCashFlow,
-    cumulativeCashFlow: buildCumulativeCashFlow(monthlyCashFlow),
     timeline: buildTimeline(document, items),
-    upcomingPayments: buildUpcomingPayments(items, allocations, options.asOf),
+    upcomingPayments: buildUpcomingPayments(items, allocations, asOfMonth),
     allocations,
   };
-}
-
-export function getBudgetSummary(document: BudgetDocument, options: SelectOptions): BudgetSummary {
-  return selectBudgetView(document, options).summary;
-}
-
-export function getBudgetHierarchy(
-  document: BudgetDocument,
-  options: SelectOptions,
-): BudgetHierarchyGroup[] {
-  return selectBudgetView(document, options).hierarchy;
-}
-
-export function getMonthlyCashFlow(
-  document: BudgetDocument,
-  options: SelectOptions,
-): MonthlyCashFlow {
-  return selectBudgetView(document, options).monthlyCashFlow;
-}
-
-export function getCumulativeCashFlow(
-  document: BudgetDocument,
-  options: SelectOptions,
-): CumulativeCashPoint[] {
-  return selectBudgetView(document, options).cumulativeCashFlow;
-}
-
-export function getBudgetTimeline(
-  document: BudgetDocument,
-  options: SelectOptions,
-): BudgetTimelineEntry[] {
-  return selectBudgetView(document, options).timeline;
-}
-
-export function getUpcomingPayments(
-  document: BudgetDocument,
-  options: SelectOptions,
-  limit?: number,
-): UpcomingPayment[] {
-  const payments = selectBudgetView(document, options).upcomingPayments;
-  return limit === undefined ? payments : payments.slice(0, Math.max(0, limit));
 }

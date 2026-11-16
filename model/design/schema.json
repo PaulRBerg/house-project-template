@@ -1,0 +1,1522 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://house-model.invalid/schema/design-v1.json",
+  "title": "House procedural design package",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "units",
+    "id",
+    "name",
+    "transform",
+    "parcel",
+    "levels",
+    "rooms",
+    "walls",
+    "openings",
+    "slabs",
+    "roofs",
+    "stairs",
+    "semantic_refs",
+    "materials",
+    "furnishings",
+    "site_components"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "units": {
+      "const": "m"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "name": {
+      "description": "Project display name, shown on the drawing sheets.",
+      "type": "string",
+      "minLength": 1
+    },
+    "transform": {
+      "$ref": "#/$defs/matrix4"
+    },
+    "parcel": {
+      "$ref": "#/$defs/parcel"
+    },
+    "levels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/level"
+      }
+    },
+    "rooms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/room"
+      }
+    },
+    "walls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/wall"
+      }
+    },
+    "openings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/opening"
+      }
+    },
+    "slabs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/slab"
+      }
+    },
+    "roofs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/roof"
+      }
+    },
+    "stairs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/stair"
+      }
+    },
+    "semantic_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/semanticRef"
+      }
+    },
+    "accepted_metrics": {
+      "type": "object",
+      "properties": {
+        "house_budget_gross_m2": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "house_wall_body_gross_m2": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "house_finished_gross_max_m2": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "heated_floor_face_m2": {
+          "$ref": "#/$defs/nonnegative"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "string"
+        },
+        "house_blend_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "layout_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "survey_status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "baseline_evidence": {
+      "type": "object",
+      "required": ["source_revision", "room_finished_floors"],
+      "properties": {
+        "source_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "room_finished_floors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/roomFloorEvidence"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "furnishings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/extensibleEntity"
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/extensibleEntity"
+      }
+    },
+    "lights": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/extensibleEntity"
+      }
+    },
+    "cameras": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/camera"
+      }
+    },
+    "site_components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/extensibleEntity"
+      }
+    },
+    "structure": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/structural_member"
+      }
+    },
+    "voids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/void"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "number": {
+      "type": "number"
+    },
+    "nonnegative": {
+      "type": "number",
+      "minimum": 0
+    },
+    "positive": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "point2": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "point3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "matrix4": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {
+          "$ref": "#/$defs/number"
+        }
+      }
+    },
+    "ring": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "#/$defs/point2"
+      }
+    },
+    "polygon": {
+      "type": "object",
+      "required": ["outer", "holes"],
+      "properties": {
+        "outer": {
+          "$ref": "#/$defs/ring"
+        },
+        "holes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ring"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "parcel": {
+      "type": "object",
+      "required": ["id", "polygon", "reported_area_m2", "side_lengths_m", "vehicle_access_edge"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "parcel_number": {
+          "type": "string"
+        },
+        "polygon": {
+          "$ref": "#/$defs/polygon"
+        },
+        "reported_area_m2": {
+          "$ref": "#/$defs/positive"
+        },
+        "side_lengths_m": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "$ref": "#/$defs/positive"
+          }
+        },
+        "site_pin_lat_lon": {
+          "$ref": "#/$defs/point2"
+        },
+        "ground_material_id": {
+          "description": "Material of the generated ground mesh over the parcel polygon; omit for no ground.",
+          "$ref": "#/$defs/id"
+        },
+        "setback_material_id": {
+          "description": "Material of the generated setback outline at requirements.json setback.minimum_m; omit for no outline.",
+          "$ref": "#/$defs/id"
+        },
+        "vehicle_access_edge": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "grid_north_deg": {
+          "description": "Approximate clockwise angle from world +Y to cadastral grid north; not a surveyed bearing. Omit it and the drawings show no compass.",
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ledgestone": {
+      "type": "object",
+      "required": ["material_ids", "course_heights_m", "length_range_m"],
+      "properties": {
+        "material_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "description": "Stone tones, chosen per stone by the seeded generator."
+        },
+        "course_heights_m": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/positive"
+          },
+          "minItems": 1,
+          "description": "Course heights drawn per row, joint included."
+        },
+        "length_range_m": {
+          "$ref": "#/$defs/point2",
+          "description": "Minimum and maximum stone length, joint included."
+        },
+        "joint_m": {
+          "$ref": "#/$defs/nonnegative",
+          "description": "Gap between stones and between courses. Defaults to 0.005."
+        },
+        "depth_m": {
+          "$ref": "#/$defs/positive",
+          "description": "Stone body depth behind its outer face. Defaults to 0.012."
+        },
+        "proud_m": {
+          "$ref": "#/$defs/nonnegative",
+          "description": "Outer-face distance proud of the wall face. Defaults to 0.004."
+        },
+        "seed": {
+          "type": "string",
+          "description": "Course and length generator seed. Defaults to the wall id."
+        }
+      },
+      "additionalProperties": false
+    },
+    "level": {
+      "type": "object",
+      "required": ["id", "name", "elevation_m", "clear_height_m", "floor_top_offset_m"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "elevation_m": {
+          "$ref": "#/$defs/number"
+        },
+        "clear_height_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "floor_top_offset_m": {
+          "type": "number",
+          "description": "Finished floor mesh top offset from authored level elevation; 0 puts the finished top at the level."
+        }
+      },
+      "additionalProperties": false
+    },
+    "room": {
+      "type": "object",
+      "required": ["id", "name", "level_id", "zone", "floor_inset_m", "anchor", "material_id"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "short_name": {
+          "description": "Compact label for plans and cutaways; defaults to name.",
+          "type": "string",
+          "minLength": 1
+        },
+        "level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "zone": {
+          "$ref": "#/$defs/polygon"
+        },
+        "floor_inset_m": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "anchor": {
+          "$ref": "#/$defs/point2"
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "wall_finish": {
+          "description": "Painted, wainscot and accent skins on the wall faces bounding the finished floor.",
+          "type": "object",
+          "required": ["material_id"],
+          "properties": {
+            "material_id": {
+              "$ref": "#/$defs/id"
+            },
+            "wainscot": {
+              "type": "object",
+              "required": ["material_id", "height_m"],
+              "properties": {
+                "material_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "height_m": {
+                  "$ref": "#/$defs/positive"
+                }
+              },
+              "additionalProperties": false
+            },
+            "accents": {
+              "description": "Each accent replaces the base and wainscot on one wall face, over span_m from the wall start or the whole face.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["wall_id", "material_id"],
+                "properties": {
+                  "wall_id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "material_id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "span_m": {
+                    "$ref": "#/$defs/point2"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "wall": {
+      "type": "object",
+      "required": ["id", "name", "level_id", "start", "end", "thickness", "material_id", "role"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "start": {
+          "$ref": "#/$defs/point2"
+        },
+        "end": {
+          "$ref": "#/$defs/point2"
+        },
+        "thickness": {
+          "$ref": "#/$defs/positive"
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "height_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "cutaway_height_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "exterior_side": {
+          "enum": [-1, 1]
+        },
+        "finish": {
+          "type": "object",
+          "required": ["style", "material_id"],
+          "properties": {
+            "style": {
+              "enum": ["plain", "ledgestone"],
+              "description": "plain: one flush skin in material_id. ledgestone: flush fine coursed stone over a material_id backing that shows in the joints."
+            },
+            "material_id": {
+              "$ref": "#/$defs/id",
+              "description": "Base skin: the render of a plain wall, or the mortar backing of a ledgestone wall."
+            },
+            "span_m": {
+              "$ref": "#/$defs/point2",
+              "description": "Along-wall range of the ledgestone; the base skin shows outside it."
+            },
+            "extend_top_m": {
+              "description": "Raises the base skin and ledgestone of cells that reach the wall top, over the slab edge or parapet: a height for the whole wall, or a list of along-wall ranges with their own heights. Defaults to 0.",
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/nonnegative"
+                },
+                {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["span_m", "height_m"],
+                    "properties": {
+                      "span_m": {
+                        "$ref": "#/$defs/point2"
+                      },
+                      "height_m": {
+                        "$ref": "#/$defs/positive"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              ]
+            },
+            "stone": {
+              "$ref": "#/$defs/ledgestone"
+            },
+            "bands": {
+              "type": "array",
+              "description": "Flush skins that replace the base skin and stone in their rectangle and stop at the openings they cross.",
+              "items": {
+                "type": "object",
+                "required": ["z_m", "material_id"],
+                "properties": {
+                  "z_m": {
+                    "$ref": "#/$defs/point2",
+                    "description": "Vertical range relative to the level elevation; may extend below 0 or above the wall height."
+                  },
+                  "material_id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "proud_m": {
+                    "$ref": "#/$defs/positive",
+                    "description": "Outer-face distance proud of the wall face. Defaults to 0.003."
+                  },
+                  "span_m": {
+                    "$ref": "#/$defs/point2",
+                    "description": "Along-wall range. Defaults to the whole wall."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "panels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["span_m", "depth_m", "material_id"],
+                "properties": {
+                  "span_m": {
+                    "$ref": "#/$defs/point2"
+                  },
+                  "depth_m": {
+                    "$ref": "#/$defs/positive"
+                  },
+                  "material_id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "pitch_m": {
+                    "$ref": "#/$defs/positive"
+                  },
+                  "width_m": {
+                    "$ref": "#/$defs/positive"
+                  },
+                  "z_span_m": {
+                    "$ref": "#/$defs/point2",
+                    "description": "Vertical range relative to the level elevation that clips the panel. Defaults to its whole wall cells."
+                  }
+                },
+                "additionalProperties": false,
+                "dependentRequired": {
+                  "pitch_m": ["width_m"],
+                  "width_m": ["pitch_m"]
+                }
+              }
+            }
+          },
+          "additionalProperties": false,
+          "if": {
+            "properties": {
+              "style": {
+                "const": "ledgestone"
+              }
+            }
+          },
+          "then": {
+            "required": ["stone"]
+          },
+          "else": {
+            "not": {
+              "required": ["stone"]
+            }
+          }
+        },
+        "closures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["span_m", "bottom_m", "top_m"],
+            "properties": {
+              "span_m": {
+                "$ref": "#/$defs/point2"
+              },
+              "bottom_m": {
+                "$ref": "#/$defs/number"
+              },
+              "top_m": {
+                "$ref": "#/$defs/point2"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "role": {
+          "enum": ["exterior", "interior"]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "exterior"
+              }
+            }
+          },
+          "then": {
+            "required": ["exterior_side", "finish"]
+          }
+        }
+      ]
+    },
+    "opening": {
+      "type": "object",
+      "required": ["id", "wall_id", "kind", "offset", "width", "sill", "head"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "wall_id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": ["door", "open", "terrace", "window", "double"]
+        },
+        "offset": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "width": {
+          "$ref": "#/$defs/positive"
+        },
+        "sill": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "head": {
+          "$ref": "#/$defs/positive"
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "blind": {
+          "type": "boolean"
+        },
+        "blind_concealed": {
+          "type": "boolean",
+          "description": "The blind cassette is concealed in the insulation above the head instead of mounted below it."
+        },
+        "blind_drop_m": {
+          "$ref": "#/$defs/nonnegative"
+        },
+        "panel_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "operation": {
+          "const": "sliding",
+          "description": "Explicit opening operation. Omission preserves the unresolved/default glazed-opening representation."
+        },
+        "slide_direction": {
+          "enum": ["toward-start", "toward-end"],
+          "description": "Travel direction along the authored wall. On a two-panel slider the panel opposite the named end is the active leaf; a sliding-pocket door parks its leaf toward the named end."
+        },
+        "frame_width_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "swing_deg": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Open angle; positive swings to the left of the wall's start-to-end vector, whichever jamb carries the hinge."
+        },
+        "hinge": {
+          "enum": ["start", "end"],
+          "description": "Jamb carrying the hinge along the authored wall; defaults to start. Put it beside the nearest perpendicular wall so the open leaf rests against that wall."
+        },
+        "surround": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["fraction", "wall_offset_m", "center_z_m", "size"],
+            "properties": {
+              "fraction": {
+                "type": "number"
+              },
+              "offset_m": {
+                "type": "number"
+              },
+              "wall_offset_m": {
+                "type": "number"
+              },
+              "center_z_m": {
+                "type": "number"
+              },
+              "size": {
+                "$ref": "#/$defs/point3"
+              },
+              "finish": {
+                "enum": ["timber", "graphite"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "door_style": {
+          "enum": ["flush-entry", "flush-concealed", "sliding-pocket", "standard"],
+          "description": "flush-entry: flush oak entrance with vertical pull; exterior renders close it temporarily. flush-concealed: Filomuro-type interior door whose frame hides behind a shadow reveal, with a leaf finished like the wall. sliding-pocket: flush leaf sliding into a cassette inside the partition, shown parked open. standard: ordinary white interior door with a visible frame and casings, without threshold."
+        },
+        "door_finish": {
+          "$ref": "#/$defs/id",
+          "description": "Material of a flush-concealed leaf; defaults to the wall plaster."
+        },
+        "reveal": {
+          "type": "object",
+          "description": "Lined exterior reveal of a window, double or terrace opening in an exterior wall; doors and open openings ignore it.",
+          "required": ["lining_material_id", "depth_m"],
+          "properties": {
+            "lining_material_id": {
+              "$ref": "#/$defs/id"
+            },
+            "depth_m": {
+              "$ref": "#/$defs/positive",
+              "description": "Frame plane distance behind the exterior face, below the wall thickness."
+            },
+            "surround_m": {
+              "$ref": "#/$defs/positive",
+              "description": "Width of the flush band around the opening on the exterior face."
+            },
+            "surround_material_id": {
+              "$ref": "#/$defs/id"
+            },
+            "pitch_m": {
+              "$ref": "#/$defs/positive",
+              "description": "Splits the surround into vertical slats at this pitch."
+            },
+            "width_m": {
+              "$ref": "#/$defs/positive",
+              "description": "Surround slat width."
+            }
+          },
+          "dependentRequired": {
+            "surround_m": ["surround_material_id"],
+            "surround_material_id": ["surround_m"],
+            "pitch_m": ["surround_m", "width_m"],
+            "width_m": ["pitch_m"]
+          },
+          "additionalProperties": false
+        }
+      },
+      "dependentRequired": {
+        "operation": ["panel_count", "slide_direction"]
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["operation"]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "terrace"
+              },
+              "panel_count": {
+                "const": 2
+              }
+            },
+            "not": {
+              "required": ["swing_deg"]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["slide_direction"]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": ["operation"]
+              },
+              {
+                "required": ["door_style"],
+                "properties": {
+                  "door_style": {
+                    "const": "sliding-pocket"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": ["door_style"],
+            "properties": {
+              "door_style": {
+                "const": "sliding-pocket"
+              }
+            }
+          },
+          "then": {
+            "required": ["slide_direction"],
+            "not": {
+              "anyOf": [
+                {
+                  "required": ["swing_deg"]
+                },
+                {
+                  "required": ["hinge"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["door_style"]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "door"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "slab": {
+      "type": "object",
+      "required": ["id", "name", "level_id", "polygon", "base_z_m", "thickness_m", "material_id"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "polygon": {
+          "$ref": "#/$defs/polygon"
+        },
+        "base_z_m": {
+          "$ref": "#/$defs/number"
+        },
+        "thickness_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "role": {
+          "enum": ["slab", "ceiling", "roof"]
+        },
+        "trims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trim"
+          }
+        },
+        "guards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["start", "end"],
+            "properties": {
+              "start": {
+                "$ref": "#/$defs/point2"
+              },
+              "end": {
+                "$ref": "#/$defs/point2"
+              },
+              "panels": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height_m": {
+                "$ref": "#/$defs/positive"
+              },
+              "material_id": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "planters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["center", "size"],
+            "properties": {
+              "center": {
+                "$ref": "#/$defs/point2"
+              },
+              "size": {
+                "$ref": "#/$defs/point3"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "roof": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "level_id",
+        "polygon",
+        "base_z_m",
+        "deck_z_m",
+        "pitch_deg",
+        "slope_direction",
+        "material_id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "polygon": {
+          "$ref": "#/$defs/polygon"
+        },
+        "base_z_m": {
+          "$ref": "#/$defs/number"
+        },
+        "deck_z_m": {
+          "$ref": "#/$defs/number"
+        },
+        "pitch_deg": {
+          "type": "number",
+          "minimum": -89,
+          "maximum": 89
+        },
+        "slope_direction": {
+          "$ref": "#/$defs/point2"
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "pitch_origin": {
+          "$ref": "#/$defs/point2"
+        },
+        "trims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trim"
+          }
+        },
+        "pv": {
+          "type": "object",
+          "required": [
+            "columns",
+            "rows",
+            "origin",
+            "spacing_m",
+            "module_size_m",
+            "height_above_roof_m"
+          ],
+          "properties": {
+            "columns": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "rows": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "origin": {
+              "$ref": "#/$defs/point2"
+            },
+            "spacing_m": {
+              "$ref": "#/$defs/point2"
+            },
+            "module_size_m": {
+              "$ref": "#/$defs/point3"
+            },
+            "height_above_roof_m": {
+              "$ref": "#/$defs/nonnegative"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "stair": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "from_level_id",
+        "to_level_id",
+        "zone",
+        "riser_count",
+        "riser_height_m",
+        "tread_depth_m",
+        "configuration"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "from_level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "to_level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "zone": {
+          "$ref": "#/$defs/polygon"
+        },
+        "riser_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "riser_height_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "tread_depth_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "configuration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        },
+        "geometry": {
+          "type": "object",
+          "properties": {
+            "origin": {
+              "$ref": "#/$defs/point2"
+            },
+            "run_direction": {
+              "$ref": "#/$defs/point2"
+            },
+            "flight_width_m": {
+              "$ref": "#/$defs/positive"
+            },
+            "side_margin_m": {
+              "$ref": "#/$defs/nonnegative"
+            },
+            "flight_gap_m": {
+              "$ref": "#/$defs/nonnegative"
+            },
+            "landing_depth_m": {
+              "$ref": "#/$defs/positive"
+            },
+            "landing_thickness_m": {
+              "$ref": "#/$defs/positive"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "structural_member": {
+      "description": "Concept reinforced-concrete frame member (column or beam, absolute z bounds) or a structural grid axis (no level or geometry).",
+      "type": "object",
+      "required": ["id", "kind", "name"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": ["column", "beam", "axis"]
+        },
+        "mark": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        },
+        "level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "center": {
+          "$ref": "#/$defs/point2"
+        },
+        "section_m": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/positive"
+            },
+            {
+              "$ref": "#/$defs/positive"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "start": {
+          "$ref": "#/$defs/point2"
+        },
+        "end": {
+          "$ref": "#/$defs/point2"
+        },
+        "width_m": {
+          "$ref": "#/$defs/positive"
+        },
+        "bottom_z_m": {
+          "$ref": "#/$defs/number"
+        },
+        "top_z_m": {
+          "$ref": "#/$defs/number"
+        },
+        "placement": {
+          "enum": ["in-wall", "upturned", "flush", "downstand", "band", "edge"]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "enum": ["x", "y"],
+          "description": "x: an axis at constant x, labelled with a number; y: an axis at constant y, labelled with a letter."
+        },
+        "position": {
+          "$ref": "#/$defs/number"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "column"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "mark",
+              "material_id",
+              "level_id",
+              "center",
+              "section_m",
+              "bottom_z_m",
+              "top_z_m"
+            ],
+            "properties": {
+              "start": false,
+              "end": false,
+              "width_m": false,
+              "placement": false,
+              "label": false,
+              "direction": false,
+              "position": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "beam"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "mark",
+              "material_id",
+              "level_id",
+              "start",
+              "end",
+              "width_m",
+              "bottom_z_m",
+              "top_z_m",
+              "placement"
+            ],
+            "properties": {
+              "center": false,
+              "section_m": false,
+              "label": false,
+              "direction": false,
+              "position": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "axis"
+              }
+            }
+          },
+          "then": {
+            "required": ["label", "direction", "position"],
+            "properties": {
+              "mark": false,
+              "material_id": false,
+              "level_id": false,
+              "center": false,
+              "section_m": false,
+              "start": false,
+              "end": false,
+              "width_m": false,
+              "bottom_z_m": false,
+              "top_z_m": false,
+              "placement": false
+            }
+          }
+        }
+      ]
+    },
+    "semanticRef": {
+      "type": "object",
+      "required": ["entity_id", "requirements"],
+      "properties": {
+        "entity_id": {
+          "$ref": "#/$defs/id"
+        },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "roomFloorEvidence": {
+      "description": "Comparison evidence from the saved baseline, never fallback generation geometry.",
+      "type": "object",
+      "required": ["room_id", "polygon", "area_m2"],
+      "properties": {
+        "room_id": {
+          "$ref": "#/$defs/id"
+        },
+        "polygon": {
+          "$ref": "#/$defs/polygon"
+        },
+        "area_m2": {
+          "$ref": "#/$defs/nonnegative"
+        }
+      },
+      "additionalProperties": false
+    },
+    "camera": {
+      "type": "object",
+      "required": ["id", "name", "matrix", "render_jobs", "scene_definitions"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "matrix": {
+          "$ref": "#/$defs/matrix4"
+        },
+        "render_jobs": {
+          "description": "Views of this camera in the render queue, in queue order after earlier cameras' jobs.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/renderJob"
+          }
+        },
+        "scene_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sceneDefinition"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "renderJob": {
+      "type": "object",
+      "required": ["stem", "category", "scene_id", "filename"],
+      "properties": {
+        "stem": {
+          "$ref": "#/$defs/id"
+        },
+        "category": {
+          "enum": ["exteriors", "interiors", "plans"]
+        },
+        "scene_id": {
+          "$ref": "#/$defs/id"
+        },
+        "filename": {
+          "description": "Delivered PNG name inside the category folder.",
+          "type": "string",
+          "pattern": "^[^/]+\\.png$"
+        },
+        "default": {
+          "description": "The view the saved file and the interactive presentation open on; defaults to the first job.",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sceneDefinition": {
+      "type": "object",
+      "required": ["id", "name", "camera_id", "cutaway"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "camera_id": {
+          "$ref": "#/$defs/id"
+        },
+        "cutaway": {
+          "description": "none renders the authored scene, plan an orthographic floor or site plan, section a furnished cutaway of level_id.",
+          "enum": ["none", "plan", "section"]
+        },
+        "level_id": {
+          "description": "The level a floor plan or section shows.",
+          "$ref": "#/$defs/id"
+        },
+        "world_id": {
+          "$ref": "#/$defs/id"
+        },
+        "interior": {
+          "type": "boolean"
+        },
+        "evening": {
+          "description": "Evening scene: the temporary key/fill suns keep only a faint fill.",
+          "type": "boolean"
+        },
+        "view_transform": {
+          "type": "string"
+        },
+        "look": {
+          "type": "string"
+        },
+        "exposure": {
+          "type": "number"
+        },
+        "white_balance_temperature": {
+          "type": "number"
+        },
+        "excluded_collections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "extensibleEntity": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "additionalProperties": true
+    },
+    "trim": {
+      "type": "object",
+      "required": ["center", "size"],
+      "properties": {
+        "center": {
+          "$ref": "#/$defs/point3"
+        },
+        "size": {
+          "$ref": "#/$defs/point3"
+        },
+        "finish": {
+          "enum": ["timber", "graphite"]
+        },
+        "material_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "additionalProperties": false
+    },
+    "void": {
+      "type": "object",
+      "required": ["id", "name", "level_id", "room_below_id", "polygon", "cut_slab_ids"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "level_id": {
+          "$ref": "#/$defs/id"
+        },
+        "room_below_id": {
+          "$ref": "#/$defs/id"
+        },
+        "polygon": {
+          "$ref": "#/$defs/polygon"
+        },
+        "cut_slab_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

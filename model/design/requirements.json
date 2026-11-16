@@ -1,0 +1,164 @@
+{
+  "schema_version": 3,
+  "gross_area": {
+    "cap_m2": 180.0,
+    "requirement_ids": ["LAY-06"]
+  },
+  "setback": {
+    "minimum_m": 2.0,
+    "requirement_ids": ["SITE-02"]
+  },
+  "clear_heights": {
+    "levels_m": {
+      "G": 2.55,
+      "U": 2.55
+    },
+    "minimum_habitable_m": 2.55,
+    "requirement_ids": ["LAY-07"]
+  },
+  "stair_geometry": {
+    "formula_min_cm": 62.0,
+    "formula_max_cm": 64.0,
+    "max_risers_per_flight": 18,
+    "flights": 2,
+    "source": "NP 057-02 3.2.(A).6",
+    "requirement_ids": ["LAY-04"]
+  },
+  "corridor_width": {
+    "minimum_m": 1.2,
+    "room_ids": ["G-HALL", "U-LOBBY"],
+    "source": "Legea 114/1996, anexa nr. 1",
+    "requirement_ids": ["LAY-05"]
+  },
+  "main_bathroom_access": {
+    "room_id": "U-BATH",
+    "reference_square_m": 1.5,
+    "reference_door_clear_width_m": 0.8,
+    "source": "Legea 114/1996, anexa nr. 1; NP 057-02 3.2.(A).4",
+    "requirement_ids": ["RM-UBATH-01"]
+  },
+  "pv_modules": {
+    "count": 16,
+    "requirement_ids": ["EN-07"]
+  },
+  "programme": {
+    "rooms": {
+      "G-HALL": "G",
+      "G-LIV": "G",
+      "G-KIT": "G",
+      "G-OFF": "G",
+      "G-BATH": "G",
+      "G-TECH": "G",
+      "G-STAIR": "G",
+      "U-LOBBY": "U",
+      "U-MBED": "U",
+      "U-CHILD": "U",
+      "U-BATH": "U"
+    },
+    "bathrooms": ["G-BATH", "U-BATH"],
+    "requirement_ids": ["LAY-01", "RM-HOUSE-01"]
+  },
+  "direct_connections": [
+    {
+      "rooms": ["G-HALL", "G-LIV"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["G-HALL", "G-OFF"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["G-HALL", "G-BATH"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["G-HALL", "G-TECH"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["G-HALL", "G-STAIR"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["G-KIT", "G-LIV"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["U-LOBBY", "U-MBED"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["U-LOBBY", "U-CHILD"],
+      "requirement_ids": ["LAY-01"]
+    },
+    {
+      "rooms": ["U-LOBBY", "U-BATH"],
+      "requirement_ids": ["LAY-01"]
+    }
+  ],
+  "required_equipment": [
+    {
+      "requirement_id": "RM-BATH-01",
+      "room_id": "G-BATH",
+      "purposes": ["shower", "toilet", "bathroom-vanity"]
+    },
+    {
+      "requirement_id": "RM-UBATH-01",
+      "room_id": "U-BATH",
+      "purposes": ["bathtub", "toilet", "bathroom-vanity"]
+    },
+    {
+      "requirement_id": "RM-TECH-01",
+      "room_id": "G-TECH",
+      "purposes": [
+        "heat-pump-indoor-unit",
+        "domestic-hot-water-storage-tank",
+        "mvhr-unit",
+        "washing-machine",
+        "tumble-dryer",
+        "electrical-panel",
+        "network-rack"
+      ]
+    }
+  ],
+  "required_site_components": [
+    {
+      "requirement_id": "GAR-01",
+      "kinds": ["lawn", "landscape-plant"]
+    },
+    {
+      "requirement_id": "GAR-02",
+      "kinds": ["perimeter-walkway"]
+    },
+    {
+      "requirement_id": "GAR-03",
+      "kinds": ["terrace", "terrace-furniture"]
+    },
+    {
+      "requirement_id": "GAR-04",
+      "kinds": ["parking", "pedestrian-path"]
+    },
+    {
+      "requirement_id": "GAR-05",
+      "kinds": ["fence", "pedestrian-gate", "vehicle-gate"]
+    },
+    {
+      "requirement_id": "EN-03",
+      "kinds": ["heat-pump-outdoor-unit"]
+    }
+  ],
+  "review_only": [
+    {
+      "requirement_ids": ["SITE-01", "HH-05"],
+      "reason": "Parcela demonstrativă este fictivă și nemăsurată; poziția casei, accesul și retragerile legale se stabilesc după ridicarea topografică și certificatul de urbanism."
+    },
+    {
+      "requirement_ids": ["RM-UBATH-01"],
+      "reason": "Accesul la cadă pentru persoane în scaun cu rotile este o verificare a arhitectului; modelul nu dovedește conformarea."
+    },
+    {
+      "requirement_ids": ["EN-07"],
+      "reason": "Cele 16 module sunt un volum de concept; puterea, lestarea și încărcările se stabilesc prin proiect."
+    }
+  ]
+}

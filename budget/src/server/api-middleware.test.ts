@@ -1,79 +1,77 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { createServer, request as httpRequest, type Server } from "node:http";
-import { tmpdir } from "node:os";
+import { rm } from "node:fs/promises";
+import { createServer, request as httpRequest } from "node:http";
 import { join } from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { BudgetConflictError, loadBudget, saveBudget } from "../api/client.js";
-import { serializeBudgetDocument } from "../domain/serialization.js";
-import { makeDocument } from "../domain/test-fixtures.js";
+import { loadBudget } from "../api/client.js";
+import { createTempBudgetFile } from "../test/budget-file.js";
+import { makeDocument } from "../test/builders.js";
 import { createBudgetApiMiddleware } from "./api-middleware.js";
-import { BudgetStore } from "./budget-store.js";
+import { BudgetFileReader } from "./budget-file-reader.js";
 import { ExchangeRateCache } from "./exchange-rate.js";
 
+interface TestApiServer {
+  documentPath: string;
+  baseUrl: string;
+  close: () => Promise<void>;
+}
+
+/** Serves the API middleware over a temporary budget file on an ephemeral loopback port. */
+async function startApiServer(
+  prefix: string,
+  buildExchangeRates?: (directory: string) => ExchangeRateCache,
+): Promise<TestApiServer> {
+  const { directory, documentPath } = await createTempBudgetFile(prefix);
+  const middleware = createBudgetApiMiddleware(new BudgetFileReader({ documentPath }), {
+    exchangeRates: buildExchangeRates?.(directory),
+  });
+  const server = createServer((request, response) => {
+    middleware(request, response, () => {
+      response.statusCode = 404;
+      response.end();
+    });
+  });
+  await new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("Adresa de test lipsește");
+  return {
+    documentPath,
+    baseUrl: `http://127.0.0.1:${address.port}`,
+    async close() {
+      await new Promise<void>((resolve, reject) => {
+        server.close((error) => (error ? reject(error) : resolve()));
+      });
+      await rm(directory, { recursive: true, force: true });
+    },
+  };
+}
+
 describe("budget API middleware", () => {
-  let directory: string;
+  let api: TestApiServer;
   let documentPath: string;
-  let server: Server;
   let baseUrl: string;
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), "house-template-budget-api-"));
-    documentPath = join(directory, "project.json");
-    await writeFile(documentPath, serializeBudgetDocument(makeDocument()), "utf8");
-    const middleware = createBudgetApiMiddleware(
-      new BudgetStore({ documentPath, backupDirectory: join(directory, "backups") }),
-      { maxBodyBytes: 100_000 },
-    );
-    server = createServer((request, response) => {
-      middleware(request, response, () => {
-        response.statusCode = 404;
-        response.end();
-      });
-    });
-    await new Promise<void>((resolve, reject) => {
-      server.once("error", reject);
-      server.listen(0, "127.0.0.1", resolve);
-    });
-    const address = server.address();
-    if (!address || typeof address === "string") throw new Error("Adresa de test lipsește");
-    baseUrl = `http://127.0.0.1:${address.port}`;
+    api = await startApiServer("house-project-template-budget-api-");
+    ({ documentPath, baseUrl } = api);
   });
 
-  afterEach(async () => {
-    await new Promise<void>((resolve, reject) => {
-      server.close((error) => (error ? reject(error) : resolve()));
-    });
-    await rm(directory, { recursive: true, force: true });
-  });
+  afterEach(() => api.close());
 
   const apiFetch: typeof fetch = (input, init) => {
     const requestedUrl =
       typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
     const url = new URL(requestedUrl, baseUrl);
-    const headers = new Headers(init?.headers);
-    if (init?.method === "PUT") headers.set("Origin", baseUrl);
-    return fetch(url, { ...init, headers });
+    return fetch(url, init);
   };
 
-  function requestApi(
-    headers: Record<string, string>,
-    payload?: string,
-  ): Promise<{ status: number; body: string }> {
+  function requestApi(headers: Record<string, string>): Promise<{ status: number; body: string }> {
     return new Promise((resolve, reject) => {
-      const request = httpRequest(`${baseUrl}/api/budget`, {
-        method: payload === undefined ? "GET" : "PUT",
-        headers: {
-          ...(payload === undefined
-            ? {}
-            : {
-                "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(payload),
-              }),
-          ...headers,
-        },
-      });
+      const request = httpRequest(`${baseUrl}/api/budget`, { method: "GET", headers });
       request.once("error", reject);
       request.once("response", (incoming) => {
         const chunks: Buffer[] = [];
@@ -85,120 +83,41 @@ describe("budget API middleware", () => {
           }),
         );
       });
-      request.end(payload);
+      request.end();
     });
   }
 
-  it("loads and saves through the typed client", async () => {
-    const initial = await loadBudget(apiFetch);
-    const saved = await saveBudget(
-      initial.revision,
-      { ...initial.document, project: { ...initial.document.project, name: "Prin API" } },
-      apiFetch,
-    );
-    expect(saved.document.project.name).toBe("Prin API");
-    expect(saved.revision).not.toBe(initial.revision);
-  });
-
-  it.each([
-    undefined,
-    "http://house.localhost",
-    "https://house.localhost:8443",
-    "https://other.localhost",
-    "https://house.localhost.attacker.example",
-    "http://localhost",
-  ])("rejects writes through a custom host from origin %s", async (origin) => {
-    const initial = await loadBudget(apiFetch);
-    const before = await readFile(documentPath, "utf8");
-    const headers: Record<string, string> = { Host: "house.localhost" };
-    if (origin !== undefined) headers.Origin = origin;
-    const response = await requestApi(
-      headers,
-      JSON.stringify({ expectedRevision: initial.revision, document: initial.document }),
-    );
-    expect(response.status).toBe(403);
-    expect(JSON.parse(response.body)).toMatchObject({
-      error: { code: "LOOPBACK_HOST_REQUIRED" },
-    });
-    expect(await readFile(documentPath, "utf8")).toBe(before);
-  });
-
-  it("returns the latest document on revision conflict", async () => {
-    const initial = await loadBudget(apiFetch);
-    await saveBudget(
-      initial.revision,
-      { ...initial.document, project: { ...initial.document.project, name: "Nou" } },
-      apiFetch,
-    );
-    let conflict: BudgetConflictError | undefined;
-    try {
-      await saveBudget(initial.revision, initial.document, apiFetch);
-    } catch (error) {
-      if (error instanceof BudgetConflictError) conflict = error;
-      else throw error;
-    }
-    expect(conflict?.latest.document.project.name).toBe("Nou");
-  });
-
-  it("rejects cross-origin writes without changing the file", async () => {
-    const initial = await loadBudget(apiFetch);
-    const before = await readFile(documentPath, "utf8");
-    const response = await fetch(`${baseUrl}/api/budget`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Origin: "http://evil.example" },
-      body: JSON.stringify({ expectedRevision: initial.revision, document: initial.document }),
-    });
-    expect(response.status).toBe(403);
-    expect(await readFile(documentPath, "utf8")).toBe(before);
+  it("loads through the typed client", async () => {
+    const snapshot = await loadBudget(apiFetch);
+    expect(snapshot.document).toEqual(makeDocument());
+    expect(snapshot.revision).toMatch(/^[a-f0-9]{64}$/);
   });
 
   it.each([
     "attacker.example",
     "other.localhost",
-    "house.localhost.attacker.example",
-    "house.localhost:8443",
+    "budget.localhost",
+    "localhost.attacker.example",
   ])("rejects unapproved Host %s even with proxy headers", async (host) => {
-    const initial = await loadBudget(apiFetch);
-    const before = await readFile(documentPath, "utf8");
-    const payload = JSON.stringify({
-      expectedRevision: initial.revision,
-      document: initial.document,
+    const response = await requestApi({
+      Host: host,
+      "X-Forwarded-Host": "localhost",
+      "X-Forwarded-Proto": "https",
     });
-    const response = await requestApi(
-      {
-        Host: host,
-        Origin: `http://${host}`,
-        "X-Forwarded-Host": "house.localhost",
-        "X-Forwarded-Proto": "https",
-      },
-      payload,
-    );
     const body = JSON.parse(response.body) as { error: { code: string } };
     expect(response.status).toBe(403);
     expect(body.error.code).toBe("LOOPBACK_HOST_REQUIRED");
-    expect(await readFile(documentPath, "utf8")).toBe(before);
   });
 
-  it("rejects oversized and invalid documents without corruption", async () => {
+  it("refuses writes because the API is read-only", async () => {
     const initial = await loadBudget(apiFetch);
-    const before = await readFile(documentPath, "utf8");
-    const oversized = await fetch(`${baseUrl}/api/budget`, {
+    const response = await fetch(`${baseUrl}/api/budget`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Origin: baseUrl },
-      body: JSON.stringify({ noise: "x".repeat(100_001) }),
+      body: JSON.stringify({ expectedRevision: initial.revision, document: initial.document }),
     });
-    expect(oversized.status).toBe(413);
-
-    const invalid = await fetch(`${baseUrl}/api/budget`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Origin: baseUrl },
-      body: JSON.stringify({
-        expectedRevision: initial.revision,
-        document: { ...initial.document, milestones: [] },
-      }),
-    });
-    expect(invalid.status).toBe(400);
-    expect(await readFile(documentPath, "utf8")).toBe(before);
+    expect(response.status).toBe(405);
+    expect(response.headers.get("Allow")).toBe("GET");
   });
 
   it("gives an actionable error for a missing canonical file", async () => {
@@ -212,39 +131,15 @@ describe("budget API middleware", () => {
 });
 
 describe("exchange rate API", () => {
-  let directory: string;
-  let server: Server;
+  let api: TestApiServer;
   let baseUrl: string;
 
   async function start(buildExchangeRates?: (dir: string) => ExchangeRateCache): Promise<void> {
-    directory = await mkdtemp(join(tmpdir(), "house-template-budget-fx-"));
-    const documentPath = join(directory, "project.json");
-    await writeFile(documentPath, serializeBudgetDocument(makeDocument()), "utf8");
-    const middleware = createBudgetApiMiddleware(
-      new BudgetStore({ documentPath, backupDirectory: join(directory, "backups") }),
-      { exchangeRates: buildExchangeRates?.(directory) },
-    );
-    server = createServer((request, response) => {
-      middleware(request, response, () => {
-        response.statusCode = 404;
-        response.end();
-      });
-    });
-    await new Promise<void>((resolve, reject) => {
-      server.once("error", reject);
-      server.listen(0, "127.0.0.1", resolve);
-    });
-    const address = server.address();
-    if (!address || typeof address === "string") throw new Error("Adresa de test lipsește");
-    baseUrl = `http://127.0.0.1:${address.port}`;
+    api = await startApiServer("house-project-template-budget-fx-", buildExchangeRates);
+    ({ baseUrl } = api);
   }
 
-  afterEach(async () => {
-    await new Promise<void>((resolve, reject) => {
-      server.close((error) => (error ? reject(error) : resolve()));
-    });
-    await rm(directory, { recursive: true, force: true });
-  });
+  afterEach(() => api.close());
 
   it("returns 200 with the cached exchange rate snapshot", async () => {
     await start(

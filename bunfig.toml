@@ -1,0 +1,3 @@
+[install]
+# Keep the cooldown local: Bun can ignore minimumReleaseAge in global config.
+minimumReleaseAge = 604800

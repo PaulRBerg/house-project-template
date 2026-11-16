@@ -1,0 +1,462 @@
+{
+  "site_components": [
+    {
+      "id": "site-context",
+      "name": "Context / teren vecin și stradă (fundal de prezentare)",
+      "kind": "generated_site",
+      "purpose": "context",
+      "collection": "00 | Site & landscape",
+      "parts": [
+        {
+          "id": "context-ground",
+          "name": "Context / teren vecin",
+          "primitive": "box",
+          "position": [
+            12.0,
+            20.0,
+            -0.26
+          ],
+          "dimensions": [
+            160.0,
+            160.0,
+            0.1
+          ],
+          "material_id": "mat_grass"
+        },
+        {
+          "id": "context-street",
+          "name": "Context / stradă",
+          "primitive": "box",
+          "position": [
+            12.0,
+            -3.5,
+            -0.21
+          ],
+          "dimensions": [
+            160.0,
+            7.0,
+            0.04
+          ],
+          "material_id": "mat_stone_grey"
+        }
+      ]
+    },
+    {
+      "id": "site-lawn",
+      "name": "Grădină / gazon",
+      "kind": "generated_site",
+      "purpose": "lawn",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-01"],
+      "primitive": "prism",
+      "outline": [
+        [0.0, 0.0],
+        [24.0, 0.0],
+        [24.0, 40.0],
+        [0.0, 40.0]
+      ],
+      "height": 0,
+      "position": [0, 0, -0.17],
+      "material_id": "mat_grass"
+    },
+    {
+      "id": "site-vehicle-access",
+      "name": "Acces auto și loc de parcare descoperit",
+      "kind": "generated_site",
+      "purpose": "parking",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["SITE-07", "GAR-04"],
+      "parts": [
+        {
+          "id": "vehicle-access-drive",
+          "name": "Acces auto / pavaj drenant din stradă",
+          "primitive": "box",
+          "position": [15.0, 2.75, -0.09],
+          "dimensions": [3.0, 5.5, 0.14],
+          "material_id": "mat_stone_grey"
+        },
+        {
+          "id": "vehicle-access-space",
+          "name": "Loc de parcare descoperit",
+          "primitive": "box",
+          "position": [15.0, 8.25, -0.09],
+          "dimensions": [3.0, 5.5, 0.14],
+          "material_id": "mat_stone_grey"
+        }
+      ]
+    },
+    {
+      "id": "site-vehicle-proxy",
+      "name": "Autoturism (volum de referință)",
+      "kind": "generated_site",
+      "purpose": "vehicle-proxy",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["SITE-07"],
+      "parts": [
+        {
+          "id": "vehicle-proxy-body",
+          "name": "Autoturism / caroserie",
+          "primitive": "box",
+          "position": [15.0, 8.2, 0.55],
+          "dimensions": [1.8, 4.4, 0.75],
+          "material_id": "mat_metal_dark"
+        },
+        {
+          "id": "vehicle-proxy-cabin",
+          "name": "Autoturism / habitaclu",
+          "primitive": "box",
+          "position": [15.0, 8.4, 1.2],
+          "dimensions": [1.6, 2.3, 0.55],
+          "material_id": "mat_glass"
+        }
+      ]
+    },
+    {
+      "id": "site-entrance-path",
+      "name": "Alee pietonală de la poartă la intrare",
+      "kind": "generated_site",
+      "purpose": "pedestrian-path",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-04"],
+      "parts": [
+        {
+          "id": "entrance-path",
+          "name": "Alee pietonală",
+          "primitive": "box",
+          "position": [8.7, 3.7, -0.09],
+          "dimensions": [1.4, 7.4, 0.14],
+          "material_id": "mat_exterior_concrete"
+        }
+      ]
+    },
+    {
+      "id": "site-perimeter-walkway",
+      "name": "Trotuar perimetral",
+      "kind": "generated_site",
+      "purpose": "perimeter-walkway",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-02"],
+      "parts": [
+        {
+          "id": "walkway-street",
+          "name": "Trotuar / latura spre stradă",
+          "primitive": "box",
+          "position": [8.0, 7.7, -0.09],
+          "dimensions": [9.2, 0.6, 0.14],
+          "material_id": "mat_exterior_concrete"
+        },
+        {
+          "id": "walkway-west",
+          "name": "Trotuar / latura de vest",
+          "primitive": "box",
+          "position": [3.7, 13.3, -0.09],
+          "dimensions": [0.6, 10.6, 0.14],
+          "material_id": "mat_exterior_concrete"
+        },
+        {
+          "id": "walkway-east",
+          "name": "Trotuar / latura de est",
+          "primitive": "box",
+          "position": [12.3, 13.3, -0.09],
+          "dimensions": [0.6, 10.6, 0.14],
+          "material_id": "mat_exterior_concrete"
+        },
+        {
+          "id": "walkway-garden",
+          "name": "Trotuar / latura spre grădină",
+          "primitive": "box",
+          "position": [5.0, 18.3, -0.09],
+          "dimensions": [2.0, 0.6, 0.14],
+          "material_id": "mat_exterior_concrete"
+        }
+      ]
+    },
+    {
+      "id": "site-terrace",
+      "name": "Terasă descoperită lângă living",
+      "kind": "generated_site",
+      "purpose": "terrace",
+      "collection": "Exterior | Terrace",
+      "requirement_ids": ["GAR-03"],
+      "parts": [
+        {
+          "id": "terrace-floor",
+          "name": "Terasă / dale exterioare antiderapante",
+          "primitive": "box",
+          "position": [9.0, 20.0, -0.08],
+          "dimensions": [6.0, 4.0, 0.16],
+          "material_id": "mat_exterior_travertine"
+        }
+      ],
+      "setback_subject": true
+    },
+    {
+      "id": "site-terrace-table",
+      "name": "Terasă / masă pentru șase persoane",
+      "kind": "generated_site",
+      "purpose": "terrace-furniture",
+      "collection": "Exterior | Furniture",
+      "requirement_ids": ["GAR-03"],
+      "parts": [
+        {
+          "id": "terrace-table",
+          "name": "Terasă / masă pentru șase persoane",
+          "position": [9.0, 20.2, 0.375],
+          "rotation": [0, 0, 0],
+          "dimensions": [1.8, 0.9, 0.75],
+          "generated": {
+            "kind": "table",
+            "params": {
+              "shape": "rect",
+              "corner_radius": 0.02,
+              "base": "legs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "site-terrace-chair-1",
+      "name": "Terasă / scaun de masă 1",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-01:28fe094b1327",
+      "position": [8.4, 19.35, 0.418787],
+      "rotation": [0, 0, 1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-chair-2",
+      "name": "Terasă / scaun de masă 2",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-02:228d989f3c26",
+      "position": [9.0, 19.35, 0.418787],
+      "rotation": [0, 0, 1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-chair-3",
+      "name": "Terasă / scaun de masă 3",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-03:d01db882e323",
+      "position": [9.6, 19.35, 0.418787],
+      "rotation": [0, 0, 1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-chair-4",
+      "name": "Terasă / scaun de masă 4",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-04:8e9b8358ff61",
+      "position": [8.4, 21.05, 0.418787],
+      "rotation": [0, 0, -1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-chair-5",
+      "name": "Terasă / scaun de masă 5",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-05:e019c9b653fc",
+      "position": [9.0, 21.05, 0.418787],
+      "rotation": [0, 0, -1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-chair-6",
+      "name": "Terasă / scaun de masă 6",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-dining-chair-06:aaef1d1ccd2c",
+      "position": [9.6, 21.05, 0.418787],
+      "rotation": [0, 0, -1.570796],
+      "dimensions": [0.4725, 0.470001, 0.837575]
+    },
+    {
+      "id": "site-terrace-planter",
+      "name": "Terasă / jardinieră",
+      "kind": "reusable_site_asset",
+      "purpose": "terrace-furniture",
+      "requirement_ids": ["GAR-03"],
+      "asset_id": "reusable-furniture:exterior-furniture:terrace-planter:8675c34d5f39",
+      "position": [11.5, 21.5, 0.441708],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [0.592152, 0.61385, 0.883416]
+    },
+    {
+      "id": "site-fence",
+      "name": "Gard perimetral",
+      "kind": "generated_site",
+      "purpose": "fence",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-05"],
+      "parts": [
+        {
+          "id": "fence-street-west",
+          "name": "Gard / fence-street-west",
+          "primitive": "box",
+          "position": [4.0, 0.0, 0.7],
+          "dimensions": [8.0, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, 0.0]
+        },
+        {
+          "id": "fence-street-middle",
+          "name": "Gard / fence-street-middle",
+          "primitive": "box",
+          "position": [11.45, 0.0, 0.7],
+          "dimensions": [4.1, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, 0.0]
+        },
+        {
+          "id": "fence-street-east",
+          "name": "Gard / fence-street-east",
+          "primitive": "box",
+          "position": [20.25, 0.0, 0.7],
+          "dimensions": [7.5, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, 0.0]
+        },
+        {
+          "id": "fence-east",
+          "name": "Gard / fence-east",
+          "primitive": "box",
+          "position": [24.0, 20.0, 0.7],
+          "dimensions": [40.0, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, 1.570796]
+        },
+        {
+          "id": "fence-rear",
+          "name": "Gard / fence-rear",
+          "primitive": "box",
+          "position": [12.0, 40.0, 0.7],
+          "dimensions": [24.0, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, 3.141593]
+        },
+        {
+          "id": "fence-west",
+          "name": "Gard / fence-west",
+          "primitive": "box",
+          "position": [0.0, 20.0, 0.7],
+          "dimensions": [40.0, 0.05, 1.4],
+          "material_id": "mat_metal_dark",
+          "rotation": [0, 0, -1.570796]
+        }
+      ]
+    },
+    {
+      "id": "site-pedestrian-gate",
+      "name": "Poartă pietonală",
+      "kind": "generated_site",
+      "purpose": "pedestrian-gate",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-05"],
+      "parts": [
+        {
+          "id": "pedestrian-gate-leaf",
+          "name": "Poartă pietonală / foaie",
+          "primitive": "box",
+          "position": [8.7, 0.0, 0.7],
+          "dimensions": [1.3, 0.06, 1.4],
+          "material_id": "mat_dark_wood"
+        }
+      ]
+    },
+    {
+      "id": "site-vehicle-gate",
+      "name": "Poartă auto",
+      "kind": "generated_site",
+      "purpose": "vehicle-gate",
+      "collection": "00 | Site & landscape",
+      "requirement_ids": ["GAR-05", "SITE-07"],
+      "parts": [
+        {
+          "id": "vehicle-gate-leaf",
+          "name": "Poartă auto / foaie culisantă",
+          "primitive": "box",
+          "position": [15.0, 0.0, 0.7],
+          "dimensions": [2.9, 0.06, 1.4],
+          "material_id": "mat_dark_wood"
+        }
+      ]
+    },
+    {
+      "id": "site-tree-shade",
+      "name": "Grădină / arbore de umbră",
+      "kind": "reusable_site_asset",
+      "purpose": "landscape-plant",
+      "requirement_ids": ["GAR-01"],
+      "asset_id": "reusable-plant:00-site-landscape:garden-shade-tree:dc02746f31df",
+      "position": [18.0, 27.0, 2.516634],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [3.830055, 3.928925, 5.373267]
+    },
+    {
+      "id": "site-tree-apple",
+      "name": "Grădină / măr",
+      "kind": "reusable_site_asset",
+      "purpose": "landscape-plant",
+      "requirement_ids": ["GAR-01"],
+      "asset_id": "reusable-plant:00-site-landscape:orchard-apple:755738a4572d",
+      "position": [6.0, 31.0, 2.290501],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [3.691721, 3.586912, 4.921002]
+    },
+    {
+      "id": "site-tree-pear",
+      "name": "Grădină / păr",
+      "kind": "reusable_site_asset",
+      "purpose": "landscape-plant",
+      "requirement_ids": ["GAR-01"],
+      "asset_id": "reusable-plant:00-site-landscape:orchard-pear:d5736b2a9d9d",
+      "position": [12.5, 35.0, 2.328389],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [3.765644, 3.902397, 4.996778]
+    },
+    {
+      "id": "site-border-rear",
+      "name": "Grădină / arbuști de-a lungul gardului din spate",
+      "kind": "reusable_site_asset",
+      "purpose": "landscape-plant",
+      "requirement_ids": ["GAR-01", "GAR-08"],
+      "asset_id": "reusable-plant:00-site-landscape:garden-lower-border:c34f72e305e4",
+      "position": [12.0, 38.9, 0.227431],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [17.0, 1.457754, 0.794861]
+    },
+    {
+      "id": "site-border-east",
+      "name": "Grădină / arbuști de-a lungul gardului de est",
+      "kind": "reusable_site_asset",
+      "purpose": "landscape-plant",
+      "requirement_ids": ["GAR-01", "GAR-08"],
+      "asset_id": "reusable-plant:00-site-landscape:garden-upper-border:324571464f24",
+      "position": [22.9, 26.0, 0.226989],
+      "rotation": [0, 0, 1.570796],
+      "dimensions": [17.0, 1.403788, 0.793977]
+    },
+    {
+      "id": "site-heat-pump",
+      "name": "Pompă de căldură / unitate exterioară",
+      "kind": "reusable_site_asset",
+      "purpose": "heat-pump-outdoor-unit",
+      "requirement_ids": ["EN-03"],
+      "asset_id": "reusable-equipment:exterior-heat-pump:heat-pump:aab60a8f14af",
+      "position": [2.9, 11.5, 0.63],
+      "rotation": [0, 0, 0.0],
+      "dimensions": [0.979, 1.700001, 1.3]
+    }
+  ]
+}

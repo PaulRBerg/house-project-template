@@ -3,7 +3,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "./styles.js";
 
-export type AppSelectOption<Value extends string> = {
+type AppSelectOption<Value extends string> = {
   value: Value;
   label: string;
 };
@@ -14,9 +14,7 @@ type AppSelectProps<Value extends string> = {
   value: Value;
   options: readonly AppSelectOption<Value>[];
   onValueChange: (value: Value) => void;
-  disabled?: boolean;
   className?: string;
-  popupClassName?: string;
 };
 
 export function AppSelect<Value extends string>({
@@ -25,13 +23,10 @@ export function AppSelect<Value extends string>({
   value,
   options,
   onValueChange,
-  disabled = false,
   className,
-  popupClassName,
 }: AppSelectProps<Value>) {
   return (
     <Select.Root
-      disabled={disabled}
       items={options}
       name={name}
       onValueChange={(nextValue) => {
@@ -42,7 +37,7 @@ export function AppSelect<Value extends string>({
       <Select.Trigger
         aria-label={label}
         className={cn(
-          "inline-flex min-h-10.5 items-center justify-between gap-2 rounded-[7px] border border-line bg-surface py-0 pr-2.5 pl-2.75 text-[0.72rem] text-ink outline-hidden data-disabled:cursor-not-allowed data-disabled:opacity-55",
+          "inline-flex min-h-10.5 items-center justify-between gap-2 rounded-[7px] border border-line bg-surface py-0 pr-2.5 pl-2.75 text-[0.72rem] text-ink outline-hidden",
           className,
         )}
       >
@@ -53,16 +48,11 @@ export function AppSelect<Value extends string>({
       </Select.Trigger>
       <Select.Portal>
         <Select.Positioner alignItemWithTrigger={false} className="z-(--z-dropdown)" sideOffset={4}>
-          <Select.Popup
-            className={cn(
-              "min-w-(--anchor-width) origin-(--transform-origin) overflow-hidden rounded-[7px] border border-line bg-surface text-[0.72rem] text-ink shadow-panel transition-[transform,opacity] data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
-              popupClassName,
-            )}
-          >
+          <Select.Popup className="min-w-(--anchor-width) origin-(--transform-origin) overflow-hidden rounded-[7px] border border-line bg-surface text-[0.72rem] text-ink shadow-panel transition-[transform,opacity] data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none">
             <Select.List className="max-h-72 overflow-y-auto p-1">
               {options.map((option) => (
                 <Select.Item
-                  className="grid min-h-9 cursor-default grid-cols-[1rem_1fr] items-center gap-2 rounded-[5px] px-2.5 outline-hidden select-none data-disabled:opacity-55 data-highlighted:bg-line/60 data-selected:font-[680]"
+                  className="grid min-h-9 cursor-default grid-cols-[1rem_1fr] items-center gap-2 rounded-[5px] px-2.5 outline-hidden select-none data-highlighted:bg-line/60 data-selected:font-[680]"
                   key={option.value}
                   value={option.value}
                 >

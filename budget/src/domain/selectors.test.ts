@@ -1,18 +1,124 @@
 import { describe, expect, it } from "vitest";
 
-import { growCents, selectBudgetView } from "./selectors.js";
-import { makeDocument, makeGroup, makeInstalment, makeItem, makePayment } from "./test-fixtures.js";
+import {
+  makeDocument,
+  makeGroup,
+  makeInstalment,
+  makeItem,
+  makePayment,
+} from "../test/builders.js";
+import { buildMonthlyCashFlow, selectBudgetView } from "./selectors.js";
 
-const options = { scenario: "base" as const, asOf: "2027-01-01" };
+const options = { asOf: "2027-01-01" };
 
 describe("budget selectors", () => {
+  it("keeps contingency rounding identical in separate and combined stage budgets", () => {
+    const estimate = {
+      kind: "total" as const,
+      amounts: { baseCents: 5 },
+      fixed: true,
+      pricedOn: "2026-09-21",
+    };
+    const document = makeDocument({
+      items: [
+        makeItem({ estimate }),
+        makeItem({ id: "extra-cent", milestoneId: "extra", estimate }),
+      ],
+      instalments: [],
+    });
+    const initial = selectBudgetView(document, options);
+    const extra = selectBudgetView(document, { ...options, scope: "extra" });
+    const all = selectBudgetView(document, { ...options, scope: "all" });
+    expect(initial.items.map((item) => item.contingencyCents)).toEqual([1]);
+    expect(extra.items.map((item) => item.contingencyCents)).toEqual([1]);
+    expect(all.summary.totalCashForecastCents).toBe(12);
+    expect(all.items.map((item) => item.contingencyCents)).toEqual([1, 1]);
+  });
+
+  it("separates Extra estimates, payments and cash flow unless explicitly requested", () => {
+    const baseline = makeDocument();
+    const document = makeDocument({
+      groups: [
+        ...baseline.groups,
+        makeGroup({ id: "extras", label: "Extra", milestoneId: "extra" }),
+      ],
+      items: [
+        ...baseline.items,
+        makeItem({ id: "child-wardrobe", groupId: "extras", milestoneId: "extra" }),
+      ],
+      instalments: [
+        ...baseline.instalments,
+        makeInstalment({ id: "extra-plan", itemId: "child-wardrobe", dueOn: "2031-06" }),
+      ],
+      payments: [
+        makePayment({
+          id: "extra-payment",
+          itemId: "child-wardrobe",
+          instalmentId: "extra-plan",
+          paidOn: "2029-06-20",
+          amountCents: 2_000,
+        }),
+      ],
+    });
+    const initial = selectBudgetView(document, options);
+    const extra = selectBudgetView(document, { ...options, scope: "extra" });
+    const all = selectBudgetView(document, { ...options, scope: "all" });
+    expect(initial).toEqual(selectBudgetView(baseline, options));
+    expect(extra.items.map(({ item }) => item.id)).toEqual(["child-wardrobe"]);
+    expect(extra.hierarchy.map(({ id }) => id)).toEqual(["extras"]);
+    expect(extra.summary).toMatchObject({
+      actualPaidCents: 2_000,
+      remainingCashForecastCents: 8_800,
+      totalCashForecastCents: 10_800,
+    });
+    expect(
+      buildMonthlyCashFlow(extra.allocations).months.map(({ periodKey }) => periodKey),
+    ).toEqual(["2029-06", "2031-06"]);
+    expect(extra.upcomingPayments[0]?.itemId).toBe("child-wardrobe");
+    expect(all.summary.totalCashForecastCents).toBe(
+      initial.summary.totalCashForecastCents + extra.summary.totalCashForecastCents,
+    );
+    expect(all.allocations.reduce((sum, allocation) => sum + allocation.amountCents, 0)).toBe(
+      all.summary.totalCashForecastCents,
+    );
+    expect(document.items[1]?.included).toBe(true);
+    expect(document.payments).toHaveLength(1);
+  });
+
+  it("retains Extra actuals after archiving only in its separate and combined budgets", () => {
+    const baseline = makeDocument();
+    const document = makeDocument({
+      groups: [
+        ...baseline.groups,
+        makeGroup({ id: "extras", milestoneId: "extra", archived: true }),
+      ],
+      items: [
+        ...baseline.items,
+        makeItem({ id: "extra-item", groupId: "extras", milestoneId: "extra" }),
+      ],
+      instalments: [
+        ...baseline.instalments,
+        makeInstalment({ id: "extra-plan", itemId: "extra-item", dueOn: "2031-06" }),
+      ],
+      payments: [makePayment({ itemId: "extra-item", instalmentId: "extra-plan" })],
+    });
+    expect(selectBudgetView(document, options)).toEqual(selectBudgetView(baseline, options));
+    const extra = selectBudgetView(document, { ...options, scope: "extra" });
+    expect(extra.summary).toMatchObject({
+      actualPaidCents: 2_000,
+      remainingCashForecastCents: 0,
+      totalCashForecastCents: 2_000,
+    });
+    expect(extra.upcomingPayments).toEqual([]);
+  });
+
   it("rounds quantity-rate money to integer euro cents", () => {
     const item = makeItem({
       estimate: {
         kind: "quantity-rate",
         quantity: 1.5,
         unit: "m²",
-        rates: { baseCents: 101, highCents: 103 },
+        rates: { baseCents: 101 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -31,7 +137,7 @@ describe("budget selectors", () => {
     );
     expect(view.hierarchy).toHaveLength(1);
     expect(view.hierarchy[0]?.estimateCents).toBe(10_000);
-    expect(view.hierarchy[0]?.forecastCents).toBe(11_000);
+    expect(view.hierarchy[0]?.totalCents).toBe(11_000);
     expect(view.summary.totalCashForecastCents).toBe(11_000);
   });
 
@@ -46,16 +152,15 @@ describe("budget selectors", () => {
     const item = view.items[0];
     expect(item).toMatchObject({
       actualPaidCents: 5_000,
-      scheduledRemainingRawCents: 3_000,
-      scheduledRemainingForecastCents: 3_000,
+      scheduledRemainingCents: 3_000,
       unallocatedFutureCents: 2_000,
       contingencyCents: 500,
       forecastBeforeContingencyCents: 10_000,
       forecastCents: 10_500,
       discrepancy: { amountCents: 2_000, kind: "unallocated" },
     });
-    expect(view.monthlyCashFlow.undated.unallocatedCents).toBe(2_000);
-    expect(view.monthlyCashFlow.undated.contingencyCents).toBe(200);
+    expect(buildMonthlyCashFlow(view.allocations).undated.unallocatedCents).toBe(2_000);
+    expect(buildMonthlyCashFlow(view.allocations).undated.contingencyCents).toBe(200);
     expect(view.summary).toMatchObject({
       actualPaidCents: 5_000,
       totalCashForecastCents: 10_500,
@@ -70,12 +175,11 @@ describe("budget selectors", () => {
     );
     expect(view.items[0]).toMatchObject({
       actualPaidCents: 12_000,
-      scheduledRemainingRawCents: 0,
+      scheduledRemainingCents: 0,
       unallocatedFutureCents: 0,
       forecastCents: 12_000,
       discrepancy: { amountCents: -2_000, kind: "over-scheduled" },
     });
-    expect(view.items[0]?.warnings).toContain("instalment-overpaid");
     expect(view.hierarchy[0]).toMatchObject({ estimateCents: 12_000, totalCents: 12_000 });
     expect(view.allocations.every((allocation) => allocation.amountCents >= 0)).toBe(true);
     expect(view.summary.remainingCashForecastCents).toBe(0);
@@ -90,7 +194,7 @@ describe("budget selectors", () => {
       included: false,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 2_000, highCents: 2_500 },
+        amounts: { baseCents: 2_000 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -105,7 +209,7 @@ describe("budget selectors", () => {
       completion: { complete: true, completedOn: "2026-09-18" },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 0, highCents: 0 },
+        amounts: { baseCents: 0 },
         fixed: false,
         pricedOn: "2020-01-01",
       },
@@ -130,7 +234,6 @@ describe("budget selectors", () => {
       }),
       options,
     );
-    expect(view.summary.optionalExcludedFutureCents).toBe(2_000);
     expect(view.hierarchy[0]).toMatchObject({ estimateCents: 11_000, totalCents: 12_000 });
     expect(view.summary.remainingCashForecastCents).toBe(11_000);
     expect(view.items.find((entry) => entry.item.id === "mobilier")?.forecastCents).toBe(0);
@@ -139,48 +242,44 @@ describe("budget selectors", () => {
     expect(view.timeline[0]).toMatchObject({
       itemCount: 2,
       completeItemCount: 1,
-      actualPaidCents: 1_000,
+      forecastCents: 12_000,
     });
   });
 
-  it("applies growth only forward in time and leaves fixed estimates unchanged", () => {
-    expect(growCents(10_000, "2027-01-01", "2028-01-01", 500)).toBe(10_500);
-    expect(growCents(10_000, "2028-01-01", "2027-01-01", 500)).toBe(10_000);
-
-    const growing = makeItem({
+  it("keeps unfixed and fixed estimates at today's prices regardless of the due date", () => {
+    const unfixed = makeItem({
       estimate: {
         kind: "total",
-        amounts: { baseCents: 10_000, highCents: 10_000 },
+        amounts: { baseCents: 10_000 },
         fixed: false,
         pricedOn: "2027-01-01",
       },
     });
-    const grown = selectBudgetView(
+    const dated = selectBudgetView(
       makeDocument({
-        items: [growing],
+        items: [unfixed],
         instalments: [makeInstalment({ dueOn: "2028-01" })],
       }),
       options,
     );
     const fixed = selectBudgetView(makeDocument(), options);
-    const fixedHigh = selectBudgetView(makeDocument(), { ...options, scenario: "high" });
-    expect(grown.items[0]?.scheduledRemainingForecastCents).toBe(10_500);
-    expect(fixed.items[0]?.scheduledRemainingForecastCents).toBe(10_000);
-    expect(fixedHigh.items[0]).toMatchObject({
+    expect(dated.items[0]?.scheduledRemainingCents).toBe(10_000);
+    expect(fixed.items[0]).toMatchObject({
       estimateCents: 10_000,
+      scheduledRemainingCents: 10_000,
       unallocatedFutureCents: 0,
-      instalments: [{ projectedCents: 10_000, scenarioProjectedCents: 10_000 }],
+      instalments: [{ projectedCents: 10_000 }],
     });
   });
 
-  it("never inflates land or owned purchases", () => {
+  it("keeps land at its base estimate and owned purchases settled", () => {
     const land = makeItem({
       id: "teren",
       costType: "land",
       contingencyEligible: false,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 8_000, highCents: 9_000 },
+        amounts: { baseCents: 8_250_000 },
         fixed: false,
         pricedOn: "2026-01-01",
       },
@@ -191,7 +290,7 @@ describe("budget selectors", () => {
       completion: { complete: true },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 10_000, highCents: 12_000 },
+        amounts: { baseCents: 10_000 },
         fixed: false,
         pricedOn: "2026-01-01",
       },
@@ -204,7 +303,7 @@ describe("budget selectors", () => {
           makeInstalment({
             id: "transa-teren",
             itemId: "teren",
-            projectedCents: 8_000,
+            projectedCents: 8_250_000,
             dueOn: "2029-01",
           }),
           makeInstalment({
@@ -217,36 +316,15 @@ describe("budget selectors", () => {
       }),
       options,
     );
+    expect(view.items.find((entry) => entry.item.id === "teren")?.scheduledRemainingCents).toBe(
+      8_250_000,
+    );
     expect(
-      view.items.find((entry) => entry.item.id === "teren")?.scheduledRemainingForecastCents,
-    ).toBe(8_000);
-    expect(
-      view.items.find((entry) => entry.item.id === "achizitie-detinuta")
-        ?.scheduledRemainingForecastCents,
+      view.items.find((entry) => entry.item.id === "achizitie-detinuta")?.scheduledRemainingCents,
     ).toBe(0);
 
-    const high = selectBudgetView(
-      makeDocument({
-        items: [land, owned],
-        instalments: [
-          makeInstalment({
-            id: "transa-teren",
-            itemId: "teren",
-            projectedCents: 8_000,
-            dueOn: "2029-01",
-          }),
-          makeInstalment({
-            id: "transa-detinuta",
-            itemId: "achizitie-detinuta",
-            projectedCents: 10_000,
-            dueOn: "2029-01",
-          }),
-        ],
-      }),
-      { ...options, scenario: "high" },
-    );
-    expect(high.items.find((entry) => entry.item.id === "teren")?.estimateCents).toBe(8_000);
-    expect(high.items.find((entry) => entry.item.id === "achizitie-detinuta")?.estimateCents).toBe(
+    expect(view.items.find((entry) => entry.item.id === "teren")?.estimateCents).toBe(8_250_000);
+    expect(view.items.find((entry) => entry.item.id === "achizitie-detinuta")?.estimateCents).toBe(
       10_000,
     );
   });
@@ -287,7 +365,7 @@ describe("budget selectors", () => {
             makeInstalment({ id: "owned-instalment", itemId: owned.id }),
           ],
         }),
-        { ...options, scenario: "high" },
+        options,
       );
       const ownedTotal = Math.max(10_000, recordedCents);
 
@@ -300,8 +378,6 @@ describe("budget selectors", () => {
         estimateCents: 10_000 + ownedTotal,
         totalCents: 11_000 + ownedTotal,
         settledCents: ownedTotal,
-        futureCents: 10_000,
-        contingencyCents: 1_000,
         children: expect.arrayContaining([
           expect.objectContaining({
             id: "devices",
@@ -336,7 +412,6 @@ describe("budget selectors", () => {
         estimateCents: 2_000,
         totalCents: 2_000,
         settledCents: 2_000,
-        futureCents: 0,
       });
     },
   );
@@ -348,7 +423,7 @@ describe("budget selectors", () => {
       completion: { complete: true, completedOn: "2026-09-18" },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 0, highCents: 0 },
+        amounts: { baseCents: 0 },
         fixed: false,
         pricedOn: "2026-09-18",
       },
@@ -370,7 +445,7 @@ describe("budget selectors", () => {
       completion: { complete: true, completedOn: "2026-11-20" },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 10_000, highCents: 14_000 },
+        amounts: { baseCents: 10_000 },
         fixed: false,
         pricedOn: "2025-01-01",
       },
@@ -381,41 +456,35 @@ describe("budget selectors", () => {
       payments: [makePayment({ amountCents: 2_500 })],
     });
 
-    for (const scenario of ["base", "high"] as const) {
-      const view = selectBudgetView(document, { ...options, scenario });
-      expect(view.items[0]).toMatchObject({
-        active: true,
-        estimateCents: 10_000,
-        actualPaidCents: 2_500,
-        scheduledRemainingRawCents: 0,
-        scheduledRemainingForecastCents: 0,
-        unallocatedFutureCents: 0,
-        excludedFutureCents: 0,
-        contingencyCents: 0,
-        overdueCents: 0,
-        discrepancy: { amountCents: 0, kind: "balanced" },
-        warnings: [],
-      });
-      expect(view.summary).toMatchObject({
-        actualPaidCents: 2_500,
-        scheduledFutureCents: 0,
-        unallocatedFutureCents: 0,
-        contingencyCents: 0,
-      });
-      expect(view.upcomingPayments).toEqual([]);
-      expect(view.monthlyCashFlow.months).toEqual([
-        expect.objectContaining({ month: "2030-02", actualCents: 2_500, scheduledCents: 0 }),
-      ]);
-      expect(view.timeline[0]).toMatchObject({ itemCount: 1, completeItemCount: 1 });
-    }
+    const view = selectBudgetView(document, options);
+    expect(view.items[0]).toMatchObject({
+      active: true,
+      estimateCents: 10_000,
+      actualPaidCents: 2_500,
+      scheduledRemainingCents: 0,
+      unallocatedFutureCents: 0,
+      contingencyCents: 0,
+      overdueCents: 0,
+      discrepancy: { amountCents: 0, kind: "balanced" },
+    });
+    expect(view.summary).toMatchObject({
+      actualPaidCents: 2_500,
+      totalCashForecastCents: 2_500,
+      remainingCashForecastCents: 0,
+    });
+    expect(view.upcomingPayments).toEqual([]);
+    expect(buildMonthlyCashFlow(view.allocations).months).toEqual([
+      expect.objectContaining({ periodKey: "2026-11", actualCents: 2_500, scheduledCents: 0 }),
+    ]);
+    expect(view.timeline[0]).toMatchObject({ itemCount: 1, completeItemCount: 1 });
   });
 
-  it("allocates rounded contingency proportionally without losing a cent", () => {
+  it("allocates the fixed 10 % contingency proportionally without losing a cent", () => {
     const first = makeItem({
       id: "primul",
       estimate: {
         kind: "total",
-        amounts: { baseCents: 1, highCents: 1 },
+        amounts: { baseCents: 15 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -425,103 +494,53 @@ describe("budget selectors", () => {
       sortOrder: 1,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 2, highCents: 2 },
+        amounts: { baseCents: 25 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
     });
-    const base = makeDocument();
     const view = selectBudgetView(
       makeDocument({
-        project: { ...base.project, contingencyBps: 5_000 },
         items: [first, second],
         instalments: [
-          makeInstalment({ id: "transa-unu", itemId: "primul", projectedCents: 1 }),
-          makeInstalment({ id: "transa-doi", itemId: "al-doilea", projectedCents: 2 }),
+          makeInstalment({ id: "transa-unu", itemId: "primul", projectedCents: 15 }),
+          makeInstalment({ id: "transa-doi", itemId: "al-doilea", projectedCents: 25 }),
         ],
       }),
       options,
     );
     const contingency = view.allocations.filter((allocation) => allocation.kind === "contingency");
-    expect(contingency.map((allocation) => allocation.amountCents)).toEqual([1, 1]);
-    expect(view.summary.contingencyCents).toBe(2);
+    expect(contingency.map((allocation) => allocation.amountCents)).toEqual([2, 2]);
   });
 
-  it("refuses unbounded growth and unsafe grown cent values", () => {
-    expect(() => growCents(10_000, "2000-01-01", "2101-01-02", 500)).toThrow(/nu poate depăși/);
-    expect(() => growCents(100_000_000_000, "2027-01-01", "2028-01-01", 2_500)).toThrow(
-      /cenți întregi siguri/,
-    );
-  });
-
-  it("uses one actual ledger across Optimist and Prudent scenarios", () => {
-    const document = makeDocument({ payments: [makePayment({ amountCents: 1_000 })] });
-    const actuals = (["base", "high"] as const).map(
-      (scenario) => selectBudgetView(document, { ...options, scenario }).summary.actualPaidCents,
-    );
-    expect(actuals).toEqual([1_000, 1_000]);
-  });
-
-  it("scales an unfixed base instalment into dated Optimist and Prudent plans", () => {
+  it("subtracts actual payments from the plan and keeps overspend visible", () => {
     const item = makeItem({
       estimate: {
         kind: "total",
-        amounts: { baseCents: 120, highCents: 150 },
+        amounts: { baseCents: 120 },
         fixed: false,
         pricedOn: "2027-01-01",
       },
     });
-    const document = makeDocument({
-      items: [item],
-      instalments: [makeInstalment({ projectedCents: 120, dueOn: "2028-01" })],
-    });
-    const optimist = selectBudgetView(document, { ...options, scenario: "base" });
-    const high = selectBudgetView(document, { ...options, scenario: "high" });
-
-    expect(optimist.items[0]?.instalments[0]).toMatchObject({
-      projectedCents: 120,
-      scenarioProjectedCents: 120,
-      remainingForecastCents: growCents(120, "2027-01-01", "2028-01", 500),
-    });
-    expect(high.items[0]?.instalments[0]).toMatchObject({
-      projectedCents: 120,
-      scenarioProjectedCents: 150,
-      remainingForecastCents: growCents(150, "2027-01-01", "2028-01", 500),
-    });
-    expect(optimist.items[0]?.unallocatedFutureCents).toBe(0);
-    expect(high.items[0]?.unallocatedFutureCents).toBe(0);
-    expect(optimist.monthlyCashFlow.undated.unallocatedCents).toBe(0);
-    expect(high.monthlyCashFlow.undated.unallocatedCents).toBe(0);
-    expect(optimist.monthlyCashFlow.months.some((month) => month.month === "2028-01")).toBe(true);
-    expect(high.monthlyCashFlow.months.some((month) => month.month === "2028-01")).toBe(true);
-  });
-
-  it("subtracts shared actuals after scenario scaling and keeps overspend visible", () => {
-    const item = makeItem({
-      estimate: {
-        kind: "total",
-        amounts: { baseCents: 120, highCents: 150 },
-        fixed: false,
-        pricedOn: "2027-01-01",
-      },
-    });
-    const partial = makeDocument({
-      items: [item],
-      instalments: [makeInstalment({ projectedCents: 120, dueOn: "2028-01" })],
-      payments: [makePayment({ amountCents: 50 })],
-    });
-    const optimist = selectBudgetView(partial, { ...options, scenario: "base" });
-    const high = selectBudgetView(partial, { ...options, scenario: "high" });
-    expect(optimist.items[0]?.instalments[0]).toMatchObject({
+    const partial = selectBudgetView(
+      makeDocument({
+        items: [item],
+        instalments: [makeInstalment({ projectedCents: 120, dueOn: "2028-01" })],
+        payments: [makePayment({ amountCents: 50 })],
+      }),
+      options,
+    );
+    expect(partial.items[0]?.instalments[0]).toMatchObject({
       actualPaidCents: 50,
-      scenarioProjectedCents: 120,
-      remainingRawCents: 70,
+      projectedCents: 120,
+      remainingCents: 70,
     });
-    expect(high.items[0]?.instalments[0]).toMatchObject({
-      actualPaidCents: 50,
-      scenarioProjectedCents: 150,
-      remainingRawCents: 100,
-    });
+    expect(partial.items[0]?.unallocatedFutureCents).toBe(0);
+    expect(
+      buildMonthlyCashFlow(partial.allocations).months.some(
+        (month) => month.periodKey === "2028-01",
+      ),
+    ).toBe(true);
 
     const fullyPaid = selectBudgetView(
       makeDocument({
@@ -529,40 +548,14 @@ describe("budget selectors", () => {
         instalments: [makeInstalment({ projectedCents: 120, dueOn: "2028-01" })],
         payments: [makePayment({ amountCents: 130 })],
       }),
-      { ...options, scenario: "base" },
+      options,
     );
     expect(fullyPaid.items[0]).toMatchObject({
       actualPaidCents: 130,
-      scheduledRemainingRawCents: 0,
+      scheduledRemainingCents: 0,
       forecastCents: 130,
+      discrepancy: { amountCents: -10, kind: "over-scheduled" },
     });
-    expect(fullyPaid.items[0]?.warnings).toContain("instalment-overpaid");
-  });
-
-  it("distributes scenario plan rounding exactly across instalments", () => {
-    const item = makeItem({
-      estimate: {
-        kind: "total",
-        amounts: { baseCents: 3, highCents: 5 },
-        fixed: false,
-        pricedOn: "2026-09-18",
-      },
-    });
-    const high = selectBudgetView(
-      makeDocument({
-        items: [item],
-        instalments: [
-          makeInstalment({ id: "transa-unu", projectedCents: 1 }),
-          makeInstalment({ id: "transa-doi", projectedCents: 2 }),
-        ],
-      }),
-      { ...options, scenario: "high" },
-    );
-    expect(
-      high.items[0]?.instalments.map((instalment) => instalment.scenarioProjectedCents),
-    ).toEqual([2, 3]);
-    expect(high.items[0]?.scheduledRemainingRawCents).toBe(5);
-    expect(high.items[0]?.unallocatedFutureCents).toBe(0);
   });
 
   it("shows overdue and undated rows in shared timeline selectors", () => {
@@ -584,8 +577,22 @@ describe("budget selectors", () => {
     const view = selectBudgetView(document, options);
     expect(view.items[0]?.overdueCents).toBe(10_000);
     expect(view.upcomingPayments.some((payment) => payment.overdue)).toBe(true);
-    expect(view.monthlyCashFlow.undated.scheduledCents).toBe(10_000);
+    expect(buildMonthlyCashFlow(view.allocations).undated.scheduledCents).toBe(10_000);
     expect(view.timeline.find((entry) => entry.milestone.id === "la-gri")?.itemCount).toBe(1);
+  });
+
+  it("lists the next unpaid instalment, not the advance already paid", () => {
+    const view = selectBudgetView(
+      makeDocument({
+        instalments: [
+          makeInstalment({ projectedCents: 5_000, dueOn: "2027-01" }),
+          makeInstalment({ id: "transa-finala", projectedCents: 5_000, dueOn: "2027-03" }),
+        ],
+        payments: [makePayment({ amountCents: 5_000 })],
+      }),
+      { asOf: "2027-01-02" },
+    );
+    expect(view.upcomingPayments.map((payment) => payment.dueOn)).toEqual(["2027-03"]);
   });
 
   it("marks a monthly deadline overdue only after that month ends", () => {
@@ -593,14 +600,8 @@ describe("budget selectors", () => {
       instalments: [makeInstalment({ dueOn: "2027-01" })],
     });
 
-    const duringMonth = selectBudgetView(document, {
-      scenario: "base",
-      asOf: "2027-01-31",
-    });
-    const afterMonth = selectBudgetView(document, {
-      scenario: "base",
-      asOf: "2027-02-01",
-    });
+    const duringMonth = selectBudgetView(document, { asOf: "2027-01-31" });
+    const afterMonth = selectBudgetView(document, { asOf: "2027-02-01" });
 
     expect(duringMonth.items[0]?.instalments[0]?.overdue).toBe(false);
     expect(duringMonth.upcomingPayments[0]?.overdue).toBe(false);
@@ -621,7 +622,7 @@ describe("budget selectors", () => {
         groupId: "root",
         estimate: {
           kind: "total",
-          amounts: { baseCents: 20_000, highCents: 20_000 },
+          amounts: { baseCents: 20_000 },
           fixed: true,
           pricedOn: "2026-09-18",
         },
@@ -631,7 +632,7 @@ describe("budget selectors", () => {
         groupId: "category-high",
         estimate: {
           kind: "total",
-          amounts: { baseCents: 40_000, highCents: 40_000 },
+          amounts: { baseCents: 40_000 },
           fixed: true,
           pricedOn: "2026-09-18",
         },
@@ -641,7 +642,7 @@ describe("budget selectors", () => {
         groupId: "category-low",
         estimate: {
           kind: "total",
-          amounts: { baseCents: 30_000, highCents: 30_000 },
+          amounts: { baseCents: 30_000 },
           fixed: true,
           pricedOn: "2026-09-18",
         },
@@ -708,7 +709,7 @@ describe("budget selectors", () => {
     );
 
     expect(view.items.find((entry) => entry.item.id === "ranged")).toMatchObject({
-      scheduledRemainingRawCents: 0,
+      scheduledRemainingCents: 0,
       scheduleStartOn: "2027-02",
       scheduleFinalOn: "2028-08",
     });

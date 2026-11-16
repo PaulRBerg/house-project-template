@@ -1,6 +1,0 @@
-interface:
-  display_name: House Brief
-  short_description: Review and maintain house-project decisions and evidence boundaries.
-  default_prompt: Use $house-brief to review the relevant project records and identify decisions, conflicts, and unknowns.
-policy:
-  allow_implicit_invocation: true

@@ -1,5 +1,5 @@
 import { budgetDocumentSchema, type BudgetDocument } from "../domain/schema.js";
-import { makeDocument, makeGroup, makeInstalment, makeItem } from "../domain/test-fixtures.js";
+import { makeBeneficiary, makeDocument, makeGroup, makeInstalment, makeItem } from "./builders.js";
 
 export const uiFixtureIds = {
   groups: {
@@ -15,6 +15,9 @@ export const uiFixtureIds = {
     finishOptional: "finish-optional",
     moveMovable: "move-movable",
     moveArchivedComplete: "move-archived-complete",
+  },
+  beneficiaries: {
+    contractor: "constructor-exemplu",
   },
 } as const;
 
@@ -68,6 +71,7 @@ export function makeUiDocument(overrides: Partial<BudgetDocument> = {}): BudgetD
       milestoneId: "la-rosu",
       costType: "work",
       sortOrder: 0,
+      beneficiaryId: uiFixtureIds.beneficiaries.contractor,
     }),
     makeItem({
       id: uiFixtureIds.items.finishOptional,
@@ -106,6 +110,7 @@ export function makeUiDocument(overrides: Partial<BudgetDocument> = {}): BudgetD
     makeDocument({
       groups,
       items,
+      beneficiaries: [makeBeneficiary({ id: uiFixtureIds.beneficiaries.contractor })],
       instalments: items.map((item) =>
         makeInstalment({
           id: `instalment-${item.id}`,

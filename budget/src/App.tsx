@@ -1,41 +1,51 @@
 import { Tabs } from "@base-ui/react/tabs";
-import { CircleAlert, Download, House, Landmark, RotateCcw, WalletCards } from "lucide-react";
+import { CircleAlert, House, Landmark, RotateCcw, Users, WalletCards } from "lucide-react";
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useEffect, useMemo, useState } from "react";
 
-import { AssumptionsEditor } from "./components/budget/AssumptionsEditor.js";
-import { BudgetTable, type BudgetGrouping } from "./components/budget/BudgetTable.js";
+import { BNR_EXCHANGE_RATE_PAGE_URL } from "./api/contracts.js";
+import { BeneficiariesView } from "./components/beneficiaries/BeneficiariesView.js";
+import { AssumptionsDialog } from "./components/budget/AssumptionsDialog.js";
+import { BudgetTable } from "./components/budget/BudgetTable.js";
 import {
   BudgetToolbar,
-  type ScopeFilter,
+  type CostScopeFilter,
   type StatusFilter,
 } from "./components/budget/BudgetToolbar.js";
+import {
+  BUDGET_GROUPINGS,
+  DEFAULT_CATEGORY_ID,
+  EXTRAS_CATEGORY_ID,
+  supportsRoomGrouping,
+} from "./components/budget/categories.js";
 import { ItemDetails } from "./components/budget/ItemDetails.js";
-import { ProjectOverview, StageStrip } from "./components/budget/ProjectOverview.js";
-import { CashFlowView } from "./components/planning/index.js";
+import { ProjectOverview } from "./components/budget/ProjectOverview.js";
+import { StageStrip } from "./components/budget/StageStrip.js";
+import { CashFlowView } from "./components/cash-flow/CashFlowView.js";
 import { AnimatedView } from "./components/shared/AnimatedView.js";
 import { AppButton } from "./components/shared/AppButton.js";
 import { AppSelect } from "./components/shared/AppSelect.js";
-import { ConfirmDialog } from "./components/shared/ConfirmDialog.js";
-import { cn, fieldStyles } from "./components/shared/styles.js";
-import { selectBudgetView, type Milestone } from "./domain/index.js";
-import { useBudgetStore } from "./hooks/useBudgetStore.js";
+import { cn, emptyStatePanelStyles } from "./components/shared/styles.js";
+import {
+  EXTRA_MILESTONE_ID,
+  getBeneficiaryBundles,
+  selectBudgetView,
+  type Milestone,
+} from "./domain/index.js";
+import { useBudgetSnapshot } from "./hooks/useBudgetSnapshot.js";
 import { useExchangeRate, type UseExchangeRateResult } from "./hooks/useExchangeRate.js";
-import { downloadBudgetJson } from "./ui/export.js";
 import { localCalendarDate } from "./ui/format.js";
 
-type AppView = "budget" | "flux";
-
-function supportsRoomGrouping(categoryId: string): boolean {
-  return categoryId === "finish" || categoryId === "move";
-}
-
-const NAVIGATION: Array<{ id: AppView; label: string; icon: typeof Landmark }> = [
+const NAVIGATION = [
   { id: "budget", label: "Buget", icon: Landmark },
   { id: "flux", label: "Flux", icon: WalletCards },
-];
+  { id: "beneficiari", label: "Beneficiari", icon: Users },
+] as const;
 
-const BNR_EXCHANGE_RATE_PAGE_URL = "https://www.bnr.ro/541-cursul-de-schimb";
+const APP_PAGES = NAVIGATION.map(({ id }) => id);
+
+const statusPageStyles =
+  "flex min-h-screen flex-col items-center justify-center p-7.5 text-center [&_h1]:mt-3 [&_h1]:text-[2rem] [&_h1]:tracking-[-0.04em]";
 
 interface ExchangeRateHeaderDisplay {
   text: string;
@@ -61,87 +71,94 @@ function formatExchangeRateHeader(exchangeRate: UseExchangeRateResult): Exchange
 }
 
 export function App() {
-  const store = useBudgetStore();
+  const budget = useBudgetSnapshot();
   const exchangeRate = useExchangeRate();
   const exchangeRateHeader = formatExchangeRateHeader(exchangeRate);
-  const [activeView, setActiveView] = useQueryState(
+  const [activePage, setActivePage] = useQueryState(
     "page",
-    parseAsStringLiteral(["budget", "flux"]).withDefault("budget").withOptions({ history: "push" }),
+    parseAsStringLiteral(APP_PAGES).withDefault("budget").withOptions({ history: "push" }),
   );
   const [category, setCategory] = useQueryState(
     "category",
-    parseAsString.withDefault("construction").withOptions({ history: "push" }),
+    parseAsString.withDefault(DEFAULT_CATEGORY_ID).withOptions({ history: "push" }),
   );
   const [grouping, setGrouping] = useQueryState(
     "grouping",
-    parseAsStringLiteral(["rooms", "categories"] satisfies BudgetGrouping[])
-      .withDefault("rooms")
-      .withOptions({ history: "push" }),
+    parseAsStringLiteral(BUDGET_GROUPINGS).withDefault("rooms").withOptions({ history: "push" }),
   );
-  const [planningMilestone, setPlanningMilestone] = useState<Milestone["id"] | "all">("all");
+  const [beneficiaryId, setBeneficiaryId] = useQueryState(
+    "beneficiar",
+    parseAsString.withOptions({ history: "push" }),
+  );
+  const [cashFlowMilestone, setCashFlowMilestone] = useState<Milestone["id"] | "all">("all");
   const [search, setSearch] = useState("");
-  const [scope, setScope] = useState<ScopeFilter>("all");
+  const [costScope, setCostScope] = useState<CostScopeFilter>("all");
   const [status, setStatus] = useState<StatusFilter>("active");
-  const [assumptionsEditor, setAssumptionsEditor] = useState(false);
+  const filters = useMemo(() => ({ search, costScope, status }), [search, costScope, status]);
+  const [assumptionsMounted, setAssumptionsMounted] = useState(false);
   const [assumptionsOpen, setAssumptionsOpen] = useState(false);
-  const [assumptionsDirty, setAssumptionsDirty] = useState(false);
-  const [conflictConfirmationOpen, setConflictConfirmationOpen] = useState(false);
   const [itemDetailsId, setItemDetailsId] = useState<string | null>(null);
   const [itemDetailsOpen, setItemDetailsOpen] = useState(false);
-  const document = store.document;
-  const view = useMemo(
-    () =>
-      document
-        ? selectBudgetView(document, { scenario: "base", asOf: localCalendarDate() })
-        : undefined,
-    [document],
-  );
-  const dirty = assumptionsDirty || Boolean(store.unsavedDocument);
-
+  // Overdue and upcoming state follows the calendar day, refreshed when the tab regains focus.
+  const [asOf, setAsOf] = useState(localCalendarDate);
   useEffect(() => {
-    const beforeUnload = (event: BeforeUnloadEvent): void => {
-      if (!dirty) return;
-      event.preventDefault();
+    const refresh = (): void => setAsOf(localCalendarDate());
+    window.addEventListener("focus", refresh);
+    window.document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      window.document.removeEventListener("visibilitychange", refresh);
     };
-    window.addEventListener("beforeunload", beforeUnload);
-    return () => window.removeEventListener("beforeunload", beforeUnload);
-  }, [dirty]);
-
-  if (store.loadState === "loading") {
+  }, []);
+  const document = budget.document;
+  const view = useMemo(
+    () => (document ? selectBudgetView(document, { asOf, scope: "all" }) : undefined),
+    [asOf, document],
+  );
+  const initialView = useMemo(
+    () => (document ? selectBudgetView(document, { asOf }) : undefined),
+    [asOf, document],
+  );
+  const bundles = useMemo(
+    () => (document && view ? getBeneficiaryBundles(document, view) : []),
+    [document, view],
+  );
+  if (budget.loadState === "loading") {
     return (
-      <main
-        className="flex min-h-screen flex-col items-center justify-center p-7.5 text-center [&_h1]:mt-3 [&_h1]:text-[2rem] [&_h1]:tracking-[-0.04em]"
-        aria-busy="true"
-      >
+      <main className={statusPageStyles} aria-busy="true">
         <House className="text-accent" aria-hidden="true" size={28} />
-        <h1>House budget</h1>
+        <h1>Casa noastră</h1>
         <p className="mt-1.5 mb-4.5 max-w-150 text-muted">Se încarcă bugetul local…</p>
       </main>
     );
   }
 
-  if (store.loadState === "error" || !document || !view) {
+  if (budget.loadState === "error" || !document || !view || !initialView) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-7.5 text-center [&_h1]:mt-3 [&_h1]:text-[2rem] [&_h1]:tracking-[-0.04em]">
+      <main className={statusPageStyles}>
         <CircleAlert className="text-accent" aria-hidden="true" size={28} />
         <h1>Bugetul local nu poate fi deschis</h1>
         <p className="mt-1.5 mb-4.5 max-w-150 text-muted" role="alert">
-          {store.loadError ?? "Serverul nu a returnat un document valid."}
+          {budget.loadError ?? "Serverul nu a returnat un document valid."}
         </p>
-        <AppButton intent="primary" onClick={() => void store.reload()} type="button">
+        <AppButton intent="primary" onClick={() => void budget.reload()} type="button">
           <RotateCcw className="text-accent" aria-hidden="true" size={16} /> Reîncearcă
         </AppButton>
       </main>
     );
   }
 
-  const requestAssumptionsEditor = (): void => {
-    setAssumptionsEditor(true);
+  const requestAssumptions = (): void => {
+    setAssumptionsMounted(true);
     setAssumptionsOpen(true);
   };
   const requestItemDetails = (id: string): void => {
     setItemDetailsId(id);
     setItemDetailsOpen(true);
+  };
+  const requestBeneficiary = (id: string): void => {
+    void setActivePage("beneficiari");
+    void setBeneficiaryId(id);
   };
   const selectedItem = view.items.find((entry) => entry.item.id === itemDetailsId);
   const selectedCategory =
@@ -153,18 +170,18 @@ export function App() {
         <a
           className="inline-flex items-center gap-2.25 justify-self-start text-[0.88rem] font-[760] no-underline"
           href="#main-content"
-          aria-label="House budget, mergi la conținut"
+          aria-label="Casa noastră, mergi la conținut"
         >
           <House className="text-accent" aria-hidden="true" size={19} />
-          <span>House budget</span>
+          <span>Casa noastră</span>
         </a>
         <nav className="flex gap-1 self-stretch" aria-label="Secțiuni principale">
           {NAVIGATION.map(({ id, label, icon: Icon }) => (
             <button
               className="inline-flex items-center gap-1.75 border-0 border-b-2 border-transparent bg-transparent px-3.75 text-[0.79rem] font-bold text-muted hover:text-ink aria-[current=page]:border-accent aria-[current=page]:text-ink [&[aria-current=page]_svg]:text-accent"
-              aria-current={activeView === id ? "page" : undefined}
+              aria-current={activePage === id ? "page" : undefined}
               key={id}
-              onClick={() => void setActiveView(id)}
+              onClick={() => void setActivePage(id)}
               type="button"
             >
               <Icon aria-hidden="true" size={16} /> {label}
@@ -182,64 +199,11 @@ export function App() {
         </a>
       </header>
 
-      {store.saveState === "error" && (
-        <aside
-          className="relative z-(--z-banner) flex items-center justify-between gap-5 border-b border-error-line bg-error px-gutter py-3 [&>div:first-child]:flex [&>div:first-child]:flex-col"
-          role="alert"
-        >
-          <div>
-            <strong className="text-[0.79rem]">Modificarea nu a fost scrisă pe disc.</strong>
-            <span className="text-[0.72rem] text-muted">{store.saveError}</span>
-          </div>
-          <AppButton
-            intent="secondary"
-            disabled={store.busy}
-            onClick={() => void store.retry()}
-            type="button"
-          >
-            Reîncearcă salvarea
-          </AppButton>
-        </aside>
-      )}
-      {store.saveState === "conflict" && store.conflict && (
-        <aside
-          className="relative z-(--z-banner) flex items-center justify-between gap-5 border-b border-notice-line bg-notice px-gutter py-3 [&>div:first-child]:flex [&>div:first-child]:flex-col"
-          role="alert"
-        >
-          <div>
-            <strong className="text-[0.79rem]">Bugetul a fost modificat de altă sesiune.</strong>
-            <span className="text-[0.72rem] text-muted">
-              Draftul tău este păstrat aici. Descarcă-l înainte de a încărca versiunea nouă de pe
-              disc.
-            </span>
-          </div>
-          <div className="flex gap-2">
-            <AppButton
-              intent="secondary"
-              onClick={() =>
-                store.unsavedDocument &&
-                downloadBudgetJson(store.unsavedDocument, "buget-draft-nesalvat.json")
-              }
-              type="button"
-            >
-              <Download aria-hidden="true" size={15} /> Descarcă draftul
-            </AppButton>
-            <AppButton
-              intent="primary"
-              onClick={() => setConflictConfirmationOpen(true)}
-              type="button"
-            >
-              Încarcă versiunea de pe disc
-            </AppButton>
-          </div>
-        </aside>
-      )}
-
       <main className="mx-auto max-w-385 px-gutter pt-8 pb-20" id="main-content">
-        <AnimatedView value={activeView}>
-          {(displayedView) => (
+        <AnimatedView value={activePage}>
+          {(displayedPage) => (
             <>
-              {displayedView === "budget" ? (
+              {displayedPage === "budget" && (
                 <Tabs.Root
                   onValueChange={(id) => {
                     if (typeof id !== "string") return;
@@ -248,20 +212,20 @@ export function App() {
                   }}
                   value={selectedCategory}
                 >
-                  <ProjectOverview view={view} project={document.project} />
+                  <h1 className="sr-only">Buget</h1>
+                  <ProjectOverview view={initialView} project={document.project} />
                   <StageStrip view={view} />
                   <BudgetToolbar
-                    disabled={store.busy}
-                    onOpenAssumptions={requestAssumptionsEditor}
-                    onScopeChange={setScope}
+                    costScope={costScope}
+                    onCostScopeChange={setCostScope}
+                    onOpenAssumptions={requestAssumptions}
                     onSearchChange={setSearch}
                     onStatusChange={setStatus}
-                    scope={scope}
                     search={search}
                     status={status}
                   />
                   {document.items.length === 0 ? (
-                    <section className="mt-10 rounded-xl border border-line bg-surface px-5 py-13 text-center text-muted [&_h2]:text-ink">
+                    <section className={cn(emptyStatePanelStyles, "mt-10 [&_h2]:text-ink")}>
                       <h2>Bugetul nu conține încă elemente</h2>
                       <p className="mx-auto mt-2 max-w-155">
                         Documentul local a fost încărcat corect. Nu există costuri sau plăți de
@@ -270,57 +234,77 @@ export function App() {
                     </section>
                   ) : (
                     <Tabs.Panel keepMounted value={selectedCategory}>
+                      {selectedCategory === EXTRAS_CATEGORY_ID && (
+                        <p
+                          className="my-4 border-l-3 border-stage pl-3 text-[0.82rem] text-muted"
+                          data-stage={EXTRA_MILESTONE_ID}
+                        >
+                          Dotări după mutare · iunie 2029 – iunie 2031. Buget separat, exclus din
+                          „Rămas de plată”. Dotările rămân în brief și în modelul casei.
+                        </p>
+                      )}
                       <BudgetTable
-                        filters={{ search, scope, status }}
+                        beneficiaries={document.beneficiaries}
+                        filters={filters}
                         grouping={grouping}
                         hierarchy={view.hierarchy}
                         onGroupingChange={(nextGrouping) => void setGrouping(nextGrouping)}
+                        onOpenBeneficiary={requestBeneficiary}
                         onOpenItem={requestItemDetails}
-                        selectedCategory={selectedCategory ?? ""}
+                        selectedCategory={selectedCategory}
                       />
                     </Tabs.Panel>
                   )}
                 </Tabs.Root>
-              ) : (
+              )}
+              {displayedPage === "flux" && (
                 <>
                   <section
                     className="flex items-center justify-end gap-2.5"
                     aria-label="Controale planificare"
                   >
-                    <div className={cn(fieldStyles, "flex-row! items-center!")}>
+                    <div className="flex min-w-0 items-center gap-1.5 text-[0.72rem] font-[680]">
                       <span>Etapă</span>
                       <AppSelect
                         className="min-w-52 flex-1 text-[0.82rem] font-medium"
                         label="Etapă"
-                        name="planning-milestone"
-                        onValueChange={setPlanningMilestone}
+                        name="cash-flow-milestone"
+                        onValueChange={setCashFlowMilestone}
                         options={[
-                          { value: "all", label: "Toate etapele" },
+                          { value: "all", label: "Până la mutare" },
                           ...document.milestones.map((entry) => ({
                             value: entry.id,
                             label: entry.label,
                           })),
                         ]}
-                        value={planningMilestone}
+                        value={cashFlowMilestone}
                       />
                     </div>
-                    <AppButton
-                      intent="secondary"
-                      disabled={store.busy}
-                      onClick={requestAssumptionsEditor}
-                      type="button"
-                    >
+                    <AppButton intent="secondary" onClick={requestAssumptions} type="button">
                       Ipoteze
                     </AppButton>
                   </section>
                   <div className="mt-7">
                     <CashFlowView
-                      document={document}
-                      milestoneId={planningMilestone}
+                      milestoneId={cashFlowMilestone}
                       onOpenItem={requestItemDetails}
-                      view={view}
+                      view={cashFlowMilestone === EXTRA_MILESTONE_ID ? view : initialView}
                     />
                   </div>
+                </>
+              )}
+              {displayedPage === "beneficiari" && (
+                <>
+                  <p className="mb-4 text-[0.78rem] text-muted">
+                    Toate costurile pe beneficiari, inclusiv etapa Extra.
+                  </p>
+                  <BeneficiariesView
+                    bundles={bundles}
+                    document={document}
+                    onOpenItem={requestItemDetails}
+                    onSelect={(id) => void setBeneficiaryId(id)}
+                    selectedId={beneficiaryId}
+                  />
                 </>
               )}
             </>
@@ -342,35 +326,17 @@ export function App() {
         />
       )}
 
-      {assumptionsEditor && (
-        <AssumptionsEditor
-          busy={store.busy}
-          document={document}
+      {assumptionsMounted && (
+        <AssumptionsDialog
           onClose={() => {
             setAssumptionsOpen(false);
           }}
           onExited={() => {
-            setAssumptionsEditor(false);
-            setAssumptionsDirty(false);
+            setAssumptionsMounted(false);
           }}
-          onDirtyChange={setAssumptionsDirty}
-          onSave={store.persist}
           open={assumptionsOpen}
         />
       )}
-      <ConfirmDialog
-        cancelLabel="Păstrează draftul"
-        confirmLabel="Încarcă versiunea de pe disc"
-        description="Draftul nesalvat din aplicație va fi înlocuit cu versiunea curentă de pe disc."
-        onConfirm={() => {
-          setConflictConfirmationOpen(false);
-          store.loadLatest();
-          setAssumptionsOpen(false);
-        }}
-        onOpenChange={setConflictConfirmationOpen}
-        open={conflictConfirmationOpen}
-        title="Încarci versiunea de pe disc?"
-      />
     </div>
   );
 }

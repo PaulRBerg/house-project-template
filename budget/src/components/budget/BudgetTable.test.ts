@@ -1,39 +1,34 @@
-import { readFileSync } from "node:fs";
-
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
-import { parseBudgetDocument, selectBudgetView } from "../../domain/index.js";
+import { budgetTableProps } from "../../test/budget-table.js";
 import {
   makeDocument,
   makeGroup,
   makeInstalment,
   makeItem,
   makePayment,
-} from "../../domain/test-fixtures.js";
+} from "../../test/builders.js";
 import { BudgetTable } from "./BudgetTable.js";
-import type { ScopeFilter, StatusFilter } from "./BudgetToolbar.js";
-
-const filters = { search: "", scope: "all", status: "all" } as const;
+import type { CostScopeFilter, StatusFilter } from "./BudgetToolbar.js";
 
 function renderTable(
   document: ReturnType<typeof makeDocument>,
   search = "",
   selectedCategory = "constructie",
   grouping: "rooms" | "categories" = "rooms",
-  activeFilters: Partial<{ scope: ScopeFilter; status: StatusFilter }> = {},
+  activeFilters: Partial<{ costScope: CostScopeFilter; status: StatusFilter }> = {},
 ): string {
-  const view = selectBudgetView(document, { scenario: "base", asOf: "2026-09-19" });
   return renderToStaticMarkup(
-    createElement(BudgetTable, {
-      filters: { ...filters, ...activeFilters, search },
-      grouping,
-      hierarchy: view.hierarchy,
-      onGroupingChange: () => undefined,
-      onOpenItem: () => undefined,
-      selectedCategory,
-    }),
+    createElement(
+      BudgetTable,
+      budgetTableProps(document, {
+        filters: { search, costScope: "all", status: "all", ...activeFilters },
+        grouping,
+        selectedCategory,
+      }),
+    ),
   );
 }
 
@@ -49,12 +44,6 @@ function summaryById(markup: string, id: string): string {
 function areaSummaryById(markup: string, id: string): string {
   const start = markup.indexOf(`data-budget-area-summary="${id}"`);
   return start === -1 ? "" : markup.slice(start, markup.indexOf("<table", start));
-}
-
-function itemIdsInGroup(group: ReturnType<typeof selectBudgetView>["hierarchy"][number]): string[] {
-  return group.children.flatMap((child) =>
-    child.kind === "item" ? [child.id] : itemIdsInGroup(child),
-  );
 }
 
 describe("BudgetTable", () => {
@@ -80,10 +69,10 @@ describe("BudgetTable", () => {
   });
 
   it.each([
-    ["planned", false, "planned", "work", "€720–€792"],
-    ["fixed", true, "planned", "work", "€720–€792"],
-    ["owned", false, "owned", "work", "€720"],
-    ["land", false, "planned", "land", "€720"],
+    ["planned", false, "planned", "work", "€3,900–€4,290"],
+    ["fixed", true, "planned", "work", "€3,900–€4,290"],
+    ["owned", false, "owned", "work", "€3,900"],
+    ["land", false, "planned", "land", "€3,900"],
   ] as const)(
     "shows the base quantity-derived total for %s costs",
     (_label, fixed, ownership, costType, total) => {
@@ -94,9 +83,9 @@ describe("BudgetTable", () => {
         completion: { complete: ownership === "owned" },
         estimate: {
           kind: "quantity-rate",
-          quantity: 48,
+          quantity: 260,
           unit: "m²",
-          rates: { baseCents: 1_500, highCents: 2_500 },
+          rates: { baseCents: 1_500 },
           fixed,
           pricedOn: "2026-09-19",
         },
@@ -115,7 +104,7 @@ describe("BudgetTable", () => {
       completion: { complete: true, completedOn: "2026-09-18" },
       estimate: {
         kind: "total",
-        amounts: { baseCents: 260_000, highCents: 260_000 },
+        amounts: { baseCents: 260_000 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -174,7 +163,7 @@ describe("BudgetTable", () => {
     expect(row).not.toContain("Plătit");
   });
 
-  it("hides payment progress for one-off rows while retaining all-one-off group totals", () => {
+  it("hides one-off row progress while retaining group, partial-progress and mixed category totals", () => {
     const nestedGroup = makeGroup({
       id: "constructie-fitness",
       label: "Fitness",
@@ -188,7 +177,7 @@ describe("BudgetTable", () => {
       contingencyEligible: false,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 10_000, highCents: 10_000 },
+        amounts: { baseCents: 10_000 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -203,57 +192,7 @@ describe("BudgetTable", () => {
       contingencyEligible: false,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 20_000, highCents: 20_000 },
-        fixed: true,
-        pricedOn: "2026-09-18",
-      },
-    });
-    const markup = renderTable(
-      makeDocument({ groups: [makeGroup(), nestedGroup], items: [unpaid, owned], instalments: [] }),
-      "achiziție",
-    );
-
-    for (const id of [unpaid.id, owned.id]) {
-      const row = rowById(markup, id);
-      expect(row).not.toContain("Neplătit");
-      expect(row).not.toContain("Plătit");
-      expect(row).not.toContain('role="progressbar"');
-      expect(row.match(/<td/g) ?? []).toHaveLength(3);
-    }
-    const group = rowById(markup, nestedGroup.id);
-    expect(group).toContain("€200 plătit");
-    expect(group).toContain("€100 rămas");
-    expect(group).toContain('role="progressbar"');
-    const summary = summaryById(markup, "constructie");
-    expect(summary).toContain("€300</strong>");
-    expect(summary).toContain("€200 plătit");
-    expect(summary).toContain("€100 rămas");
-    expect(summary).toContain('role="progressbar"');
-  });
-
-  it("retains partial-progress rows and mixed category payment totals", () => {
-    const oneOff = makeItem({
-      id: "one-off",
-      label: "Achiziție unică",
-      paymentMode: "one-off",
-      contingencyEligible: false,
-      estimate: {
-        kind: "total",
-        amounts: { baseCents: 10_000, highCents: 10_000 },
-        fixed: true,
-        pricedOn: "2026-09-18",
-      },
-    });
-    const owned = makeItem({
-      id: "owned-one-off",
-      label: "Achiziție deținută",
-      ownership: "owned",
-      completion: { complete: true, completedOn: "2026-09-18" },
-      paymentMode: "one-off",
-      contingencyEligible: false,
-      estimate: {
-        kind: "total",
-        amounts: { baseCents: 20_000, highCents: 20_000 },
+        amounts: { baseCents: 20_000 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
@@ -265,14 +204,15 @@ describe("BudgetTable", () => {
       contingencyEligible: false,
       estimate: {
         kind: "total",
-        amounts: { baseCents: 30_000, highCents: 30_000 },
+        amounts: { baseCents: 30_000 },
         fixed: true,
         pricedOn: "2026-09-18",
       },
     });
     const markup = renderTable(
       makeDocument({
-        items: [oneOff, owned, staged],
+        groups: [makeGroup(), nestedGroup],
+        items: [unpaid, owned, staged],
         instalments: [makeInstalment({ itemId: staged.id, projectedCents: 30_000 })],
         payments: [
           makePayment({
@@ -282,14 +222,28 @@ describe("BudgetTable", () => {
           }),
         ],
       }),
+      "achiziție",
     );
 
+    for (const id of [unpaid.id, owned.id]) {
+      const row = rowById(markup, id);
+      expect(row).not.toContain("Neplătit");
+      expect(row).not.toContain("Plătit");
+      expect(row).not.toContain('role="progressbar"');
+      expect(row.match(/<td/g) ?? []).toHaveLength(4);
+    }
+    const group = rowById(markup, nestedGroup.id);
+    expect(group).toContain("€200 plătit");
+    expect(group).toContain("€100 rămas");
+    expect(group).toContain('role="progressbar"');
     const stagedRow = rowById(markup, staged.id);
     expect(stagedRow).toContain("€50 plătit");
     expect(stagedRow).toContain("€250 rămas");
     expect(stagedRow).toContain('role="progressbar"');
     const summary = summaryById(markup, "constructie");
     expect(summary).toContain("€600</strong>");
+    expect(summary).toContain("€250 plătit");
+    expect(summary).toContain("€350 rămas");
     expect(summary).toContain('aria-valuenow="25000"');
     expect(summary).toContain('aria-valuemax="60000"');
     expect(summary).toContain('role="progressbar"');
@@ -359,6 +313,37 @@ describe("BudgetTable", () => {
     expect(markup).toContain(">Cost</th>");
     expect(markup).not.toContain("Estimare-prognoză");
     expect(rowById(markup, nestedGroup.id)).toContain("cursor-pointer");
+  });
+
+  it("renders groups as tinted bands with item counts and indents items past the chevron", () => {
+    const nestedGroup = makeGroup({
+      id: "constructie-structura",
+      label: "Structură",
+      parentId: "constructie",
+    });
+    const deepGroup = makeGroup({
+      id: "constructie-structura-fundatie",
+      label: "Fundație",
+      parentId: nestedGroup.id,
+    });
+    const rootItem = makeItem({ id: "root-item", groupId: "constructie" });
+    const nestedItem = makeItem({ id: "nested-item", groupId: nestedGroup.id });
+    const deepItem = makeItem({ id: "deep-item", groupId: deepGroup.id });
+    const markup = renderTable(
+      makeDocument({
+        groups: [makeGroup(), nestedGroup, deepGroup],
+        items: [rootItem, nestedItem, deepItem],
+      }),
+    );
+
+    const nestedRow = rowById(markup, nestedGroup.id);
+    expect(nestedRow).toContain("bg-stage-tint/50");
+    expect(nestedRow).toContain("2 elemente");
+    const deepRow = rowById(markup, deepGroup.id);
+    expect(deepRow).toContain("bg-stage-tint/25");
+    expect(deepRow).toContain("1 element<");
+    expect(rowById(markup, rootItem.id)).toContain("padding-inline-start:43px");
+    expect(rowById(markup, nestedItem.id)).toContain("padding-inline-start:59px");
   });
 
   it("expands matching nested groups while searching", () => {
@@ -441,7 +426,7 @@ describe("BudgetTable", () => {
     expect(markup).toContain("Niciun element din categoria Planuri nu corespunde filtrelor.");
   });
 
-  it("uses rooms by default only for finish and move stages, while preserving category view", () => {
+  it("uses rooms by default only for finish, move and Extra stages, while preserving category view", () => {
     const finish = makeGroup({ id: "finish", label: "La cheie", milestoneId: "la-cheie" });
     const interior = makeGroup({
       id: "finish-interior",
@@ -457,7 +442,7 @@ describe("BudgetTable", () => {
           label: "Pardoseală living",
           groupId: interior.id,
           milestoneId: "la-cheie",
-          areaId: "living-room",
+          areaId: "G-LIV",
         }),
         makeItem({
           id: "whole-house-finish",
@@ -480,7 +465,7 @@ describe("BudgetTable", () => {
     const categories = renderTable(document, "", finish.id, "categories");
     const earlierStage = renderTable(
       makeDocument({
-        items: [makeItem({ areaId: "living-room" })],
+        items: [makeItem({ areaId: "G-LIV" })],
         instalments: [],
       }),
       "",
@@ -490,15 +475,15 @@ describe("BudgetTable", () => {
 
     expect(rooms).toContain("Pe camere");
     expect(rooms).toContain('aria-pressed="true"');
-    expect(rooms).toContain("Whole house");
-    expect(rooms).toContain("Living room");
-    expect(rooms).toContain("To be assigned");
+    expect(rooms).toContain("Întreaga casă");
+    expect(rooms).toContain("Living și dining");
+    expect(rooms).toContain("Amplasare de stabilit");
     expect(rooms).toContain("Subtotal în La cheie");
     expect(rooms).toContain("Totalurile pe camere acoperă doar etapa selectată.");
     expect(categories).toContain("Pe categorii");
     expect(categories).not.toContain("Subtotal în La cheie");
     expect(earlierStage).not.toContain("Pe camere");
-    expect(earlierStage).not.toContain("Living room");
+    expect(earlierStage).not.toContain("Living și dining");
   });
 
   it("keeps room, category, item search and scope filters within matching room sections", () => {
@@ -517,24 +502,24 @@ describe("BudgetTable", () => {
           label: "Parchet",
           groupId: interior.id,
           milestoneId: "la-cheie",
-          areaId: "living-room",
+          areaId: "G-LIV",
         }),
         makeItem({
           id: "kitchen-floor",
           label: "Gresie",
           groupId: interior.id,
           milestoneId: "la-cheie",
-          areaId: "kitchen",
+          areaId: "G-KIT",
           costScope: "movable",
         }),
       ],
       instalments: [],
     });
 
-    const roomSearch = renderTable(document, "kitchen", finish.id, "rooms");
+    const roomSearch = renderTable(document, "bucătărie", finish.id, "rooms");
     const categorySearch = renderTable(document, "finisaje", finish.id, "rooms");
     const itemSearch = renderTable(document, "parchet", finish.id, "rooms");
-    const movableOnly = renderTable(document, "", finish.id, "rooms", { scope: "movable" });
+    const movableOnly = renderTable(document, "", finish.id, "rooms", { costScope: "movable" });
 
     expect(roomSearch).toContain("Gresie");
     expect(roomSearch).not.toContain("Parchet");
@@ -556,14 +541,14 @@ describe("BudgetTable", () => {
           label: "Finisaj living",
           groupId: finish.id,
           milestoneId: "la-cheie",
-          areaId: "living-room",
+          areaId: "G-LIV",
         }),
         makeItem({
           id: "kitchen-payment",
           label: "Finisaj bucătărie",
           groupId: finish.id,
           milestoneId: "la-cheie",
-          areaId: "kitchen",
+          areaId: "G-KIT",
         }),
       ],
       instalments: [
@@ -579,30 +564,8 @@ describe("BudgetTable", () => {
       expect(rowById(markup, itemId)).toContain('aria-haspopup="dialog"');
     }
     expect(summaryById(markup, finish.id)).toContain('aria-valuenow="5000"');
-    expect(areaSummaryById(markup, "area-living-room")).toContain('aria-valuenow="5000"');
-    expect(areaSummaryById(markup, "area-kitchen")).toContain("Neplătit");
-    expect(areaSummaryById(markup, "area-kitchen")).not.toContain('role="progressbar"');
-  });
-
-  it("renders every canonical finish and move item once in room grouping", () => {
-    const dataUrl = new URL("../../../data/project.json", import.meta.url);
-    const document = parseBudgetDocument(JSON.parse(readFileSync(dataUrl, "utf8")));
-    const hierarchy = selectBudgetView(document, {
-      scenario: "base",
-      asOf: "2026-09-19",
-    }).hierarchy;
-
-    for (const categoryId of ["finish", "move"]) {
-      const root = hierarchy.find((group) => group.id === categoryId);
-      if (!root) throw new Error(`Lipsește categoria ${categoryId}.`);
-      const markup = renderTable(document, "", categoryId, "rooms");
-      const itemIds = itemIdsInGroup(root);
-
-      expect(itemIds).not.toHaveLength(0);
-      expect(new Set(itemIds)).toHaveProperty("size", itemIds.length);
-      for (const itemId of itemIds) {
-        expect(markup.match(new RegExp(`data-budget-id="${itemId}"`, "g")), itemId).toHaveLength(1);
-      }
-    }
+    expect(areaSummaryById(markup, "area-g-liv")).toContain('aria-valuenow="5000"');
+    expect(areaSummaryById(markup, "area-g-kit")).toContain("Neplătit");
+    expect(areaSummaryById(markup, "area-g-kit")).not.toContain('role="progressbar"');
   });
 });

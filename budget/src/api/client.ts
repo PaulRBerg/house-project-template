@@ -1,5 +1,8 @@
-import type { BudgetDocument } from "../domain/schema.js";
+import type { z } from "zod";
+
+import { formatValidationIssues } from "../domain/schema.js";
 import {
+  API_PATHS,
   apiErrorSchema,
   budgetSnapshotSchema,
   exchangeRateSchema,
@@ -18,16 +21,6 @@ export class BudgetApiError extends Error {
     this.status = status;
     this.code = code;
     this.details = details;
-  }
-}
-
-export class BudgetConflictError extends BudgetApiError {
-  readonly latest: BudgetSnapshot;
-
-  constructor(message: string, latest: BudgetSnapshot) {
-    super(409, "REVISION_CONFLICT", message);
-    this.name = "BudgetConflictError";
-    this.latest = latest;
   }
 }
 
@@ -52,72 +45,45 @@ function throwApiError(response: Response, body: unknown): never {
       `Serverul a răspuns cu eroarea HTTP ${response.status}, într-un format necunoscut.`,
     );
   }
-  const { error, latest } = parsed.data;
-  if (response.status === 409 && latest) {
-    throw new BudgetConflictError(error.message, latest);
-  }
+  const { error } = parsed.data;
   throw new BudgetApiError(response.status, error.code, error.message, error.details ?? []);
 }
 
-export async function loadBudget(fetcher: typeof fetch = fetch): Promise<BudgetSnapshot> {
-  const response = await fetcher("/api/budget", {
-    headers: { Accept: "application/json" },
-  });
+async function fetchJson<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  invalidMessage: string,
+  fetcher: typeof fetch,
+): Promise<T> {
+  const response = await fetcher(path, { headers: { Accept: "application/json" } });
   const body = await decodeResponse(response);
   if (!response.ok) throwApiError(response, body);
-  const parsed = budgetSnapshotSchema.safeParse(body);
+  const parsed = schema.safeParse(body);
   if (!parsed.success) {
     throw new BudgetApiError(
       response.status,
       "INVALID_RESPONSE",
-      "Serverul a returnat un document de buget invalid.",
-      parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`),
+      invalidMessage,
+      formatValidationIssues(parsed.error),
     );
   }
   return parsed.data;
 }
 
-export async function loadExchangeRate(fetcher: typeof fetch = fetch): Promise<ExchangeRate> {
-  const response = await fetcher("/api/exchange-rate", {
-    headers: { Accept: "application/json" },
-  });
-  const body = await decodeResponse(response);
-  if (!response.ok) throwApiError(response, body);
-  const parsed = exchangeRateSchema.safeParse(body);
-  if (!parsed.success) {
-    throw new BudgetApiError(
-      response.status,
-      "INVALID_RESPONSE",
-      "Serverul a returnat un curs de schimb invalid.",
-      parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`),
-    );
-  }
-  return parsed.data;
+export function loadBudget(fetcher: typeof fetch = fetch): Promise<BudgetSnapshot> {
+  return fetchJson(
+    API_PATHS.budget,
+    budgetSnapshotSchema,
+    "Serverul a returnat un document de buget invalid.",
+    fetcher,
+  );
 }
 
-export async function saveBudget(
-  expectedRevision: string,
-  document: BudgetDocument,
-  fetcher: typeof fetch = fetch,
-): Promise<BudgetSnapshot> {
-  const response = await fetcher("/api/budget", {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ expectedRevision, document }),
-  });
-  const body = await decodeResponse(response);
-  if (!response.ok) throwApiError(response, body);
-  const parsed = budgetSnapshotSchema.safeParse(body);
-  if (!parsed.success) {
-    throw new BudgetApiError(
-      response.status,
-      "INVALID_RESPONSE",
-      "Serverul a returnat o revizie de buget invalidă după salvare.",
-      parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`),
-    );
-  }
-  return parsed.data;
+export function loadExchangeRate(fetcher: typeof fetch = fetch): Promise<ExchangeRate> {
+  return fetchJson(
+    API_PATHS.exchangeRate,
+    exchangeRateSchema,
+    "Serverul a returnat un curs de schimb invalid.",
+    fetcher,
+  );
 }

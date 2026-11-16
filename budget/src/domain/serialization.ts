@@ -1,13 +1,4 @@
-import type { BudgetDocument } from "./schema.js";
-
-const RECORD_ARRAY_KEYS = [
-  "milestones",
-  "groups",
-  "items",
-  "sources",
-  "instalments",
-  "payments",
-] as const satisfies ReadonlyArray<keyof BudgetDocument>;
+import { RECORD_COLLECTION_KEYS, type BudgetDocument } from "./schema.js";
 
 /**
  * Keeps the canonical JSON readable while guaranteeing one array record per line.
@@ -17,14 +8,14 @@ export function serializeBudgetDocument(document: BudgetDocument): string {
   const lines = ["{"];
   lines.push(`  "schemaVersion": ${JSON.stringify(document.schemaVersion)},`);
   lines.push(`  "project": ${JSON.stringify(document.project)},`);
-  RECORD_ARRAY_KEYS.forEach((key, keyIndex) => {
+  RECORD_COLLECTION_KEYS.forEach((key, keyIndex) => {
     lines.push(`  "${key}": [`);
     const records = document[key] as ReadonlyArray<unknown>;
     records.forEach((record, recordIndex) => {
       const comma = recordIndex < records.length - 1 ? "," : "";
       lines.push(`    ${JSON.stringify(record)}${comma}`);
     });
-    const comma = keyIndex < RECORD_ARRAY_KEYS.length - 1 ? "," : "";
+    const comma = keyIndex < RECORD_COLLECTION_KEYS.length - 1 ? "," : "";
     lines.push(`  ]${comma}`);
   });
   lines.push("}");

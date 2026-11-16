@@ -1,51 +1,78 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  budgetAreaIdSchema,
-  budgetDocumentSchema,
-  isoMonthSchema,
-  parseBudgetDocument,
-  paymentModeSchema,
-  scenarioAmountsSchema,
-  scenarioSchema,
-} from "./schema.js";
-import {
+  makeBeneficiary,
   makeDocument,
   makeGroup,
   makeInstalment,
   makeItem,
   makePayment,
   makeSource,
-} from "./test-fixtures.js";
+} from "../test/builders.js";
+import {
+  budgetAreaIdSchema,
+  budgetDocumentSchema,
+  isoMonthSchema,
+  parseBudgetDocument,
+  estimateAmountsSchema,
+  paymentModeSchema,
+} from "./schema.js";
 
 describe("budgetDocumentSchema", () => {
+  it("requires all five milestones and rejects a reversed interval", () => {
+    const document = makeDocument();
+    expect(parseBudgetDocument(document)).toEqual(document);
+    expect(
+      budgetDocumentSchema.safeParse({
+        ...document,
+        milestones: document.milestones.filter((milestone) => milestone.id !== "extra"),
+      }).success,
+    ).toBe(false);
+    expect(
+      budgetDocumentSchema.safeParse({
+        ...document,
+        milestones: document.milestones.map((milestone) =>
+          milestone.id === "extra" ? { ...milestone, startDate: "2032-06" } : milestone,
+        ),
+      }).success,
+    ).toBe(false);
+  });
   it("accepts a fully linked document", () => {
     expect(parseBudgetDocument(makeDocument())).toEqual(makeDocument());
   });
 
-  it("normalizes valid legacy planning days to months", () => {
+  it("accepts only the stable record ID in a brief reference", () => {
     const document = makeDocument();
-    const legacy = {
+    const withStatus = {
       ...document,
-      milestones: document.milestones.map((milestone) => ({
-        ...milestone,
-        date: `${milestone.date}-01`,
-      })),
-      instalments: document.instalments.map((instalment) => ({
-        ...instalment,
-        dueOn: instalment.dueOn ? `${instalment.dueOn}-20` : undefined,
+      items: document.items.map((item) => ({
+        ...item,
+        briefReferences: [{ recordId: "household-brief", status: "required" }],
       })),
     };
+    expect(budgetDocumentSchema.safeParse(withStatus).success).toBe(false);
+  });
 
-    expect(parseBudgetDocument(legacy)).toEqual(document);
-    expect(isoMonthSchema.safeParse("2027-02-30").success).toBe(false);
+  it("accepts only calendar months as planning values", () => {
+    const document = makeDocument();
+    expect(isoMonthSchema.safeParse("2027-02").success).toBe(true);
+    expect(isoMonthSchema.safeParse("2027-02-01").success).toBe(false);
     expect(isoMonthSchema.safeParse("2027-13").success).toBe(false);
+    expect(
+      budgetDocumentSchema.safeParse({
+        ...document,
+        instalments: document.instalments.map((instalment) => ({
+          ...instalment,
+          dueOn: `${instalment.dueOn ?? "2027-01"}-20`,
+        })),
+      }).success,
+    ).toBe(false);
   });
 
   it("accepts only catalogue area IDs while keeping schema-v1 area metadata optional", () => {
     const legacyDocument = makeDocument();
     expect(parseBudgetDocument(legacyDocument)).toEqual(legacyDocument);
-    expect(budgetAreaIdSchema.safeParse("living-room").success).toBe(true);
+    expect(budgetAreaIdSchema.safeParse("G-LIV").success).toBe(true);
     expect(
       budgetDocumentSchema.safeParse({
         ...legacyDocument,
@@ -55,20 +82,15 @@ describe("budgetDocumentSchema", () => {
     expect(
       parseBudgetDocument({
         ...legacyDocument,
-        items: legacyDocument.items.map((item) => ({ ...item, areaId: "living-room" })),
+        items: legacyDocument.items.map((item) => ({ ...item, areaId: "G-LIV" })),
       }).items[0]?.areaId,
-    ).toBe("living-room");
+    ).toBe("G-LIV");
   });
 
-  it("accepts only Optimist and Prudent, ordered by cost", () => {
-    expect(scenarioSchema.options).toEqual(["base", "high"]);
-    expect(scenarioSchema.safeParse("low").success).toBe(false);
-    expect(scenarioAmountsSchema.safeParse({ baseCents: 120, highCents: 100 }).success).toBe(false);
-    expect(scenarioAmountsSchema.safeParse({ baseCents: 120, highCents: 120 }).success).toBe(true);
-    expect(scenarioAmountsSchema.safeParse({ lowCents: 100, highCents: 150 }).success).toBe(false);
-    expect(
-      scenarioAmountsSchema.safeParse({ baseCents: 120, highCents: 150, unexpected: 100 }).success,
-    ).toBe(false);
+  it("accepts exactly one estimate amount", () => {
+    expect(estimateAmountsSchema.safeParse({ baseCents: 120 }).success).toBe(true);
+    expect(estimateAmountsSchema.safeParse({ lowCents: 100 }).success).toBe(false);
+    expect(estimateAmountsSchema.safeParse({ baseCents: 120, highCents: 150 }).success).toBe(false);
   });
 
   it("accepts only the two payment presentation modes", () => {
@@ -82,86 +104,49 @@ describe("budgetDocumentSchema", () => {
     ).toBe(false);
   });
 
-  it("defaults legacy schema-v1 items to partial progress without mutating the input", () => {
+  it("requires a payment mode on every item", () => {
     const document = makeDocument();
-    const legacy = {
-      ...document,
-      items: document.items.map(({ paymentMode: _paymentMode, ...item }) => item),
-    };
-
-    expect(parseBudgetDocument(legacy)).toEqual(document);
-    expect(legacy.items[0]).not.toHaveProperty("paymentMode");
-  });
-
-  it("opens both legacy estimate kinds without changing retained amounts or accounting data", () => {
-    const document = makeDocument({
-      items: [
-        makeItem(),
-        makeItem({
-          id: "cantitate",
-          estimate: {
-            kind: "quantity-rate",
-            quantity: 48,
-            quantityBasis: "built-area",
-            unit: "m²",
-            rates: { baseCents: 120, highCents: 150 },
-            fixed: false,
-            pricedOn: "2026-09-18",
-          },
-        }),
-      ],
-      payments: [makePayment()],
-    });
-    const legacy = {
-      ...document,
-      items: document.items.map((item) => ({
-        ...item,
-        estimate:
-          item.estimate.kind === "total"
-            ? { ...item.estimate, amounts: { ...item.estimate.amounts, lowCents: 90 } }
-            : { ...item.estimate, rates: { ...item.estimate.rates, lowCents: 90 } },
-      })),
-    };
-    expect(parseBudgetDocument(legacy)).toEqual(document);
-    expect(legacy.items[0]?.estimate).toMatchObject({ amounts: { lowCents: 90 } });
-    expect(parseBudgetDocument(parseBudgetDocument(legacy))).toEqual(document);
-  });
-
-  it("opens older v1 backups without restoring retired budget limits", () => {
-    const document = makeDocument();
-    const legacy = {
-      ...document,
-      project: {
-        ...document.project,
-        coreBudgetTargetCents: 1_000_000,
-        coreBudgetCapCents: 2_000_000,
-      },
-    };
-    expect(parseBudgetDocument(legacy)).toEqual(document);
     expect(
       budgetDocumentSchema.safeParse({
-        ...legacy,
-        project: { ...legacy.project, unexpected: true },
+        ...document,
+        items: document.items.map(({ paymentMode: _paymentMode, ...item }) => item),
       }).success,
     ).toBe(false);
   });
 
+  it("rejects retired project budget limits and assumptions", () => {
+    const document = makeDocument();
+    for (const retired of [
+      "coreBudgetTargetCents",
+      "coreBudgetCapCents",
+      "annualGrowthBps",
+      "contingencyBps",
+    ]) {
+      expect(
+        budgetDocumentSchema.safeParse({
+          ...document,
+          project: { ...document.project, [retired]: 1_000 },
+        }).success,
+      ).toBe(false);
+    }
+  });
+
   it("accepts revised fractional areas while rejecting mismatched quantity-based estimates", () => {
     const input = makeDocument();
-    input.project.builtAreaSqm = 48.5;
+    input.project.builtAreaSqm = 251.4;
     const item = input.items[0];
     if (!item) throw new Error("Fixture needs a budget item");
     item.estimate = {
       kind: "quantity-rate",
-      quantity: 48.5,
+      quantity: 251.4,
       quantityBasis: "built-area",
       unit: "m²",
-      rates: { baseCents: 100, highCents: 150 },
+      rates: { baseCents: 11000 },
       fixed: false,
       pricedOn: "2026-09-20",
     };
-    expect(parseBudgetDocument(input).project.builtAreaSqm).toBe(48.5);
-    item.estimate.quantity = 49;
+    expect(parseBudgetDocument(input).project.builtAreaSqm).toBe(251.4);
+    item.estimate.quantity = 260;
     const result = budgetDocumentSchema.safeParse(input);
     expect(result.success).toBe(false);
     if (!result.success) {
@@ -173,23 +158,15 @@ describe("budgetDocumentSchema", () => {
     ).toBe(false);
   });
 
-  it("accepts project milestone dates while requiring every known ID once", () => {
+  it("rejects altered invariants and milestone dates", () => {
     const input = makeDocument();
-    const revised = budgetDocumentSchema.safeParse({
+    const result = budgetDocumentSchema.safeParse({
       ...input,
       milestones: input.milestones.map((milestone) =>
-        milestone.id === "la-cheie" ? { ...milestone, date: "2031-02" } : milestone,
+        milestone.id === "la-cheie" ? { ...milestone, date: "2028-10" } : milestone,
       ),
     });
-    expect(revised.success).toBe(true);
-
-    const duplicate = budgetDocumentSchema.safeParse({
-      ...input,
-      milestones: input.milestones.map((milestone) =>
-        milestone.id === "la-mutat" ? { ...milestone, id: "la-cheie" } : milestone,
-      ),
-    });
-    expect(duplicate.success).toBe(false);
+    expect(result.success).toBe(false);
   });
 
   it("rejects orphaned, cyclic, and cross-stage hierarchy references", () => {
@@ -246,33 +223,93 @@ describe("budgetDocumentSchema", () => {
     );
   });
 
-  it("accepts bounded editable assumptions, supplier, and the built-area quantity basis", () => {
+  it("accepts brand and the built-area quantity basis", () => {
     const input = makeDocument({
-      project: {
-        ...makeDocument().project,
-        annualGrowthBps: 750,
-        contingencyBps: 1_500,
-      },
       items: [
         makeItem({
-          supplier: "Example supplier",
+          brand: "Miele",
           estimate: {
             kind: "quantity-rate",
-            quantity: 48,
+            quantity: 260,
             quantityBasis: "built-area",
             unit: "m²",
-            rates: { baseCents: 120, highCents: 150 },
+            rates: { baseCents: 120 },
             fixed: false,
             pricedOn: "2026-09-18",
           },
         }),
       ],
     });
-    expect(parseBudgetDocument(input).project).toMatchObject({
-      annualGrowthBps: 750,
-      contingencyBps: 1_500,
+    expect(parseBudgetDocument(input).items[0]?.brand).toBe("Miele");
+  });
+
+  it("rejects the retired `supplier` key", () => {
+    const document = makeDocument();
+    const input = { ...document, items: [{ ...makeItem(), supplier: "Constructor Exemplu SRL" }] };
+    expect(budgetDocumentSchema.safeParse(input).success).toBe(false);
+  });
+
+  it("requires the beneficiaries collection", () => {
+    const document = makeDocument();
+    const missing = { ...document } as Record<string, unknown>;
+    delete missing.beneficiaries;
+    expect(budgetDocumentSchema.safeParse(missing).success).toBe(false);
+  });
+
+  it("accepts beneficiaries and an item's beneficiaryId reference", () => {
+    const beneficiary = makeBeneficiary({
+      id: "constructor-exemplu",
+      name: "Constructor Exemplu",
+      phone: "0700 000 000",
+      email: "contact@example.com",
+      website: "https://example.com/",
     });
-    expect(parseBudgetDocument(input).items[0]?.supplier).toBe("Example supplier");
+    const document = makeDocument({
+      beneficiaries: [beneficiary],
+      items: [makeItem({ beneficiaryId: "constructor-exemplu" })],
+    });
+    const parsed = parseBudgetDocument(document);
+    expect(parsed.beneficiaries).toEqual([beneficiary]);
+    expect(parsed.items[0]?.beneficiaryId).toBe("constructor-exemplu");
+  });
+
+  it("rejects an item referencing an unknown beneficiaryId", () => {
+    const document = makeDocument({
+      items: [makeItem({ beneficiaryId: "no-such-beneficiary" })],
+    });
+    const result = budgetDocumentSchema.safeParse(document);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.map((issue) => issue.message).join(" ")).toContain("nu există");
+    }
+  });
+
+  it("rejects a beneficiary ID colliding with another collection's ID", () => {
+    const document = makeDocument({
+      beneficiaries: [makeBeneficiary({ id: "constructie" })],
+    });
+    expect(budgetDocumentSchema.safeParse(document).success).toBe(false);
+  });
+
+  it("rejects the reserved beneficiary id «tbd»", () => {
+    const document = makeDocument({
+      beneficiaries: [makeBeneficiary({ id: "tbd" })],
+    });
+    expect(budgetDocumentSchema.safeParse(document).success).toBe(false);
+  });
+
+  it("rejects an invalid beneficiary email", () => {
+    const document = makeDocument({
+      beneficiaries: [makeBeneficiary({ email: "not-an-email" })],
+    });
+    expect(budgetDocumentSchema.safeParse(document).success).toBe(false);
+  });
+
+  it("rejects a non-http beneficiary website", () => {
+    const document = makeDocument({
+      beneficiaries: [makeBeneficiary({ website: "ftp://example.com" })],
+    });
+    expect(budgetDocumentSchema.safeParse(document).success).toBe(false);
   });
 
   it("rejects unsafe quantity products and a wrong built-area quantity", () => {
@@ -281,10 +318,7 @@ describe("budgetDocumentSchema", () => {
         kind: "quantity-rate",
         quantity: 1_000_000_000,
         unit: "unitate",
-        rates: {
-          baseCents: 100_000_000_000,
-          highCents: 100_000_000_000,
-        },
+        rates: { baseCents: 100_000_000_000 },
         fixed: false,
         pricedOn: "2026-09-18",
       },
@@ -292,10 +326,10 @@ describe("budgetDocumentSchema", () => {
     const wrongArea = makeItem({
       estimate: {
         kind: "quantity-rate",
-        quantity: 49,
+        quantity: 261,
         quantityBasis: "built-area",
         unit: "m²",
-        rates: { baseCents: 120, highCents: 150 },
+        rates: { baseCents: 120 },
         fixed: false,
         pricedOn: "2026-09-18",
       },
@@ -306,14 +340,8 @@ describe("budgetDocumentSchema", () => {
     );
   });
 
-  it("rejects out-of-range assumptions and non-http source URLs", () => {
+  it("rejects non-http source URLs", () => {
     const document = makeDocument();
-    expect(
-      budgetDocumentSchema.safeParse({
-        ...document,
-        project: { ...document.project, annualGrowthBps: 2_501, contingencyBps: 5_001 },
-      }).success,
-    ).toBe(false);
     expect(
       budgetDocumentSchema.safeParse({
         ...document,

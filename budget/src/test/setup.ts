@@ -20,6 +20,5 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
-  vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });

@@ -35,7 +35,7 @@ describe("ExchangeRateCache", () => {
   let cachePath: string;
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), "house-template-exchange-rate-"));
+    directory = await mkdtemp(join(tmpdir(), "house-project-template-exchange-rate-"));
     cachePath = join(directory, "exchange-rate.json");
   });
 
@@ -182,6 +182,17 @@ describe("ExchangeRateCache", () => {
     const snapshot = await cache.read();
     expect(snapshot).toMatchObject({ ronPerEur: 5.2644, source: "BNR", stale: false });
   });
+  it("returns a freshly fetched rate even when the cache cannot be written", async () => {
+    const blocker = join(directory, "blocker");
+    await writeFile(blocker, "", "utf8");
+    const cache = new ExchangeRateCache({
+      cachePath: join(blocker, "exchange-rate.json"),
+      fetcher: () => Promise.resolve(xmlResponse(bnrXml("2026-09-18", "5.2644"))),
+      now: () => new Date("2026-09-18T08:00:00.000Z"),
+    });
+    await expect(cache.read()).resolves.toMatchObject({ ronPerEur: 5.2644, stale: false });
+  });
+
   it("keeps serving the stale value without retrying upstream right after a failure", async () => {
     await writeFile(
       cachePath,
